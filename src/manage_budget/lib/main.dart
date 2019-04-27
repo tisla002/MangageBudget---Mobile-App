@@ -14,7 +14,11 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Manage Budget',
       theme: new ThemeData(
-        primarySwatch: Colors.indigoAccent[300],
+        //brightness: Brightness.light,
+        //primaryColor: Colors.white,
+        //accentColor: Colors.white,
+        //buttonColor: Color(0xFFFFFDFF),
+        //primarySwatch: Colors.lightBlueAccent[200],
       ),
       home: new LoginPage()
 
