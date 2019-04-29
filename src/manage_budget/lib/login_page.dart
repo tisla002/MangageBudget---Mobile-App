@@ -7,7 +7,6 @@ import 'main_page.dart';
   String _email;
   String _password;
 
-  bool _connect_google = false;
   bool _connect = false;
 
   final formKey = new GlobalKey<FormState>();
@@ -26,11 +25,6 @@ import 'main_page.dart';
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
-    if(user.uid != null){
-      _connect_google = true;
-    }else{
-      _connect_google = false;
-    }
     return user;
   }
 
@@ -43,7 +37,7 @@ import 'main_page.dart';
     return false;
   }
 
-  void _login() async{
+  _login() async{
     if(_validate()){
       try{
         FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
@@ -160,13 +154,14 @@ import 'main_page.dart';
               color: Color(0xFF18D191),
               child: new Text("Login"),
               onPressed: () {
-                _login();
-                if(_connect == true){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MainPage()),
-                  );
-                }
+                _login().then((value) {
+                  if(_connect != null ){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                    );
+                  }
+                });
               }
           ),
           RaisedButton.icon(
@@ -179,13 +174,14 @@ import 'main_page.dart';
             icon: Image.asset('assets/google_icon.png', height: 24.0),
             label: Text('Sign in with Google'),
             onPressed: () {
-              _handleSignIn();
-              if(_connect_google == true){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MainPage()),
-                );
-              }
+              _handleSignIn().then((FirebaseUser user) {
+                if(user.uid != null ){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                  );
+                }
+              });
             },
           ),
           FlatButton(
