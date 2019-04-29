@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "121498942801",
+    "firebase_url": "https://cs180proj.firebaseio.com",
+    "project_id": "cs180proj",
+    "storage_bucket": "cs180proj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121498942801:android:37b16e53d29cc869",
+        "android_client_info": {
+          "package_name": "com.feflask.manage_budget"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121498942801-o3n4cs72or7slrjqn5kgigh5f88b6dbp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.feflask.manage_budget",
+            "certificate_hash": "19e159f8674d0051036c5d939e5e09b73f7a087a"
+          }
+        },
+        {
+          "client_id": "121498942801-tn9rlpnd0d8etvd5llb15ijfsn4bbv2s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY6kggNmARE2ZITLvcBJlr1mM5wAQ1N3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121498942801-tn9rlpnd0d8etvd5llb15ijfsn4bbv2s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
