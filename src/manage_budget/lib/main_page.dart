@@ -16,6 +16,11 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text("Main Page"),
         backgroundColor: Colors.green,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings)
+          ),
+        ],
       ),
       backgroundColor: Colors.grey[200],
       body: Center(
