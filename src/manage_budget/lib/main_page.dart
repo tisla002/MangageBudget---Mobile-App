@@ -26,6 +26,7 @@ class _MainPageState extends State<MainPage> {
             new Image(image: new AssetImage("assets/oof.png")),
 
             new SizedBox(
+              height: 70.0,
               width: double.infinity,
               child: OutlineButton(
 
@@ -40,7 +41,7 @@ class _MainPageState extends State<MainPage> {
 
             new SizedBox(
               width: double.infinity,
-              height: 50.0,
+              height: 70.0,
               child: OutlineButton(
 
                   color: Colors.grey[200],
@@ -52,6 +53,7 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             new SizedBox(
+              height: 70.0,
               width: double.infinity,
               child: OutlineButton(
                   highlightColor: Colors.green,
