@@ -12,7 +12,7 @@ import 'dart:math';
    List<GaugeSegment> data = [];
 
    for (int i=0;i < targetList.length;i++){
-     data.add(GaugeSegment(targetList.elementAt(i).item, targetList.elementAt(i).amount));
+     data.add(GaugeSegment(targetList.elementAt(i).item, targetList.elementAt(i).amount,targetList.elementAt(i).color));
    }
 
 
@@ -21,17 +21,25 @@ import 'dart:math';
   id: 'Segments',
   domainFn: (GaugeSegment segment, _) => segment.segment,
   measureFn: (GaugeSegment segment, _) => segment.size,
+  colorFn: (GaugeSegment segment, _) => segment.color,
   data: data,
   )
   ];
 }
 
-class creditsAndExpenses extends StatelessWidget {
+class creditsAndExpensesPage extends StatelessWidget {
 
  @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(title: Text('Credits And Expenses')),
+      appBar: AppBar(
+          leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed:() {Navigator.pop(context);} ),
+          title: Text('Credits And Expenses'),
+          actions: <Widget>[
+            IconButton(icon:Icon(Icons.settings),onPressed: null)
+          ],
+      ),
+
 
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,7 +71,12 @@ class creditsAndExpenses extends StatelessWidget {
             minWidth: 400.0,
             height: 50.0,
             child: RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => detailedReportPage()),
+                );
+              },
               child: Text("View Detailed Report",
                   style: TextStyle(
                     color: Colors.white,
@@ -108,12 +121,35 @@ class _expensesListViewState extends State<expensesListView>{
        itemCount: targetList.length,
        itemBuilder: (context,position){
          return Card(
+           color: Colors.green,
            child: Container(
              padding: const EdgeInsets.all(16.0),
              child: Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children:[
-                 Text( targetList.elementAt(position).item, style: TextStyle(fontSize: 14.0),
+                 Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   children:[
+                     Align(
+                       alignment: Alignment.centerLeft,
+                       child: Container(
+                         child:Text(targetList.elementAt(position).item, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold)),
+                       )
+                     ),
+                     Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          child: Text(targetList.elementAt(position).date, style: TextStyle(fontSize: 12.0, color: Colors.white))
+                        ),
+                     )
+                    ]
                  ),
+                 Align(
+                   alignment: Alignment.centerRight,
+                   child:Container(
+                     child:Text("\$"+targetList.elementAt(position).amount.toString(),style: TextStyle(fontSize: 16.0))
+                   )
+                 )
                ]
              ),
            ),
@@ -128,23 +164,28 @@ class expensesListEntry{
    final String item;
    final int amount;
    final String date;
+   charts.Color color;
 
-   expensesListEntry(this.item,this.amount,this.date);
+   expensesListEntry(this.item,this.amount,this.date,this.color);
 }
 
 List<expensesListEntry> expensesListEntrySample = [
-  new expensesListEntry("Car", 100, "4/1/2019"),
-  new expensesListEntry("Staters's Bros", 150, "4/2/2019"),
-  new expensesListEntry("AT&T",49, "4/2/2019"),
-  new expensesListEntry("Edison",39,"4/10/2019"),
-  new expensesListEntry("Car", 100, "4/1/2019"),
-  new expensesListEntry("Staters's Bros", 150, "4/2/2019"),
-  new expensesListEntry("AT&T",49, "4/2/2019"),
-  new expensesListEntry("Edison",39,"4/10/2019"),
-  new expensesListEntry("Car", 150, "4/1/2019"),
-  new expensesListEntry("Staters's Bros", 150, "4/2/2019"),
-  new expensesListEntry("AT&T",49, "4/2/2019"),
-  new expensesListEntry("Edison",39,"4/10/2019"),
+  new expensesListEntry("Car", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault),
+  new expensesListEntry("Staters's Bros", 150, "4/2/2019", charts.MaterialPalette.deepOrange.shadeDefault),
+  new expensesListEntry("AT&T",49, "4/2/2019", charts.MaterialPalette.red.shadeDefault),
+  new expensesListEntry("Edison",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
+  new expensesListEntry("Poo", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
+  new expensesListEntry("Walmart", 150, "4/2/2019", charts.MaterialPalette.deepOrange.shadeDefault),
+  new expensesListEntry("Verizon",49, "4/2/2019", charts.MaterialPalette.red.shadeDefault),
+  new expensesListEntry("Apple",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
+  new expensesListEntry("Lincoln", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
+  new expensesListEntry("McDonalds", 100, "4/1/2019", charts.MaterialPalette.purple.shadeDefault),
+  new expensesListEntry("Vons", 150, "4/2/2019", charts.MaterialPalette.deepOrange.shadeDefault),
+  new expensesListEntry("Jack in the Box",49, "4/2/2019", charts.MaterialPalette.red.shadeDefault),
+  new expensesListEntry("Wendy's",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
+  new expensesListEntry("Burger King", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
+
+
 ];
 
 class GaugeChart extends StatelessWidget {
@@ -155,47 +196,48 @@ class GaugeChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new charts.PieChart(seriesList,
-        animate: animate,
-        // Configure the width of the pie slices to 30px. The remaining space in
-        // the chart will be left as a hole in the center. Adjust the start
-        // angle and the arc length of the pie so it resembles a gauge.
-        defaultRenderer: new charts.ArcRendererConfig(
-            arcWidth: 30, startAngle: 4 / 5 * pi, arcLength: 7 / 5 * pi));
-  }
-
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<GaugeSegment, String>> _createSampleData() {
-    final data = [
-      new GaugeSegment('Car', 50),
-      new GaugeSegment('Phone', 20)
-    ];
-
-    return [
-      new charts.Series<GaugeSegment, String>(
-        id: 'Segments',
-        domainFn: (GaugeSegment segment, _) => segment.segment,
-        measureFn: (GaugeSegment segment, _) => segment.size,
-        data: data,
-      )
-    ];
+    return RotatedBox(
+      quarterTurns: 0,
+      child:
+      charts.PieChart(seriesList,
+          animate: animate,
+          // Configure the width of the pie slices to 30px. The remaining space in
+          // the chart will be left as a hole in the center. Adjust the start
+          // angle and the arc length of the pie so it resembles a gauge.
+          defaultRenderer: new charts.ArcRendererConfig(
+              arcWidth: 30, startAngle: -7/6 *pi, arcLength: 6.7 / 5 * pi))
+    );
   }
 }
 
 class GaugeSegment {
   final String segment;
   final int size;
+  charts.Color color;
 
-  GaugeSegment(this.segment, this.size);
+  GaugeSegment(this.segment, this.size,this.color);
 }
 
-
+class detailedReportPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed:() {Navigator.pop(context);} ),
+        title: Text('Detailed Report'),
+        actions: <Widget>[
+          IconButton(icon:Icon(Icons.settings),onPressed: null)
+        ],
+      ),
+    );
+  }
+}
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(MaterialApp(
-      home: new creditsAndExpenses(),
+      home: new creditsAndExpensesPage(),
     ));
   });
 }

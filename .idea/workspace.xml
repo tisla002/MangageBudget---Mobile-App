@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc226483-fd12-4fcb-97d6-34f01e75f69c" name="Default Changelist" comment="">
+    <list default="true" id="dc226483-fd12-4fcb-97d6-34f01e75f69c" name="Default Changelist" comment="Added beginning of detailed report page and improved readability of expenses viewList">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manage_budget/lib/creditsAndExpenses.dart" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_budget/lib/creditsAndExpenses.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/manage_budget/lib/creditsAndExpenses.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="136" column="36" selection-start-line="136" selection-start-column="36" selection-end-line="136" selection-end-column="36" />
+            <state relative-caret-position="360">
+              <caret line="132" column="27" lean-forward="true" selection-start-line="132" selection-start-column="27" selection-end-line="132" selection-end-column="27" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -83,6 +85,8 @@
       <find>gaugesegment</find>
       <find>var</find>
       <find>gaugesegm</find>
+      <find>creditsAnd</find>
+      <find>listview</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -126,12 +130,6 @@
               <item name="CS180Project" type="b2602c69:ProjectViewProjectNode" />
               <item name="CS180Project" type="462c0819:PsiDirectoryNode" />
               <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CS180Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CS180Project" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-              <item name="libraries" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CS180Project" type="b2602c69:ProjectViewProjectNode" />
@@ -249,7 +247,14 @@
       <option name="project" value="LOCAL" />
       <updated>1556609264285</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Completed Display for List View and Fixed Gauge Color issues">
+      <created>1556843452111</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1556843452111</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -266,14 +271,14 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.1455451" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.1455451" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
       <window_info id="Resources Explorer" order="5" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Favorites" order="7" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Run" order="0" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Run" order="0" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Floobits" order="1" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.3286119" />
       <window_info anchor="bottom" id="Debug" order="3" />
@@ -294,7 +299,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add ListView.builder for Expenses" />
     <MESSAGE value="Add ListView.builder for Expenses2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add ListView.builder for Expenses2" />
+    <MESSAGE value="Completed Display for List View and Fixed Gauge Color issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="Completed Display for List View and Fixed Gauge Color issues" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CS180Project.iml">
@@ -372,8 +378,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/manage_budget/lib/creditsAndExpenses.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="136" column="36" selection-start-line="136" selection-start-column="36" selection-end-line="136" selection-end-column="36" />
+        <state relative-caret-position="360">
+          <caret line="132" column="27" lean-forward="true" selection-start-line="132" selection-start-column="27" selection-end-line="132" selection-end-column="27" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
