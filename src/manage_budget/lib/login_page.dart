@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:manage_budget/create_account.dart';
 import 'main_page.dart';
 
 
   String _email;
   String _password;
 
-  bool _connect_google = false;
   bool _connect = false;
 
   final formKey = new GlobalKey<FormState>();
@@ -26,11 +26,6 @@ import 'main_page.dart';
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
-    if(user.uid != null){
-      _connect_google = true;
-    }else{
-      _connect_google = false;
-    }
     return user;
   }
 
@@ -40,11 +35,10 @@ import 'main_page.dart';
       form.save();
       return true;
     }
-
     return false;
   }
 
-  void _login() async{
+  _login() async{
     if(_validate()){
       try{
         FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
@@ -61,10 +55,6 @@ import 'main_page.dart';
     }
   }
 
-  void _createAccount() {
-
-  }
-
   class LoginPage extends StatefulWidget {
     @override
       State<StatefulWidget> createState() => new _LoginPageState();
@@ -74,113 +64,137 @@ import 'main_page.dart';
     @override
       Widget build(BuildContext context) {
       return Scaffold(
-        //appBar: AppBar(
-        //  title: Text('Login Page'),
-        //),
+        resizeToAvoidBottomPadding: false,
         body: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            //padding: EdgeInsets.symmetric(horizontal: 24.0),
             children: <Widget>[
-              SizedBox(height: 80.0),
-              Column(
-                children: <Widget>[
-                  SizedBox(height: 100.0,
-                      child: Image.asset('assets/icon.jpg')
-                  ),
-                  SizedBox(height: 17.0),
-                  Text(
-                    "Manage Budget",
-                    style: new TextStyle(fontFamily: 'Rubik-Regular',
-                        fontSize: 30.0),
-                  ),
-                ],
+              Container(
+                padding: EdgeInsets.only(top: 80.0),
+                child: icon(),
               ),
-              SizedBox(height: 90.0),
-              Form(
-                key: formKey,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-                      child: new TextFormField(
-                        decoration: new InputDecoration(labelText: 'Email'),
-                        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-                        onSaved: (value) => _email = value,
-                      ),
-                    ),
-                    new SizedBox(
-                      height: 6.0,
-                    ),
-                    Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-                      child: new TextFormField(
-                        obscureText: true,
-                        decoration: new InputDecoration(labelText: 'Password'),
-                        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-                        onSaved: (value) => _password = value,
-                      ),
-                    ),
-                  ],
-                ) ,
+              Container(
+                padding: EdgeInsets.only(top: 90.0),
+                child: textfields(),
               ),
-              SizedBox(
-                height: 25.0,
-              ),
-              Center(
-                child: RaisedButton(
-                  padding: EdgeInsets.all(8.0),
-                  textColor: Colors.white,
-                  color: Color(0xFF18D191),
-                  child: new Text("Login"),
-                  onPressed: () {
-                    _login();
-                    if(_connect == true){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                      );
-                    }
-                  }
-                ),
-              ),
-              SizedBox(
-                height: 12.0,
-              ),
-              Center(
-                child: RaisedButton.icon(
-                  color: Color(0xFFFFFDFF),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                  ),
-                  elevation: 8.0,
-                  highlightElevation: 6.0,
-                  icon: Image.asset('assets/google_icon.png', height: 24.0),
-                  label: Text('Sign in with Google'),
-                  onPressed: () {
-                    _handleSignIn();
-                    if(_connect_google == true){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                      );
-                    }
-                  },
-                ),
-              ),
-              FlatButton(
-                padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
-                child: Text(
-                  "Create an Account"
-                ),
-                onPressed: () {
-                  _createAccount();
-                },
+              Container(
+                padding: EdgeInsets.only(top: 40.0),
+                child: loginbuttons(),
               )
             ],
           )
         ),
       );
     }
+  }
+
+  class icon extends StatelessWidget{
+    @override
+      Widget build(BuildContext context) {
+      return Column(
+        children: <Widget>[
+          Container(
+            height: 100.0,
+            child: Image.asset('assets/icon.jpg'),
+            padding: EdgeInsets.only(bottom: 17.0),
+          ),
+          Text(
+            "Manage Budget",
+            style: new TextStyle(fontFamily: 'Rubik-Regular',
+                fontSize: 30.0),
+          ),
+        ],
+      );
+    }
+  }
+
+  class textfields extends StatelessWidget{
+    @override
+    Widget build(BuildContext context) {
+      return Form(
+        key: formKey,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding:
+              const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
+              child: new TextFormField(
+                decoration: new InputDecoration(labelText: 'Email'),
+                validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+                onSaved: (value) => _email = value,
+              ),
+            ),
+            Padding(
+              padding:
+              const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
+              child: new TextFormField(
+                obscureText: true,
+                decoration: new InputDecoration(labelText: 'Password'),
+                validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+                onSaved: (value) => _password = value,
+              ),
+            ),
+          ],
+        ) ,
+      );
+    }
+  }
+
+  class loginbuttons extends StatelessWidget{
+    @override
+    Widget build(BuildContext context) {
+      return Column(
+        children: <Widget>[
+          RaisedButton(
+              padding: EdgeInsets.all(8.0),
+              textColor: Colors.white,
+              color: Color(0xFF18D191),
+              child: new Text("Login"),
+              onPressed: () {
+                _login().then((value) {
+                  if(_connect != null ){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                    );
+                  }
+                });
+              }
+          ),
+          RaisedButton.icon(
+            color: Color(0xFFFFFDFF),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)
+            ),
+            elevation: 8.0,
+            highlightElevation: 6.0,
+            icon: Image.asset('assets/google_icon.png', height: 24.0),
+            label: Text('Sign in with Google'),
+            onPressed: () {
+              _handleSignIn().then((FirebaseUser user) {
+                if(user.uid != null ){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                  );
+                }
+              });
+            },
+          ),
+          FlatButton(
+            padding: EdgeInsets.only(top:100),
+            child: Text(
+                "Create an Account"
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => createAccount()),
+              );
+            },
+          )
+        ],
+      );
+    }
+
   }
