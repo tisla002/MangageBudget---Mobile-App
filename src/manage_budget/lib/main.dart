@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manage_budget/login_page.dart';
 
 
+
 void main(){
   runApp(new MyApp());
 }
