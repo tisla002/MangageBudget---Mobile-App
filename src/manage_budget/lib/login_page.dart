@@ -152,7 +152,7 @@ import 'main_page.dart';
               child: new Text("Login"),
               onPressed: () {
                 _login().then((value) {
-                  if(_connect != null ){
+                  if(_connect != false ){
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),
