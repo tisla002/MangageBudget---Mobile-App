@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:manage_budget/create_account.dart';
 import 'main_page.dart';
 
 
@@ -52,10 +53,6 @@ import 'main_page.dart';
         print('Error: $e');
       }
     }
-  }
-
-  void _createAccount() {
-
   }
 
   class LoginPage extends StatefulWidget {
@@ -190,7 +187,10 @@ import 'main_page.dart';
                 "Create an Account"
             ),
             onPressed: () {
-              _createAccount();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => createAccount()),
+              );
             },
           )
         ],
