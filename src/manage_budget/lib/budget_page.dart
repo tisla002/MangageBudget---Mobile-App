@@ -80,7 +80,13 @@ class _BudgetPageState extends State<BudgetPage> {
               elevation: 0.0,
               child: new Icon(Icons.add),
               backgroundColor: new Color(0xFF18D191), //color....
-              onPressed: () { Navigator.of(context).pushNamed("/AddBudgetPage");}
+              onPressed: () {
+                //Navigator.of(context).pushNamed("/AddBudgetPage");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddBudgetPage()),
+                );
+              }
             )
           );
         }

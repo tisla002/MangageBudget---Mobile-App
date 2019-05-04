@@ -69,16 +69,18 @@ import 'main_page.dart';
           child: Column(
             //padding: EdgeInsets.symmetric(horizontal: 24.0),
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 45.0),
-                child: icon(),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.only(top: 65.0),
+                  child: icon(),
+                ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 45.0),
+                padding: EdgeInsets.only(top: 25.0),
                 child: textfields(),
               ),
               Container(
-                padding: EdgeInsets.only(top: 20.0),
+                padding: EdgeInsets.only(top: 30.0),
                 child: loginbuttons(),
               )
             ],
