@@ -70,15 +70,15 @@ import 'main_page.dart';
             //padding: EdgeInsets.symmetric(horizontal: 24.0),
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 60.0),
+                padding: EdgeInsets.only(top: 45.0),
                 child: icon(),
               ),
               Container(
-                padding: EdgeInsets.only(top: 70.0),
+                padding: EdgeInsets.only(top: 45.0),
                 child: textfields(),
               ),
               Container(
-                padding: EdgeInsets.only(top: 30.0),
+                padding: EdgeInsets.only(top: 20.0),
                 child: loginbuttons(),
               )
             ],
