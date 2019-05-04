@@ -1,5 +1,12 @@
+import 'dart:core';
+import 'dart:ui';
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter/services.dart';
+import 'dart:math';
 
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
@@ -64,10 +71,10 @@ class _BudgetPageState extends State<BudgetPage> {
         @override
         Widget build(BuildContext context) {
           return Scaffold(
-            appBar: AppBar(
+            /*appBar: AppBar(
               backgroundColor: new Color(0xFF18D191),
               title: Text('BudgetPage', style: _medFont)
-            ),
+            ),*/
             body: _buildSuggestions(),
             floatingActionButton: new FloatingActionButton(
               elevation: 0.0,

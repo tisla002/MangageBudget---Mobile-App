@@ -4,6 +4,7 @@ import "package:manage_budget/login_page.dart";
 import "package:manage_budget/settings.dart";
 import 'package:firebase_database/firebase_database.dart';
 import "package:manage_budget/creditsAndExpenses.dart";
+import "budget_page.dart";
 
 //adrian this should be where you are going to be working
 class MainPage extends StatefulWidget {
@@ -29,19 +30,7 @@ class _MainPageState extends State<MainPage> {
 
     creditsAndExpensesPage(
     ),
-    new SizedBox(
-      height: 70.0,
-      width: double.infinity,
-      child: OutlineButton(
-          highlightColor: Colors.green,
-          color: Colors.grey,
-          textColor: Colors.black,
-          onPressed: (){
-
-          },
-          child: Text("Third Submenu")
-      ),
-    ),
+    BudgetPage(),
   ];
 
   @override
