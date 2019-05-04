@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import "package:manage_budget/login_page.dart";
 import "package:manage_budget/settings.dart";
 import 'package:firebase_database/firebase_database.dart';
+import "package:manage_budget/creditsAndExpenses.dart";
 
 //adrian this should be where you are going to be working
 class MainPage extends StatefulWidget {
@@ -13,17 +14,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    new SizedBox(
-      height: 70.0,
-      width: double.infinity,
-      child: OutlineButton(
-          color: Colors.grey[200],
-          textColor: Colors.black,
-          onPressed: (){
-          },
-          child: Text("First Submenu")
-      ),
-    ),
+
     new SizedBox(
       height: 70.0,
       width: double.infinity,
@@ -34,6 +25,9 @@ class _MainPageState extends State<MainPage> {
           },
           child: Text("Second Submenu")
       ),
+    ),
+
+    creditsAndExpensesPage(
     ),
     new SizedBox(
       height: 70.0,

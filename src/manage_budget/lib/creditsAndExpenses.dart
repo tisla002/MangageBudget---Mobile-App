@@ -33,17 +33,17 @@ class creditsAndExpensesPage extends StatelessWidget {
   Widget build(BuildContext context){
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
+     /* appBar: AppBar(
           leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed:() {Navigator.pop(context);} ),
           title: Text('Credits And Expenses'),
           actions: <Widget>[
             IconButton(icon:Icon(Icons.settings),onPressed: null)
           ],
-      ),
+      ),*/
 
 
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: ListView(
+        //crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
             height: 200,
