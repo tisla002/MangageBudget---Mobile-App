@@ -128,9 +128,9 @@ class creditsAndExpensesPage extends StatelessWidget {
         Container(
           padding: const EdgeInsets.only(top:10),
           child:
-            AppBar(title: Text("Expenses",style: TextStyle(
+           /* AppBar(title: Text("Expenses",style: TextStyle(
               color: Colors.white,
-            )),)
+            )),)*/
         ),
         Container(
           height:306,
