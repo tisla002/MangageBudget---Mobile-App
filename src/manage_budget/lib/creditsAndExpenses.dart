@@ -32,6 +32,7 @@ class creditsAndExpensesPage extends StatelessWidget {
  @override
   Widget build(BuildContext context){
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
           leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed:() {Navigator.pop(context);} ),
           title: Text('Credits And Expenses'),
@@ -48,6 +49,7 @@ class creditsAndExpensesPage extends StatelessWidget {
             height: 200,
             child: GaugeChart(createData(expensesListEntrySample)),
           ),
+
           Container(
             padding: EdgeInsets.only(left:5.0,top:10.0),
             child:
@@ -55,7 +57,46 @@ class creditsAndExpensesPage extends StatelessWidget {
               minWidth: 400.0,
               height: 50.0,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(context: context,
+                  builder: (BuildContext context){
+                    return AlertDialog(
+                      title: new Text("Add Credits: "),
+                      content: new TextField(
+                        decoration: new InputDecoration(labelText: "Enter your number"),
+                        keyboardType: TextInputType.number,
+                        autofocus: true,
+                      ),
+                      actions: <Widget>[
+                        ButtonTheme(
+                        minWidth:150,
+                        child:
+                          new RaisedButton.icon(
+                              icon: new Icon(Icons.check,color: Colors.white),
+                              disabledColor: Colors.grey,
+                              color: Colors.green,
+                              onPressed: () {
+                              },
+                              label: Text("")
+                          ),
+                        ),
+
+                        ButtonTheme(
+                        minWidth:150,
+                        child:
+                          new RaisedButton.icon(
+                            icon: new Icon(Icons.close,color: Colors.white),
+                            color: Colors.red,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            label: Text(""),
+                          ),
+                        )
+                      ],
+                    );
+                  });
+                },
                 child: Text ("Add Credit",
                     style: TextStyle(
                       color: Colors.white,
@@ -133,7 +174,7 @@ class _expensesListViewState extends State<expensesListView>{
                      Align(
                        alignment: Alignment.centerLeft,
                        child: Container(
-                         child:Text(targetList.elementAt(position).item, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold)),
+                         child:Text(targetList.elementAt(position).item, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
                        )
                      ),
                      Align(
@@ -147,7 +188,7 @@ class _expensesListViewState extends State<expensesListView>{
                  Align(
                    alignment: Alignment.centerRight,
                    child:Container(
-                     child:Text("\$"+targetList.elementAt(position).amount.toString(),style: TextStyle(fontSize: 16.0))
+                     child:Text("\$"+targetList.elementAt(position).amount.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
                    )
                  )
                ]
@@ -170,7 +211,7 @@ class expensesListEntry{
 }
 
 List<expensesListEntry> expensesListEntrySample = [
-  new expensesListEntry("Car", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault),
+  new expensesListEntry("Winson", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault),
   new expensesListEntry("Staters's Bros", 150, "4/2/2019", charts.MaterialPalette.deepOrange.shadeDefault),
   new expensesListEntry("AT&T",49, "4/2/2019", charts.MaterialPalette.red.shadeDefault),
   new expensesListEntry("Edison",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
@@ -229,6 +270,7 @@ class detailedReportPage extends StatelessWidget{
           IconButton(icon:Icon(Icons.settings),onPressed: null)
         ],
       ),
+
     );
   }
 }
