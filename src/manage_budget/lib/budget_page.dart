@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/flutter_charts.dart' as charts;
-import 'package:firebase_database/firebase_database.dart';
-//import 'main_page.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
-//void main() => runApp(BudgetPage());
+final budgetBoxHeight = 30.0;
+final budgetBoxWidth = 400.0;
+final numCount = 10;
+
+
+List<BudgetCategory> dataSample = [
+  new BudgetCategory("Food", 500, 300, charts.MaterialPalette.green.shadeDefault),
+  new BudgetCategory("Groceries", 500, 200, charts.MaterialPalette.blue.shadeDefault),
+  new BudgetCategory("Potatoes", 600, 400, charts.MaterialPalette.pink.shadeDefault),
+//  new BudgetCategory("Food", 500, charts.MaterialPalette.green.shadeDefault),
+//  new BudgetCategory("Food", 500, charts.MaterialPalette.green.shadeDefault),
+//  new BudgetCategory("Food", 500, charts.MaterialPalette.green.shadeDefault),
+//  new BudgetCategory("Food", 500, charts.MaterialPalette.green.shadeDefault),
+
+];
+
+
+//don't think I need this
+//for (int i = 0; i < targetList.length;i++) {
+//  dataSample.add(BudgetCategory(targetList.elementAt(i).category, targetList.elementAt(i).totalBudget,
+//    targetList.elementAt(i).color))
+//}
 
 class BudgetPage extends StatefulWidget {
   @override
@@ -13,9 +32,35 @@ class BudgetPage extends StatefulWidget {
 class _BudgetPageState extends State<BudgetPage> {
   final noOfSelectedItems = 0;
   final _medFont = const TextStyle(fontSize: 20.0);
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-  @override
+//  List<charts.Series<BudgetCategory, String>> _seriesData;
+//  final _biggerFont = const TextStyle(fontSize: 18.0);
 
+//  _generateData() {
+//    var data1 = [
+//      new BudgetCategory('food', 100, charts.MaterialPalette.green.shadeDefault),
+////      new BudgetCategory('gas', 500, charts.MaterialPalette.pink.shadeDefault),
+////      new BudgetCategory('bills', 100, charts.MaterialPalette.red.shadeDefault),
+////      new BudgetCategory('groceries', 300, charts.MaterialPalette.blue.shadeDefault),
+//    ];
+//
+//    _seriesData.add(
+//        charts.Series(
+//          data: data1,
+//          domainFn: (BudgetCategory budget, _) => budget.category,
+//          measureFn: (BudgetCategory budget, _) => budget.totalBudget,
+//          colorFn: (BudgetCategory budget, _) => budget.color,
+//          id: 'Total',
+//        )
+//    );
+//  }
+
+//  @override
+//  void initState() {
+//    super.initState();
+//    _seriesData = List<charts.Series<BudgetCategory, String>>();
+//    _generateData();
+//
+//  }
         @override
         Widget build(BuildContext context) {
           return Scaffold(
@@ -35,37 +80,76 @@ class _BudgetPageState extends State<BudgetPage> {
         Widget _buildSuggestions() {
           return ListView.builder(
             padding: const EdgeInsets.all(16.0),
-                itemCount: 2,
+                itemCount: dataSample.length, //dummy value
                 itemBuilder: (context, i) {
-                  if (noOfSelectedItems > 0) {    //I want it so that at the base it has total money spent and their budget
-                    if (i.isOdd) return Divider();
-                    //final index = i ~/ 2;
-                    return _buildRow();
-                    }
-                  else {
-                       //I want it so that at the base it has total money spent and their budget
-                      if (i.isOdd) return Divider();
-                      //final index = i ~/ 2;
-                      return _buildBasicRow();
-                  }
-                }
+//                  if (i.isOdd) return Divider();
 
+                  return _buildRow(dataSample, i);
+                }
           );
         }
 
-        Widget _buildRow() {
-           return ListTile(
-                //leading: Icon(),
-                title: Text('words go here'),
-                subtitle: Text('subwords go here'),
-                onTap: () {/*React to being tapped*/ },
-           );
+        Widget _buildRow(dataSample, i) {
+//          if (i == 0) {
+//            return _buildBasicRow();
+//          }
+          return new GestureDetector(
+            onTap: () {  },
+            child: Stack(
+
+            alignment: Alignment.centerLeft,
+
+            children: <Widget>[
+              SizedBox(
+
+                width: budgetBoxWidth,
+                height: budgetBoxHeight,
+                child: Container(
+                  alignment: Alignment.center,
+                  color: Colors.grey,
+
+                ),
+              ),
+              SizedBox(
+
+                width: (dataSample.elementAt(i).budgetSpent / dataSample.elementAt(i).totalBudget) * budgetBoxWidth,
+                height: budgetBoxHeight,
+                child: Container(
+                  padding: const EdgeInsets.all(5.0),
+                  alignment: Alignment.centerLeft,
+                  color: Colors.green, //dataSample.elementAt(i).barColor,
+                  child: Text(dataSample.elementAt(i).category, style: TextStyle(color: Colors.white)),
+
+                ),
+              ),
+            ],
+            )
+          );
         }
 
         Widget _buildBasicRow() {
-           return ListTile(
-             title: Text('Total Budget'),
-             onTap: () { },
+           return Stack(
+
+             alignment: Alignment.centerLeft,
+             children: <Widget> [
+               SizedBox(
+                 width: budgetBoxWidth, //dummy value
+                 height: budgetBoxHeight,
+                 child: Container(
+                   alignment: Alignment.center,
+                   color: Colors.grey,
+                   child:Text('Total'),
+                 ),
+               ),
+               SizedBox(
+                 width: 75, //dummy value
+                 height: budgetBoxHeight,
+                 child: Container(
+                   alignment: Alignment.center,
+                   color: Colors.green,
+                 ),
+               ),
+             ],
            );
         }
 }
@@ -77,6 +161,7 @@ class BudgetCategories extends StatefulWidget {
 
 
 class AddBudgetPage extends StatelessWidget {
+  String result = "";
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -89,17 +174,29 @@ class AddBudgetPage extends StatelessWidget {
             child: new Center(
                 child: new Column(
                     children: <Widget>[
-                      new TextField(),
+                      new TextField(
+                        decoration: new InputDecoration(
+                          hintText: "AddBudget",
+                        ),
+                        onSubmitted: (String str) {
+                          //setState(() {
+                            result = str;
+                            buttonPressed(context);
+                          //});
+                        },
+                      ),
+//                        onChanged: (str) //needs to store that string/int
                       new RaisedButton(
-                        onPressed: () { null; },
+                        onPressed: () {
+                          buttonPressed(context); //dummy onPressed does not look at the value
+                        },
                         child: Text('Enter'),
                       ),
-                    ]
-                )
-            )
-        )
-
-    );
+                      new Text(result)
+                    ])
+                ),
+            ),
+        );
   }
 }
 /*
@@ -128,4 +225,18 @@ void buttonPressed(BuildContext context) {
   );
 }
 
+double calculateBoxWidth(double totalBudget, budgetSpent ) {
+  return (budgetSpent / totalBudget) * budgetBoxWidth;
+}
 
+//inside a class?
+
+
+class BudgetCategory {
+  final String category;
+  final int totalBudget;
+  final int budgetSpent;
+  charts.Color barColor;
+
+  BudgetCategory(this.category, this.totalBudget, this.budgetSpent, this.barColor);
+}
