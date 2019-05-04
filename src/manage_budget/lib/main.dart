@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
         //accentColor: Colors.white,
         //buttonColor: Color(0xFFFFFDFF),
         //primarySwatch: Colors.lightBlueAccent[200],
+        //primarySwatch: Colors.greenAccent[400],
+        primarySwatch: Colors.green
       ),
       home: new LoginPage()
 

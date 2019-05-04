@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:manage_budget/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
   final formKey_createAccount = new GlobalKey<FormState>();
 
@@ -12,6 +14,17 @@ import 'package:flutter/material.dart';
     @override
       State<StatefulWidget> createState() => new _createAccountState();
 
+  }
+
+  Future<FirebaseUser> _registerAccount() async{
+    FirebaseUser user;
+    try{
+      formKey_createAccount.currentState.save();
+      user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+    }catch(e){
+      print(e.toString());
+    }
+    return user;
   }
 
   class _createAccountState extends State<createAccount>{
@@ -35,31 +48,6 @@ import 'package:flutter/material.dart';
                       padding:
                       const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
                       child: new TextFormField(
-                        decoration: new InputDecoration(labelText: 'First Name'),
-                        validator: (value) => value.isEmpty ? 'First Name can\'t be empty' : null,
-                        onSaved: (value) => _firstName = value,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
-                      child: new TextFormField(
-                        obscureText: true,
-                        decoration: new InputDecoration(labelText: 'Last Name'),
-                        validator: (value) => value.isEmpty ? 'Last Name can\'t be empty' : null,
-                        onSaved: (value) => _lastName = value,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
-                      child: new TextFormField(
-                        obscureText: true,
                         decoration: new InputDecoration(labelText: 'Email'),
                         validator: (value) => value.isEmpty ? 'Last Name can\'t be empty' : null,
                         onSaved: (value) => _email = value,
@@ -87,7 +75,14 @@ import 'package:flutter/material.dart';
                         child: OutlineButton(
                           highlightedBorderColor: Colors.black,
                           onPressed: () {
-                            //_registerAccount();
+                            _registerAccount().then((value){
+                              if(value.uid != null){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                );
+                              }
+                            });
                           },
                           child: const Text('Register'),
                         ),

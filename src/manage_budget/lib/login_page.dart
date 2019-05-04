@@ -70,15 +70,15 @@ import 'main_page.dart';
             //padding: EdgeInsets.symmetric(horizontal: 24.0),
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 80.0),
+                padding: EdgeInsets.only(top: 60.0),
                 child: icon(),
               ),
               Container(
-                padding: EdgeInsets.only(top: 90.0),
+                padding: EdgeInsets.only(top: 70.0),
                 child: textfields(),
               ),
               Container(
-                padding: EdgeInsets.only(top: 40.0),
+                padding: EdgeInsets.only(top: 30.0),
                 child: loginbuttons(),
               )
             ],
@@ -91,6 +91,11 @@ import 'main_page.dart';
   class icon extends StatelessWidget{
     @override
       Widget build(BuildContext context) {
+
+      /*return Hero(
+        tag: ,
+        child: Image.asset('assets/icon.jpg'),
+      );*/
       return Column(
         children: <Widget>[
           Container(
@@ -145,53 +150,59 @@ import 'main_page.dart';
     Widget build(BuildContext context) {
       return Column(
         children: <Widget>[
-          RaisedButton(
-              padding: EdgeInsets.all(8.0),
-              textColor: Colors.white,
-              color: Color(0xFF18D191),
-              child: new Text("Login"),
+          Container(
+            child: RaisedButton(
+                padding: EdgeInsets.all(8.0),
+                textColor: Colors.white,
+                color: Color(0xFF18D191),
+                child: new Text("Login"),
+                onPressed: () {
+                  _login().then((value) {
+                    if(_connect != false ){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainPage()),
+                      );
+                    }
+                  });
+                }
+            ),
+          ),
+          Container(
+            child: RaisedButton.icon(
+              color: Color(0xFFFFFDFF),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)
+              ),
+              elevation: 8.0,
+              highlightElevation: 6.0,
+              icon: Image.asset('assets/google_icon.png', height: 24.0),
+              label: Text('Sign in with Google'),
               onPressed: () {
-                _login().then((value) {
-                  if(_connect != false ){
+                _handleSignIn().then((FirebaseUser user) {
+                  if(user.uid != null ){
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),
                     );
                   }
                 });
-              }
-          ),
-          RaisedButton.icon(
-            color: Color(0xFFFFFDFF),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)
+              },
             ),
-            elevation: 8.0,
-            highlightElevation: 6.0,
-            icon: Image.asset('assets/google_icon.png', height: 24.0),
-            label: Text('Sign in with Google'),
-            onPressed: () {
-              _handleSignIn().then((FirebaseUser user) {
-                if(user.uid != null ){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MainPage()),
-                  );
-                }
-              });
-            },
           ),
-          FlatButton(
+          Container(
             padding: EdgeInsets.only(top:100),
-            child: Text(
-                "Create an Account"
+            child: FlatButton(
+              child: Text(
+                  "Create an Account"
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => createAccount()),
+                );
+              },
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => createAccount()),
-              );
-            },
           )
         ],
       );

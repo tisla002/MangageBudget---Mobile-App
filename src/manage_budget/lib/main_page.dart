@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:manage_budget/login_page.dart";
 import "package:manage_budget/settings.dart";
+import 'package:firebase_database/firebase_database.dart';
 
 //adrian this should be where you are going to be working
 class MainPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _MainPageState();
 }
-
-
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
@@ -18,21 +17,24 @@ class _MainPageState extends State<MainPage> {
       height: 70.0,
       width: double.infinity,
       child: OutlineButton(
-
           color: Colors.grey[200],
           textColor: Colors.black,
           onPressed: (){
-
           },
           child: Text("First Submenu")
       ),
     ),
-
-
-   LoginPage(),
-
-
-
+    new SizedBox(
+      height: 70.0,
+      width: double.infinity,
+      child: OutlineButton(
+          color: Colors.grey[200],
+          textColor: Colors.black,
+          onPressed: (){
+          },
+          child: Text("Second Submenu")
+      ),
+    ),
     new SizedBox(
       height: 70.0,
       width: double.infinity,
@@ -46,7 +48,6 @@ class _MainPageState extends State<MainPage> {
           child: Text("Third Submenu")
       ),
     ),
-
   ];
 
   @override
@@ -57,12 +58,11 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.green,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.power_settings_new),
             onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>  SettingsPage()),
-              );
+              FirebaseAuth.instance.signOut().then((value){
+                Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
+              });
             },
           ),
         ],
