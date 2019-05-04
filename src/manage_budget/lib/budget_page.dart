@@ -90,9 +90,7 @@ class _BudgetPageState extends State<BudgetPage> {
         }
 
         Widget _buildRow(dataSample, i) {
-//          if (i == 0) {
-//            return _buildBasicRow();
-//          }
+
           return new GestureDetector(
             onTap: () {  },
             child: Stack(
@@ -127,31 +125,31 @@ class _BudgetPageState extends State<BudgetPage> {
           );
         }
 
-        Widget _buildBasicRow() {
-           return Stack(
-
-             alignment: Alignment.centerLeft,
-             children: <Widget> [
-               SizedBox(
-                 width: budgetBoxWidth, //dummy value
-                 height: budgetBoxHeight,
-                 child: Container(
-                   alignment: Alignment.center,
-                   color: Colors.grey,
-                   child:Text('Total'),
-                 ),
-               ),
-               SizedBox(
-                 width: 75, //dummy value
-                 height: budgetBoxHeight,
-                 child: Container(
-                   alignment: Alignment.center,
-                   color: Colors.green,
-                 ),
-               ),
-             ],
-           );
-        }
+//        Widget _buildBasicRow() {
+//           return Stack(
+//
+//             alignment: Alignment.centerLeft,
+//             children: <Widget> [
+//               SizedBox(
+//                 width: budgetBoxWidth, //dummy value
+//                 height: budgetBoxHeight,
+//                 child: Container(
+//                   alignment: Alignment.center,
+//                   color: Colors.grey,
+//                   child:Text('Total'),
+//                 ),
+//               ),
+//               SizedBox(
+//                 width: 75, //dummy value
+//                 height: budgetBoxHeight,
+//                 child: Container(
+//                   alignment: Alignment.center,
+//                   color: Colors.green,
+//                 ),
+//               ),
+//             ],
+//           );
+//        }
 }
 
 class BudgetCategories extends StatefulWidget {
@@ -161,7 +159,15 @@ class BudgetCategories extends StatefulWidget {
 
 
 class AddBudgetPage extends StatelessWidget {
-  String result = "";
+  String newCategory = "";
+  String newTotalBudget = "";
+  String newBudgetSpent = "";
+
+//  void onPressed() {
+//    setState(() {
+//      new Text(newCategory);
+//    });
+//  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -176,45 +182,46 @@ class AddBudgetPage extends StatelessWidget {
                     children: <Widget>[
                       new TextField(
                         decoration: new InputDecoration(
-                          hintText: "AddBudget",
+                          hintText: "Add your category",
                         ),
                         onSubmitted: (String str) {
                           //setState(() {
-                            result = str;
+                            newCategory = str;
                             buttonPressed(context);
                           //});
                         },
                       ),
-//                        onChanged: (str) //needs to store that string/int
+                      new TextField(
+                        decoration: new InputDecoration(
+                          hintText: "Add your total budget",
+                        ),
+                        onSubmitted: (String str1) {
+                          newTotalBudget = str1;
+                          buttonPressed(context);
+                        }
+                      ),
                       new RaisedButton(
                         onPressed: () {
                           buttonPressed(context); //dummy onPressed does not look at the value
+
                         },
                         child: Text('Enter'),
                       ),
-                      new Text(result)
+//
                     ])
                 ),
             ),
         );
   }
 }
-/*
-class AddBudgetPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-          title: new Text('Add'),
-      )
-    );
-  }
-}*/
 
 void buttonPressed(BuildContext context) {
+
+  Navigator.pop(context);
+
   var alertDialog = AlertDialog(
     title: Text("You have pressed a button successfully"),
-    content: Text("Thank you for pressing me"),
+    content: Text("Thank you, your data is stored"),
   );
 
   showDialog(
@@ -224,13 +231,6 @@ void buttonPressed(BuildContext context) {
     }
   );
 }
-
-double calculateBoxWidth(double totalBudget, budgetSpent ) {
-  return (budgetSpent / totalBudget) * budgetBoxWidth;
-}
-
-//inside a class?
-
 
 class BudgetCategory {
   final String category;
