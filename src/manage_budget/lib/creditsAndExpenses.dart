@@ -53,7 +53,8 @@ class creditsAndExpensesPage extends StatelessWidget {
         children: <Widget>[
           Container(
             height: 200,
-            child: GaugeChart(createData(expensesListEntrySample)),
+            //child: GaugeChart(createData(expensesListEntrySample)),
+            child: GaugeChart(createData(sample())),
           ),
 
           Container(
@@ -83,7 +84,8 @@ class creditsAndExpensesPage extends StatelessWidget {
                               disabledColor: Colors.grey,
                               color: Colors.green,
                               onPressed: () {
-                                addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019");
+                                addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019", "test");
+                                //sample();
                               },
                               label: Text("")
                           ),
@@ -168,8 +170,23 @@ class expensesListView extends StatefulWidget{
   }
 }
 
+List<expensesListEntry> sample() {
+  //new expensesListEntry("Winson", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault);
+  List<expensesListEntry> sample = new List();
+  grabHistory(userID).forEach((value){
+    //TODO: fix charts.Color.fromHex()
+    sample.add(expensesListEntry(value["description"],value["amount"],value["date"], charts.Color.fromHex()));
+  });
+  //print(grabHistory(userID));
+  //print(sample);
+
+  return sample;
+}
+
+
 class _expensesListViewState extends State<expensesListView>{
-   List<expensesListEntry> targetList = expensesListEntrySample;
+   //List<expensesListEntry> targetList = expensesListEntrySample;
+    List<expensesListEntry> targetList = sample();
 
    @override
     Widget build(BuildContext context){
@@ -240,9 +257,9 @@ List<expensesListEntry> expensesListEntrySample = [
   new expensesListEntry("Jack in the Box",49, "4/2/2019", charts.MaterialPalette.red.shadeDefault),
   new expensesListEntry("Wendy's",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
   new expensesListEntry("Burger King", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
-
-
 ];
+
+
 
 class GaugeChart extends StatelessWidget {
   final List<charts.Series> seriesList;
