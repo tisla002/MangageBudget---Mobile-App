@@ -26,7 +26,7 @@
   void newuser(String uid){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(uid);
 
-    user.set({
+    user.update({
       //'userid' : uid,
       /*'credits' : {
 

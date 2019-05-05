@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manage_budget/create_account.dart';
 import 'package:manage_budget/firebase.dart';
 import 'main_page.dart';
+import 'firebase.dart';
 
 
   String _email;
@@ -30,6 +31,7 @@ import 'main_page.dart';
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
     userID = user.uid;
+    newuser(userID);
     return user;
   }
 
