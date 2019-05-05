@@ -1,7 +1,11 @@
   import 'package:firebase_database/firebase_database.dart';
 
   List<dynamic> _list = new List();
+  List<dynamic> _search = new List();
+  List<dynamic> _amnts = new List();
+  List<dynamic> _grabHistory = new List();
   int _dataInt = 0;
+  int _budgetLimit = 0;
 
   List<dynamic> getDataList(DatabaseReference ref, String dataToGet){
 
@@ -16,11 +20,20 @@
   int getDataInt(DatabaseReference ref, String dataToGet){
 
     ref.child(dataToGet).once().then((val){
-      print('Data : ${val.value[dataToGet]}');
+      //print('Data : ${val.value[dataToGet]}');
       _dataInt = val.value[dataToGet];
     } );
 
     return _dataInt;
+  }
+
+  List<dynamic> search(DatabaseReference ref, String searching, String category){
+
+    ref.orderByChild(searching).equalTo(category).once().then((val){
+      _search = val.value[""];
+    });
+
+    return _search;
   }
 
   void newuser(String uid){
@@ -47,12 +60,14 @@
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID);
     
     user.child("Credits").push().set({
-      "description" : ".....",
+      "description" : "///",
       "amount" : amount,
       "date" : date
     });
 
     _updateCredit(user,amount);
+    //grabHistory(userID);
+    BudgetLimit(userID, "grocery");
     return true;
   }
 
@@ -103,3 +118,115 @@
     return getDataList(user, "budgetlist");
   }
 
+  List<dynamic> grabHistory(String userID){ //gets all within credits
+    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Credits");
+
+    user.once().then((value){
+      _grabHistory = _parsing(value);
+      //print(_grabHistory);
+    });
+    
+    //print(_grabHistory);
+    return _grabHistory;
+  }
+
+  List<dynamic> grabHistory2(String userID, String category) { //search by category
+    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Credits");
+
+    user.orderByChild("description").equalTo(category).once().then((val){
+      _amnts = _parsing(val);
+      //print(_amnts);
+    });
+
+    //print(_amnts);
+    return _amnts;
+  }
+
+  List<dynamic> _parsing(DataSnapshot snap) {
+    List<dynamic> creditList = new List();
+
+    var map = Map.from(snap.value);
+
+    map.values.forEach((value){
+      //print(value);
+      creditList.add(value);
+    });
+
+    return creditList;
+  }
+
+  class Credit{
+    String key;
+    int amount;
+    String date;
+    String description;
+
+    Credit(this.amount, this.date, this.description);
+
+    Credit.fromSnapshot(DataSnapshot snapshot) :
+       key = snapshot.key,
+       amount = snapshot.value["amount"],
+       date = snapshot.value["date"],
+       description = snapshot.value["description"];
+
+    toJson(){
+      return {
+        "amount" : amount,
+        "date" : date,
+        "description" : description
+      };
+    }
+  }
+
+  int BudgetLimit(String userID, String category){
+    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Budgets");
+    List<dynamic> budgetList = new List();
+
+    user.orderByChild("budget category").equalTo(category).once().then((val){
+      budgetList = _parsingBudget(val);
+      _budgetLimit = budgetList[0]["cost"];
+    });
+
+    return _budgetLimit;
+  }
+
+  List<dynamic> BudgetHistory(String userID, String category){
+    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID);
+
+    //TODO: work on this
+
+  }
+
+  List<dynamic> _parsingBudget(DataSnapshot snap) {
+    List<dynamic> budgetList = new List();
+
+    var map = Map.from(snap.value);
+
+    map.values.forEach((value){
+      //print(value);
+      budgetList.add(value);
+    });
+
+    return budgetList;
+  }
+
+  class Budget{
+    String key;
+    int budgetCategory;
+    String cost;
+
+    Budget(this.budgetCategory, this.cost);
+
+    Budget.fromSnapshot(DataSnapshot snapshot) :
+          key = snapshot.key,
+          budgetCategory = snapshot.value["budget category"],
+          cost = snapshot.value["cost"];
+
+    toJson(){
+      return {
+        "budget category" : budgetCategory,
+        "cost" : cost
+      };
+    }
+
+  }
