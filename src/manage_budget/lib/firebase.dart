@@ -66,8 +66,6 @@
     });
 
     _updateCredit(user,amount);
-    //grabHistory(userID);
-    BudgetLimit(userID, "grocery");
     return true;
   }
 
@@ -178,7 +176,7 @@
     }
   }
 
-  int BudgetLimit(String userID, String category){
+  int budgetLimit(String userID, String category){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Budgets");
     List<dynamic> budgetList = new List();
 
@@ -190,11 +188,16 @@
     return _budgetLimit;
   }
 
-  List<dynamic> BudgetHistory(String userID, String category){
-    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID);
+  List<dynamic> budgetHistory(String userID, String category){
+    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Expenses");
+    List<dynamic> expenseList = new List();
 
-    //TODO: work on this
+    user.orderByChild("budget category").equalTo(category).once().then((value){
+      expenseList = _parsingBudget(value);
+      print(expenseList);
+    });
 
+    return expenseList;
   }
 
   List<dynamic> _parsingBudget(DataSnapshot snap) {
@@ -226,6 +229,51 @@
       return {
         "budget category" : budgetCategory,
         "cost" : cost
+      };
+    }
+
+  }
+
+
+  List<dynamic> _parsingExpense(DataSnapshot snap) {
+    List<dynamic> expenseList = new List();
+
+    var map = Map.from(snap.value);
+
+    map.values.forEach((value){
+      //print(value);
+      expenseList.add(value);
+    });
+
+    return expenseList;
+  }
+
+  class Expense{
+    String key;
+    int budgetCategory;
+    String expenseDescription;
+    int cost;
+    String date;
+    //"budget category" : category,
+    //"expense description" : description,
+    //"cost" : amount,
+    //"date" : date
+
+    Expense(this.budgetCategory, this.expenseDescription, this.cost, this.date);
+
+    Expense.fromSnapshot(DataSnapshot snapshot) :
+          key = snapshot.key,
+          budgetCategory = snapshot.value["budget category"],
+          expenseDescription = snapshot.value["expense description"],
+          cost = snapshot.value["cost"],
+          date = snapshot.value["date"];
+
+    toJson(){
+      return {
+        "budget category" : budgetCategory,
+        "expense description" : expenseDescription,
+        "cost" : cost,
+        "date" : date
       };
     }
 
