@@ -5,6 +5,7 @@ import "package:manage_budget/settings.dart";
 import 'package:firebase_database/firebase_database.dart';
 import "package:manage_budget/creditsAndExpenses.dart";
 import "budget_page.dart";
+import "package:manage_budget/firebase.dart";
 
 //adrian this should be where you are going to be working
 class MainPage extends StatefulWidget {
@@ -12,32 +13,91 @@ class MainPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _MainPageState();
 }
 
+
+class addExpensesPopUp extends StatelessWidget {
+  TextEditingController addExpensesController = new TextEditingController();
+  TextEditingController addDescriptionController = new TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child:
+      ButtonTheme(
+        minWidth: 400.0,
+        height: 500.0,
+        child: RaisedButton(
+          onPressed: () {
+            showDialog(context: context,
+                builder: (BuildContext context){
+                  return AlertDialog(
+                    title: new Text("Add Expenses: "),
+                    content: Column(
+                      children: <Widget>[
+                        new TextField(
+                          decoration: new InputDecoration(labelText: "Enter your number"),
+                          controller: addExpensesController,
+                          keyboardType: TextInputType.number,
+                          autofocus: true,
+                        ),
+                        new TextField(
+                          decoration: new InputDecoration(labelText: "Enter your description"),
+                          controller: addDescriptionController,
+                        )
+                      ],
+                    ),
+                    actions: <Widget>[
+                      ButtonTheme(
+                        minWidth:150,
+                        child:
+                        new RaisedButton.icon(
+                            icon: new Icon(Icons.check,color: Colors.white),
+                            disabledColor: Colors.grey,
+                            color: Colors.green,
+                            onPressed: () {
+                              addExpense(userID, int.parse(addExpensesController.text), "4/20/2019", "Grocery", addDescriptionController.text);
+                            },
+                            label: Text("")
+                        ),
+                      ),
+
+                      ButtonTheme(
+                        minWidth:150,
+                        child:
+                        new RaisedButton.icon(
+                          icon: new Icon(Icons.close,color: Colors.white),
+                          color: Colors.red,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          label: Text(""),
+                        ),
+                      )
+                    ],
+                  );
+                });
+          },
+          child: Text ("Add Expenses",
+              style: TextStyle(
+                color: Colors.white,
+              )),
+        ),
+      )
+    );
+  }
+}
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-
-    new SizedBox(
-      height: 70.0,
-      width: double.infinity,
-      child: OutlineButton(
-          color: Colors.grey[200],
-          textColor: Colors.black,
-          onPressed: (){
-          },
-          child: Text("Second Submenu")
-      ),
-    ),
-
-    creditsAndExpensesPage(
-    ),
-    BudgetPage(),
+        addExpensesPopUp(),
+        creditsAndExpensesPage(),
+        BudgetPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Main Page"),
+        title: Text("Budget App"),
         backgroundColor: Colors.green,
         actions: <Widget>[
           IconButton(

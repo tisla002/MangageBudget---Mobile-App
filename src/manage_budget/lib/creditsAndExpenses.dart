@@ -225,6 +225,10 @@ class expensesListEntry{
    expensesListEntry(this.item,this.amount,this.date,this.color);
 }
 
+List<expensesListEntry> expensesListEntryPull(){
+
+}
+
 List<expensesListEntry> expensesListEntrySample = [
   new expensesListEntry("Winson", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault),
   new expensesListEntry("Staters's Bros", 150, "4/2/2019", charts.MaterialPalette.deepOrange.shadeDefault),
@@ -288,13 +292,4 @@ class detailedReportPage extends StatelessWidget{
 
     );
   }
-}
-
-void main() {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
-    runApp(MaterialApp(
-      home: new creditsAndExpensesPage(),
-    ));
-  });
 }
