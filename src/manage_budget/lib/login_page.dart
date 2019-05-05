@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manage_budget/create_account.dart';
+import 'package:manage_budget/firebase.dart';
 import 'main_page.dart';
 
 
   String _email;
   String _password;
+
+  String userID;
 
   bool _connect = false;
 
@@ -26,6 +29,7 @@ import 'main_page.dart';
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
+    userID = user.uid;
     return user;
   }
 
@@ -48,6 +52,8 @@ import 'main_page.dart';
         }else{
           _connect = false;
         }
+
+        userID = user.uid;
       }catch(e){
         //not doing anything currently
         print('Error: $e');

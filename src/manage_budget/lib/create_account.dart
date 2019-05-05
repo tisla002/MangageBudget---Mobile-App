@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:manage_budget/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:manage_budget/firebase.dart';
+
 
   final formKey_createAccount = new GlobalKey<FormState>();
 
-  String _firstName;
-  String _lastName;
   String _email;
   String _password;
 
@@ -24,6 +24,8 @@ import 'package:firebase_auth/firebase_auth.dart';
     }catch(e){
       print(e.toString());
     }
+
+    newuser(user.uid);
     return user;
   }
 
@@ -77,10 +79,7 @@ import 'package:firebase_auth/firebase_auth.dart';
                           onPressed: () {
                             _registerAccount().then((value){
                               if(value.uid != null){
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => LoginPage()),
-                                );
+                                Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
                               }
                             });
                           },

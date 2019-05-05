@@ -4,9 +4,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:manage_budget/firebase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/services.dart';
 import 'dart:math';
+import 'login_page.dart';
+
+ TextEditingController addcreditscontroller = new TextEditingController();
+
 
  List<charts.Series<GaugeSegment, String>> createData(List<expensesListEntry> targetList) {
    List<GaugeSegment> data = [];
@@ -64,6 +70,7 @@ class creditsAndExpensesPage extends StatelessWidget {
                       title: new Text("Add Credits: "),
                       content: new TextField(
                         decoration: new InputDecoration(labelText: "Enter your number"),
+                        controller: addcreditscontroller,
                         keyboardType: TextInputType.number,
                         autofocus: true,
                       ),
@@ -76,6 +83,7 @@ class creditsAndExpensesPage extends StatelessWidget {
                               disabledColor: Colors.grey,
                               color: Colors.green,
                               onPressed: () {
+                                addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019");
                               },
                               label: Text("")
                           ),
