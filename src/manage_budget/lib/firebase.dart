@@ -53,7 +53,6 @@
     });
 
     _updateCredit(user,amount);
-
     return true;
   }
 
@@ -65,6 +64,17 @@
       "expense description" : description,
       "cost" : amount,
       "date" : date
+    });
+
+    return true;
+  }
+
+  bool addBudget(String userID, int amount, String category){
+    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID);
+
+    user.child("Budgets").push().set({
+      "budget category" : category,
+      "cost" : amount
     });
 
     _updateBudgetCategories(user, category);

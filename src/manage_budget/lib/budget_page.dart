@@ -5,12 +5,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'firebase.dart';
+import 'login_page.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
+import "firebase.dart";
 
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
 final numCount = 10;
+
+TextEditingController amount = new TextEditingController();
+TextEditingController category = new TextEditingController();
+
 
 
 List<BudgetCategory> dataSample = [
@@ -194,6 +201,7 @@ class AddBudgetPage extends StatelessWidget {
                 child: new Column(
                     children: <Widget>[
                       new TextField(
+                        controller: category,
                         decoration: new InputDecoration(
                           hintText: "Add your category",
                         ),
@@ -205,6 +213,8 @@ class AddBudgetPage extends StatelessWidget {
                         },
                       ),
                       new TextField(
+                        controller: amount,
+                        keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
                           hintText: "Add your total budget",
                         ),
@@ -215,8 +225,8 @@ class AddBudgetPage extends StatelessWidget {
                       ),
                       new RaisedButton(
                         onPressed: () {
+                          addBudget(userID, int.parse(amount.text), category.text);
                           buttonPressed(context); //dummy onPressed does not look at the value
-
                         },
                         child: Text('Enter'),
                       ),
