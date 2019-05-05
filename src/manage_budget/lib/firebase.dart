@@ -56,11 +56,11 @@
     });
   }
 
-  bool addCredit (String userID, int amount, String date){
+  bool addCredit (String userID, int amount, String date, String description){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID);
     
     user.child("Credits").push().set({
-      "description" : "///",
+      "description" : description,
       "amount" : amount,
       "date" : date
     });
@@ -128,10 +128,10 @@
     return _grabHistory;
   }
 
-  List<dynamic> grabHistory2(String userID, String category) { //search by category
+  List<dynamic> grabHistory2(String userID, String description) { //search by category
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Credits");
 
-    user.orderByChild("description").equalTo(category).once().then((val){
+    user.orderByChild("description").equalTo(description).once().then((val){
       _amnts = _parsing(val);
       //print(_amnts);
     });
@@ -188,13 +188,25 @@
     return _budgetLimit;
   }
 
-  List<dynamic> budgetHistory(String userID, String category){
+  List<dynamic> budgetHistory(String userID){
+    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Expenses");
+    List<dynamic> expenseList = new List();
+
+    user.once().then((value){
+      expenseList = _parsingExpense(value);
+      //print(expenseList);
+    });
+
+    return expenseList;
+  }
+
+  List<dynamic> budgetHistory2(String userID, String category){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Expenses");
     List<dynamic> expenseList = new List();
 
     user.orderByChild("budget category").equalTo(category).once().then((value){
-      expenseList = _parsingBudget(value);
-      print(expenseList);
+      expenseList = _parsingExpense(value);
+      //print(expenseList);
     });
 
     return expenseList;
@@ -233,7 +245,6 @@
     }
 
   }
-
 
   List<dynamic> _parsingExpense(DataSnapshot snap) {
     List<dynamic> expenseList = new List();
