@@ -84,7 +84,7 @@ class creditsAndExpensesPage extends StatelessWidget {
                               disabledColor: Colors.grey,
                               color: Colors.green,
                               onPressed: () {
-                                addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019", "test");
+                                addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019", "Credit");
                                 //sample();
                               },
                               label: Text("")
