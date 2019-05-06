@@ -192,10 +192,12 @@ List<expensesListEntry> sample() {
   List<expensesListEntry> sample = new List();
 
   budgetHistory(userID).forEach((value){
+    index = randStringIndexGen.nextInt(11);
     sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], charts.Color.fromHex(code: colorsForCharts[index]), Colors.red[600]));
   });
 
   grabHistory(userID).forEach((val){
+    index = randStringIndexGen.nextInt(11);
     sample.add(expensesListEntry(val["description"],val["amount"],val["date"], charts.Color.fromHex(code: colorsForCharts[index]), Colors.green[600]));
   });
   //print(budgetHistory(userID));
