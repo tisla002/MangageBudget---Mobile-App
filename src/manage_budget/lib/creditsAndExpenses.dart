@@ -175,7 +175,26 @@ List<expensesListEntry> sample() {
   List<expensesListEntry> sample = new List();
   grabHistory(userID).forEach((value){
     //TODO: fix charts.Color.fromHex()
-    sample.add(expensesListEntry(value["description"],value["amount"],value["date"], charts.Color.fromHex()));
+
+    List<String> colorsForCharts= new List(12);
+    colorsForCharts[0] = "FFFF5722";
+    colorsForCharts[1] = "FF00C853";
+    colorsForCharts[2] = "FF004D40";
+    colorsForCharts[3] = "FFFFEB3B";
+    colorsForCharts[4] = "FFCDDC39";
+    colorsForCharts[5] = "FFB2FF59";
+    colorsForCharts[6] = "FF009688";
+    colorsForCharts[7] = "FF00BCD4";
+    colorsForCharts[8] = "FF2196F3";
+    colorsForCharts[9] = "FF3f51B5";
+    colorsForCharts[10] = "FF9C27B0";
+    colorsForCharts[11] = "FF607D8B";
+
+    var randStringIndexGen = new Random(1000);
+    int index = randStringIndexGen.nextInt(11);
+
+
+    sample.add(expensesListEntry(value["description"],value["amount"],value["date"], charts.Color.fromHex(code: colorsForCharts[index])));
   });
   //print(grabHistory(userID));
   //print(sample);
