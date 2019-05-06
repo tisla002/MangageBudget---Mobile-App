@@ -38,7 +38,7 @@ class _DropdownState extends State<Dropdown>{
         child:
         ButtonTheme(
           minWidth: 400.0,
-          height: 500.0,
+          height: 100.0,
           child: RaisedButton(
             onPressed: () {
               showDialog(context: context,
