@@ -1,7 +1,5 @@
 import 'dart:core';
 import 'dart:ui';
-import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -9,7 +7,6 @@ import 'firebase.dart';
 import 'login_page.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
-import "firebase.dart";
 
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
@@ -18,77 +15,56 @@ final numCount = 10;
 TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
 
-
-
 List<BudgetCategory> dataSample = [
   new BudgetCategory("Food", 500, 300, charts.MaterialPalette.green.shadeDefault),
   new BudgetCategory("Groceries", 500, 200, charts.MaterialPalette.blue.shadeDefault),
-  new BudgetCategory("Potatoes", 600, 400, charts.MaterialPalette.pink.shadeDefault),
-//  new BudgetCategory("Food", 500, charts.MaterialPalette.green.shadeDefault),
-//  new BudgetCategory("Food", 500, charts.MaterialPalette.green.shadeDefault),
-//  new BudgetCategory("Food", 500, charts.MaterialPalette.green.shadeDefault),
-//  new BudgetCategory("Food", 500, charts.MaterialPalette.green.shadeDefault),
-
+  new BudgetCategory("Potatoes", 600, 400, charts.MaterialPalette.pink.shadeDefault)
 ];
-
-
-//don't think I need this
-//for (int i = 0; i < targetList.length;i++) {
-//  dataSample.add(BudgetCategory(targetList.elementAt(i).category, targetList.elementAt(i).totalBudget,
-//    targetList.elementAt(i).color))
-//}
 
 class BudgetPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _BudgetPageState();//_BudgetPageState();
+  State<StatefulWidget> createState() => new _BudgetPageState();
 }
 
 class _BudgetPageState extends State<BudgetPage> {
-  final noOfSelectedItems = 0;
-  final _medFont = const TextStyle(fontSize: 20.0);
-//  List<charts.Series<BudgetCategory, String>> _seriesData;
-//  final _biggerFont = const TextStyle(fontSize: 18.0);
-
-//  _generateData() {
-//    var data1 = [
-//      new BudgetCategory('food', 100, charts.MaterialPalette.green.shadeDefault),
-////      new BudgetCategory('gas', 500, charts.MaterialPalette.pink.shadeDefault),
-////      new BudgetCategory('bills', 100, charts.MaterialPalette.red.shadeDefault),
-////      new BudgetCategory('groceries', 300, charts.MaterialPalette.blue.shadeDefault),
-//    ];
-//
-//    _seriesData.add(
-//        charts.Series(
-//          data: data1,
-//          domainFn: (BudgetCategory budget, _) => budget.category,
-//          measureFn: (BudgetCategory budget, _) => budget.totalBudget,
-//          colorFn: (BudgetCategory budget, _) => budget.color,
-//          id: 'Total',
-//        )
-//    );
-//  }
-
-//  @override
-//  void initState() {
-//    super.initState();
-//    _seriesData = List<charts.Series<BudgetCategory, String>>();
-//    _generateData();
-//
-//  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: new FloatingActionButton(
+          elevation: 0.0,
+          child: new Icon(Icons.add),
+          backgroundColor: new Color(0xFF18D191),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddBudgetPage()),
+            );
+          }
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            height: 500,
+            child: ListView(
+              children: <Widget>[
+                expensesListView(),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  /*final noOfSelectedItems = 0;
         @override
         Widget build(BuildContext context) {
           return Scaffold(
-            /*appBar: AppBar(
-              backgroundColor: new Color(0xFF18D191),
-              title: Text('BudgetPage', style: _medFont)
-            ),*/
             body: _buildSuggestions(),
             floatingActionButton: new FloatingActionButton(
               elevation: 0.0,
               child: new Icon(Icons.add),
-              backgroundColor: new Color(0xFF18D191), //color....
+              backgroundColor: new Color(0xFF18D191),
               onPressed: () {
-                //Navigator.of(context).pushNamed("/AddBudgetPage");
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddBudgetPage()),
@@ -97,13 +73,12 @@ class _BudgetPageState extends State<BudgetPage> {
             )
           );
         }
+
         Widget _buildSuggestions() {
           return ListView.builder(
             padding: const EdgeInsets.all(16.0),
                 itemCount: dataSample.length, //dummy value
                 itemBuilder: (context, i) {
-//                  if (i.isOdd) return Divider();
-
                   return _buildRow(dataSample, i);
                 }
           );
@@ -144,50 +119,109 @@ class _BudgetPageState extends State<BudgetPage> {
             )
           );
         }
+  */
 
-//        Widget _buildBasicRow() {
-//           return Stack(
-//
-//             alignment: Alignment.centerLeft,
-//             children: <Widget> [
-//               SizedBox(
-//                 width: budgetBoxWidth, //dummy value
-//                 height: budgetBoxHeight,
-//                 child: Container(
-//                   alignment: Alignment.center,
-//                   color: Colors.grey,
-//                   child:Text('Total'),
-//                 ),
-//               ),
-//               SizedBox(
-//                 width: 75, //dummy value
-//                 height: budgetBoxHeight,
-//                 child: Container(
-//                   alignment: Alignment.center,
-//                   color: Colors.green,
-//                 ),
-//               ),
-//             ],
-//           );
-//        }
 }
 
-class BudgetCategories extends StatefulWidget {
+List<BudgetCategory> sample() {
+
+  List<BudgetCategory> sample = new List();
+
+  budgetLimit2(userID).forEach((value)  {
+    List<String> colorsForCharts= new List(12);
+    colorsForCharts[0] = "FFFF5722";
+    colorsForCharts[1] = "FF00C853";
+    colorsForCharts[2] = "FF004D40";
+    colorsForCharts[3] = "FFFFEB3B";
+    colorsForCharts[4] = "FFCDDC39";
+    colorsForCharts[5] = "FFB2FF59";
+    colorsForCharts[6] = "FF009688";
+    colorsForCharts[7] = "FF00BCD4";
+    colorsForCharts[8] = "FF2196F3";
+    colorsForCharts[9] = "FF3f51B5";
+    colorsForCharts[10] = "FF9C27B0";
+    colorsForCharts[11] = "FF607D8B";
+
+    var randStringIndexGen = new Random(1000);
+    int index = randStringIndexGen.nextInt(11);
+
+
+    sample.add( BudgetCategory( value["budget category"],value["cost"], 50,
+        charts.Color.fromHex( code: colorsForCharts[index]) ) );
+  });
+
+  print(budgetLimit2(userID));
+
+  return sample;
+}
+
+class _expensesListViewState extends State<expensesListView>{
+  //List<expensesListEntry> targetList = expensesListEntrySample;
+  List<BudgetCategory> targetList = sample();
+
+  @override
+  Widget build(BuildContext context){
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: targetList.length,
+      itemBuilder: (context,position){
+        return Card(
+          color: Colors.blue,
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children:[
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:[
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              child:Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
+                            )
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                              child: Text("5/6/2019", style: TextStyle(fontSize: 12.0, color: Colors.white))
+                          ),
+                        )
+                      ]
+                  ),
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child:Container(
+                          child:Text("\$"+targetList.elementAt(position).totalBudget.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
+                      )
+                  )
+                ]
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/*class BudgetCategories extends StatefulWidget {
   @override
   _BudgetPageState createState() => _BudgetPageState();
-}
+}*/
 
+class expensesListView extends StatefulWidget{
+  @override
+  State<expensesListView> createState(){
+    return _expensesListViewState();
+  }
+}
 
 class AddBudgetPage extends StatelessWidget {
   String newCategory = "";
   String newTotalBudget = "";
   String newBudgetSpent = "";
 
-//  void onPressed() {
-//    setState(() {
-//      new Text(newCategory);
-//    });
-//  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -263,3 +297,5 @@ class BudgetCategory {
 
   BudgetCategory(this.category, this.totalBudget, this.budgetSpent, this.barColor);
 }
+
+//comment im here
