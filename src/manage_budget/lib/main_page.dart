@@ -31,7 +31,6 @@ class _DropdownState extends State<Dropdown>{
     return targetList;
   }
   @override
-  @override
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.center,
