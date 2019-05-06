@@ -194,7 +194,7 @@
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Budgets");
 
     user.once().then((value){
-      _budgetHistory = _parsingBudget(value);
+      _budgetLimit2 = _parsingBudget(value);
       //print(expenseList);
     });
 
