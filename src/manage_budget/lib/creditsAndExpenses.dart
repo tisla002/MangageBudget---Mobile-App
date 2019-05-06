@@ -85,6 +85,7 @@ class creditsAndExpensesPage extends StatelessWidget {
                               color: Colors.green,
                               onPressed: () {
                                 addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019", "Credit");
+                                Navigator.of(context).pop();
                                 //sample();
                               },
                               label: Text("")
@@ -198,7 +199,7 @@ List<expensesListEntry> sample() {
 
   grabHistory(userID).forEach((val){
     index = randStringIndexGen.nextInt(11);
-    sample.add(expensesListEntry(val["description"],val["amount"],val["date"], charts.Color.fromHex(code: colorsForCharts[index]), Colors.green[600]));
+    sample.add(expensesListEntry(val["description"],val["amount"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
   });
   //print(budgetHistory(userID));
   //print(sample);
