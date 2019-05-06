@@ -173,7 +173,7 @@ class expensesListView extends StatefulWidget{
 List<expensesListEntry> sample() {
   //new expensesListEntry("Winson", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault);
   List<expensesListEntry> sample = new List();
-  grabHistory(userID).forEach((value){
+  budgetHistory(userID).forEach((value){
     //TODO: fix charts.Color.fromHex()
 
     List<String> colorsForCharts= new List(12);
@@ -194,9 +194,9 @@ List<expensesListEntry> sample() {
     int index = randStringIndexGen.nextInt(11);
 
 
-    sample.add(expensesListEntry(value["description"],value["amount"],value["date"], charts.Color.fromHex(code: colorsForCharts[index])));
+    sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], charts.Color.fromHex(code: colorsForCharts[index])));
   });
-  //print(grabHistory(userID));
+  print(budgetHistory(userID));
   //print(sample);
 
   return sample;
