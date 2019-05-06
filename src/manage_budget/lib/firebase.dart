@@ -4,6 +4,7 @@
   List<dynamic> _search = new List();
   List<dynamic> _amnts = new List();
   List<dynamic> _grabHistory = new List();
+  List<dynamic> _budgetHistory = new List();
   int _dataInt = 0;
   int _budgetLimit = 0;
 
@@ -190,26 +191,25 @@
 
   List<dynamic> budgetHistory(String userID){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Expenses");
-    List<dynamic> expenseList = new List();
 
     user.once().then((value){
-      expenseList = _parsingExpense(value);
+      _budgetHistory = _parsingBudget(value);
       //print(expenseList);
     });
 
-    return expenseList;
+    print(_budgetHistory);
+    return _budgetHistory;
   }
 
   List<dynamic> budgetHistory2(String userID, String category){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Expenses");
-    List<dynamic> expenseList = new List();
 
     user.orderByChild("budget category").equalTo(category).once().then((value){
-      expenseList = _parsingExpense(value);
+      _budgetHistory = _parsingBudget(value);
       //print(expenseList);
     });
 
-    return expenseList;
+    return _budgetHistory;
   }
 
   List<dynamic> _parsingBudget(DataSnapshot snap) {
