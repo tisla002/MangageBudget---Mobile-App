@@ -167,7 +167,7 @@ class _expensesListViewState extends State<expensesListView>{
       itemCount: targetList.length,
       itemBuilder: (context,position){
         return Card(
-          color: Colors.green,
+          color: Colors.blue,
           child: Container(
             padding: const EdgeInsets.all(16.0),
             child: Row(
