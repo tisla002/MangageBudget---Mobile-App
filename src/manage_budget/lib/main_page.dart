@@ -13,6 +13,52 @@ class MainPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _MainPageState();
 }
 
+class Dropdown extends StatefulWidget {
+  @override
+  _DropdownState createState() => new _DropdownState();
+}
+class _DropdownState extends State<Dropdown>{
+  dynamic dropdownValue;
+  List<String>generateStringList(){
+    List<String> targetList=[];
+    List<dynamic> grabbedList= returnBudgetList(userID);
+        grabbedList.forEach((category){
+          targetList.add(category.toString());
+        }
+    );
+    return targetList;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new FormField(builder: (FormFieldState state){
+      return InputDecorator(
+        decoration: InputDecoration(
+          icon: const Icon(Icons.assignment),
+          labelText: 'Budget Category',
+        ),
+        child:  new DropdownButtonHideUnderline(
+            child: new DropdownButton<dynamic>(
+              value: dropdownValue,
+              isDense: true,
+              onChanged: (dynamic newValue){
+                setState( (){
+                  dropdownValue = newValue;
+                  state.didChange(newValue);
+                });
+              },
+              items: generateStringList().map((String value){
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value)
+                );
+              }).toList(),
+            )
+        ),
+      );
+
+    });
+  }
+}
 
 class addExpensesPopUp extends StatelessWidget {
   TextEditingController addExpensesController = new TextEditingController();
@@ -30,24 +76,37 @@ class addExpensesPopUp extends StatelessWidget {
             showDialog(context: context,
                 builder: (BuildContext context){
                   return AlertDialog(
-                    title: new Text("Add Expenses: "),
-                    content: Column(
-                      children: <Widget>[
-                        new TextField(
-                          decoration: new InputDecoration(labelText: "Enter your number"),
-                          controller: addExpensesController,
-                          keyboardType: TextInputType.number,
-                          autofocus: true,
-                        ),
-                        new TextField(
-                          decoration: new InputDecoration(labelText: "Enter your description"),
-                          controller: addDescriptionController,
-                        )
-                      ],
+                    elevation: 15,
+                    content: Container(
+                      height: 182,
+                      child:
+                      Column(
+                        children: <Widget>[
+                         Container(
+                           height: 50,
+                           child:
+                           new TextField(
+                             decoration: new InputDecoration(labelText: "Enter your number"),
+                             controller: addExpensesController,
+                             keyboardType: TextInputType.number,
+                             autofocus: true,
+                           ),
+                         ),
+                          Container(
+                            height: 50,
+                            child:
+                            new TextField(
+                              decoration: new InputDecoration(labelText: "Enter your description"),
+                              controller: addDescriptionController,
+                            )
+                          ),
+                          Dropdown()
+                        ],
+                      )
                     ),
                     actions: <Widget>[
                       ButtonTheme(
-                        minWidth:150,
+                        minWidth:125,
                         child:
                         new RaisedButton.icon(
                             icon: new Icon(Icons.check,color: Colors.white),
@@ -61,7 +120,7 @@ class addExpensesPopUp extends StatelessWidget {
                       ),
 
                       ButtonTheme(
-                        minWidth:150,
+                        minWidth:125,
                         child:
                         new RaisedButton.icon(
                           icon: new Icon(Icons.close,color: Colors.white),
