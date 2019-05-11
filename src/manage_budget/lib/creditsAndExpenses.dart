@@ -51,11 +51,6 @@ class creditsAndExpensesPage extends StatelessWidget {
       body: ListView(
         //crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            height: 200,
-            //child: GaugeChart(createData(expensesListEntrySample)),
-            child: GaugeChart(createData(sample())),
-          ),
 
           Container(
             padding: EdgeInsets.only(left:5.0,top:10.0),
@@ -86,7 +81,6 @@ class creditsAndExpensesPage extends StatelessWidget {
                               onPressed: () {
                                 addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019", "Credit");
                                 Navigator.of(context).pop();
-                                //sample();
                               },
                               label: Text("")
                           ),
@@ -151,7 +145,7 @@ class creditsAndExpensesPage extends StatelessWidget {
             )*/
         ),
         Container(
-          height:306,
+          height:500,
           child:
             expensesListView(),
         ),
@@ -171,7 +165,7 @@ class expensesListView extends StatefulWidget{
   }
 }
 
-List<expensesListEntry> sample() {
+List<expensesListEntry> creditsAndExpensesSample() {
   //new expensesListEntry("Winson", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault);
   List<String> colorsForCharts= new List(12);
   colorsForCharts[0] = "FFFF5722";
@@ -210,7 +204,7 @@ List<expensesListEntry> sample() {
 
 class _expensesListViewState extends State<expensesListView>{
    //List<expensesListEntry> targetList = expensesListEntrySample;
-    List<expensesListEntry> targetList = sample();
+    List<expensesListEntry> targetList = creditsAndExpensesSample();
 
    @override
     Widget build(BuildContext context){

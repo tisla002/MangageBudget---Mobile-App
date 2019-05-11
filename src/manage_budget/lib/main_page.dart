@@ -32,108 +32,117 @@ class _DropdownState extends State<Dropdown>{
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.center,
-        child:
-        ButtonTheme(
-          minWidth: 400.0,
-          height: 100.0,
-          child: RaisedButton(
-            onPressed: () {
-              showDialog(context: context,
-                  builder: (BuildContext context){
-                    return AlertDialog(
-                      elevation: 15,
-                      content: Container(
-                          height: 182,
-                          child:
-                          Column(
-                            children: <Widget>[
-                              Container(
-                                height: 50,
-                                child:
-                                new TextField(
-                                  decoration: new InputDecoration(labelText: "Enter your number"),
-                                  controller: addExpensesController,
-                                  keyboardType: TextInputType.number,
-                                  autofocus: true,
-                                ),
-                              ),
-                              Container(
-                                  height: 50,
-                                  child:
-                                  new TextField(
-                                    decoration: new InputDecoration(labelText: "Enter your description"),
-                                    controller: addDescriptionController,
-                                  )
-                              ),
-                              new FormField(builder: (FormFieldState state){
-                                return InputDecorator(
-                                  decoration: InputDecoration(
-                                    icon: const Icon(Icons.assignment),
-                                    labelText: 'Budget Category',
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 400,
+          //child: GaugeChart(createData(expensesListEntrySample)),
+          child: GaugeChart(createData(creditsAndExpensesSample())),
+        ),
+        Container(
+            alignment: Alignment.bottomCenter,
+            child:
+            ButtonTheme(
+              minWidth: 400.0,
+              height: 100.0,
+              child: RaisedButton(
+                onPressed: () {
+                  showDialog(context: context,
+                      builder: (BuildContext context){
+                        return AlertDialog(
+                          elevation: 15,
+                          content: Container(
+                              height: 182,
+                              child:
+                              Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: 50,
+                                    child:
+                                    new TextField(
+                                      decoration: new InputDecoration(labelText: "Enter your number"),
+                                      controller: addExpensesController,
+                                      keyboardType: TextInputType.number,
+                                      autofocus: true,
+                                    ),
                                   ),
-                                  child:  new DropdownButtonHideUnderline(
-                                      child: new DropdownButton<dynamic>(
-                                        value: dropdownValue,
-                                        isDense: true,
-                                        onChanged: (dynamic newValue){
-                                          setState( (){
-                                            dropdownValue = newValue;
-                                            state.didChange(newValue);
-                                          });
-                                        },
-                                        items: generateStringList().map((String value){
-                                          return new DropdownMenuItem<String>(
-                                              value: value,
-                                              child: new Text(value)
-                                          );
-                                        }).toList(),
+                                  Container(
+                                      height: 50,
+                                      child:
+                                      new TextField(
+                                        decoration: new InputDecoration(labelText: "Enter your description"),
+                                        controller: addDescriptionController,
                                       )
                                   ),
-                                );
+                                  new FormField(builder: (FormFieldState state){
+                                    return InputDecorator(
+                                      decoration: InputDecoration(
+                                        icon: const Icon(Icons.assignment),
+                                        labelText: 'Budget Category',
+                                      ),
+                                      child:  new DropdownButtonHideUnderline(
+                                          child: new DropdownButton<dynamic>(
+                                            value: dropdownValue,
+                                            isDense: true,
+                                            onChanged: (dynamic newValue){
+                                              setState( (){
+                                                dropdownValue = newValue;
+                                                state.didChange(newValue);
+                                              });
+                                            },
+                                            items: generateStringList().map((String value){
+                                              return new DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: new Text(value)
+                                              );
+                                            }).toList(),
+                                          )
+                                      ),
+                                    );
 
-                              })
-                            ],
-                          )
-                      ),
-                      actions: <Widget>[
-                        ButtonTheme(
-                          minWidth:125,
-                          child:
-                          new RaisedButton.icon(
-                              icon: new Icon(Icons.check,color: Colors.white),
-                              disabledColor: Colors.grey,
-                              color: Colors.green,
-                              onPressed: () {
-                                addExpense(userID, int.parse(addExpensesController.text), "4/20/2019", dropdownValue, addDescriptionController.text);
-                              },
-                              label: Text("")
+                                  })
+                                ],
+                              )
                           ),
-                        ),
+                          actions: <Widget>[
+                            ButtonTheme(
+                              minWidth:125,
+                              child:
+                              new RaisedButton.icon(
+                                  icon: new Icon(Icons.check,color: Colors.white),
+                                  disabledColor: Colors.grey,
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    addExpense(userID, int.parse(addExpensesController.text), "4/20/2019", dropdownValue, addDescriptionController.text);
+                                  },
+                                  label: Text("")
+                              ),
+                            ),
 
-                        ButtonTheme(
-                          minWidth:125,
-                          child:
-                          new RaisedButton.icon(
-                            icon: new Icon(Icons.close,color: Colors.white),
-                            color: Colors.red,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            label: Text(""),
-                          ),
-                        )
-                      ],
-                    );
-                  });
-            },
-            child: Text ("Add Expenses",
-                style: TextStyle(
-                  color: Colors.white,
-                )),
-          ),
+                            ButtonTheme(
+                              minWidth:125,
+                              child:
+                              new RaisedButton.icon(
+                                icon: new Icon(Icons.close,color: Colors.white),
+                                color: Colors.red,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                label: Text(""),
+                              ),
+                            )
+                          ],
+                        );
+                      });
+                },
+                child: Text ("Add Expenses",
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+            )
         )
+      ],
     );
   }
 }
