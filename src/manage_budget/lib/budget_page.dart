@@ -90,7 +90,7 @@ List<BudgetCategory> sample() {
     int index = randStringIndexGen.nextInt(11);
 
 
-    sample.add( BudgetCategory( value["budget category"],value["cost"], 100,
+    sample.add( BudgetCategory( value["budget category"],value["cost"], 200,
         charts.Color.fromHex( code: colorsForCharts[index]) ) );
   });
 
@@ -113,62 +113,69 @@ class _expensesListViewState extends State<expensesListView>{
         shrinkWrap: true,
         itemCount: targetList.length,
         itemBuilder: (context,position) {
-          return Stack(
-            alignment: Alignment.bottomLeft,
-            children: <Widget> [
-              Card(
-                child: Container(
-                  height: 90,
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.green)),
+          return GestureDetector(
+            onTap: ( ) {
+              budgetBoxPressed(context);
+            },
+            child: Stack(
+              alignment: Alignment.bottomLeft,
+              children: <Widget> [
+                Card(
+                  child: Container(
+                    height: 90,
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.green)),
+                  ),
                 ),
-              ),
-              Card(
-                child: Container(
-                  alignment: Alignment.topRight,
-                  child: Text(" yoooo" ),
-                )
-              ),
-              Card(
-                color: Colors.grey,
-                child: Container(
-                  height: 52, //have to manually put in this value ._." (52, 65)
-                  padding: const EdgeInsets.all(16.0),
-                )
-              ),
-              Card(
-              color: Colors.green,
-              child: FractionallySizedBox(
-                widthFactor: calcBudgetPercent(targetList.elementAt(position).totalBudget,
-                           targetList.elementAt(position).budgetSpent),
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:[
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children:[
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
+                Card(
+                  child: Container(
+                    height: 90,
+                    padding: const EdgeInsets.all(10.0),
+                    alignment: Alignment.topRight,
+                    child: Text("yoooo" ),
+                  )
+                ),
+                Card(
+                  color: Colors.grey,
+                  child: Container(
+                    height: 52, //have to manually put in this value ._." (52, 65)
+                    padding: const EdgeInsets.all(16.0),
+                  )
+                ),
+                Card(
+                color: Colors.green,
+                child: FractionallySizedBox(
+                  widthFactor: calcBudgetPercent(targetList.elementAt(position).totalBudget,
+                             targetList.elementAt(position).budgetSpent),
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:[
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children:[
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
 //                                    child:Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
-                                  )
-                              ),
-                            ]
-                        ),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child:Container(
-                                child:Text("\$"+targetList.elementAt(position).budgetSpent.toString() + " of \$" +targetList.elementAt(position).totalBudget.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
-                            )
-                        )
-                      ]
+                                    )
+                                ),
+                              ]
+                          ),
+                          Align(
+                              alignment: Alignment.centerRight,
+                              child:Container(
+                                  child:Text("\$"+targetList.elementAt(position).budgetSpent.toString() + " of \$" +targetList.elementAt(position).totalBudget.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
+                              )
+                          )
+                        ]
+                    ),
                   ),
                 ),
               ),
+             ]
             ),
-           ]
           );
         },
 //      ),
@@ -265,7 +272,7 @@ void nothingEntered(BuildContext context) {
 
 void buttonPressed(BuildContext context) {
 
-  Navigator.pop(context);
+//  Navigator.pop(context);
 //  if(_new_category.isEmpty || _total_budget.isEmpty ) {
 //    nothingEntered(context);
 //  }
@@ -282,12 +289,31 @@ void buttonPressed(BuildContext context) {
   );
 }
 
+void budgetBoxPressed(BuildContext context) {
+  var alertDialog = AlertDialog(
+    title: Text("This function does not work"),
+    content: Text("We're working on it :("),
+  );
+
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog;
+      }
+  );
+
+}
+
 double calcBudgetPercent(int total, int spent) {
   double percent;
 
 //  percent = spent.toDouble() - total.toDouble();
 
   percent = spent.toDouble() / total.toDouble();
+
+  if(percent > 1.000) {
+    percent = 1.000;
+  }
 
   return percent;
 }
