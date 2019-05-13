@@ -36,8 +36,11 @@ class _DropdownState extends State<Dropdown>{
       children: <Widget>[
         Container(
           height: 400,
-          //child: GaugeChart(createData(expensesListEntrySample)),
           child: GaugeChart(createData(creditsAndExpensesSample())),
+        ),
+        Container(
+          child:
+            Text("Table of Contents Place Holder")
         ),
         Container(
             alignment: Alignment.bottomCenter,

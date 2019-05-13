@@ -11,10 +11,9 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import 'login_page.dart';
 
- TextEditingController addcreditscontroller = new TextEditingController();
+TextEditingController addcreditscontroller = new TextEditingController();
 
-
- List<charts.Series<GaugeSegment, String>> createData(List<expensesListEntry> targetList) {
+List<charts.Series<GaugeSegment, String>> createData(List<expensesListEntry> targetList) {
    List<GaugeSegment> data = [];
 
    for (int i=0;i < targetList.length;i++){
@@ -201,7 +200,6 @@ List<expensesListEntry> creditsAndExpensesSample() {
   return sample;
 }
 
-
 class _expensesListViewState extends State<expensesListView>{
    //List<expensesListEntry> targetList = expensesListEntrySample;
     List<expensesListEntry> targetList = creditsAndExpensesSample();
@@ -250,7 +248,6 @@ class _expensesListViewState extends State<expensesListView>{
    }
 }
 
-
 class expensesListEntry{
    final String item;
    final int amount;
@@ -281,9 +278,33 @@ List<expensesListEntry> expensesListEntryPull(){
   new expensesListEntry("Wendy's",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
   new expensesListEntry("Burger King", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
 ];*/
+class colorPickerEntry{
+  final color dartColor;
+  final Pallete chartColor;
 
+  colorPickerEntry(this.dartColor,this.chartColor);
+}
+List<colorPickerEntry> colorPickerList = [
+  new colorPickerEntry(Colors.blue,charts.MaterialPalette.blue.shadeDefault),
+  new colorPickerEntry(Colors.red,charts.MaterialPalette.red.shadeDefault),
+  new colorPickerEntry(Colors.green,charts.MaterialPalette.green.shadeDefault),
+  new colorPickerEntry(Colors.yellow,charts.MaterialPalette.yellow.shadeDefault),
+  new colorPickerEntry(Colors.pink,charts.MaterialPalette.pink.shadeDefault),
+  new colorPickerEntry(Colors.lime, charts.MaterialPalette.lime.shadeDefault),
+  new colorPickerEntry(Colors.teal,charts.MaterialPalette.teal.shadeDefault),
+  new colorPickerEntry(Colors.indigo, charts.MaterialPalette.indigo)
+]
+colorPickerEntry colorPicker(String targetString){
+  if (targetString == "blue") {return colorPickerList.elementAt(0);}
+  if (targetString == "red") {return colorPickerList.elementAt(1);}
+  if (targetString == "green") {return colorPickerList.elementAt(2);}
+  if (targetString == "yellow") {return colorPickerList.elementAt(3);}
+  if (targetString == "pink") {return colorPickerList.elementAt(4);}
+  if (targetString == "lime") {return colorPickerList.elementAt(5);}
+  if (targetString == "teal") {return colorPickerList.elementAt(6);}
+  if (targetString == "indigo") {return colorPickerList.elementAt(7);}
 
-
+}
 class GaugeChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
@@ -301,7 +322,7 @@ class GaugeChart extends StatelessWidget {
           // the chart will be left as a hole in the center. Adjust the start
           // angle and the arc length of the pie so it resembles a gauge.
           defaultRenderer: new charts.ArcRendererConfig(
-              arcWidth: 30, startAngle: -7/6 *pi, arcLength: 6.7 / 5 * pi))
+              arcWidth: 50, startAngle: -7/6 *pi, arcLength: 6.7 / 5 * pi))
     );
   }
 }
