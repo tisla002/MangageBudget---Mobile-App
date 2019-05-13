@@ -11,10 +11,9 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import 'login_page.dart';
 
- TextEditingController addcreditscontroller = new TextEditingController();
+TextEditingController addcreditscontroller = new TextEditingController();
 
-
- List<charts.Series<GaugeSegment, String>> createData(List<expensesListEntry> targetList) {
+List<charts.Series<GaugeSegment, String>> createData(List<expensesListEntry> targetList) {
    List<GaugeSegment> data = [];
 
    for (int i=0;i < targetList.length;i++){
@@ -51,11 +50,6 @@ class creditsAndExpensesPage extends StatelessWidget {
       body: ListView(
         //crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            height: 200,
-            //child: GaugeChart(createData(expensesListEntrySample)),
-            child: GaugeChart(createData(sample())),
-          ),
 
           Container(
             padding: EdgeInsets.only(left:5.0,top:10.0),
@@ -86,7 +80,6 @@ class creditsAndExpensesPage extends StatelessWidget {
                               onPressed: () {
                                 addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019", "Credit");
                                 Navigator.of(context).pop();
-                                //sample();
                               },
                               label: Text("")
                           ),
@@ -151,7 +144,7 @@ class creditsAndExpensesPage extends StatelessWidget {
             )*/
         ),
         Container(
-          height:306,
+          height:500,
           child:
             expensesListView(),
         ),
@@ -171,7 +164,7 @@ class expensesListView extends StatefulWidget{
   }
 }
 
-List<expensesListEntry> sample() {
+List<expensesListEntry> creditsAndExpensesSample() {
   //new expensesListEntry("Winson", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault);
   List<String> colorsForCharts= new List(12);
   colorsForCharts[0] = "FFFF5722";
@@ -207,10 +200,9 @@ List<expensesListEntry> sample() {
   return sample;
 }
 
-
 class _expensesListViewState extends State<expensesListView>{
    //List<expensesListEntry> targetList = expensesListEntrySample;
-    List<expensesListEntry> targetList = sample();
+    List<expensesListEntry> targetList = creditsAndExpensesSample();
 
    @override
     Widget build(BuildContext context){
@@ -256,7 +248,6 @@ class _expensesListViewState extends State<expensesListView>{
    }
 }
 
-
 class expensesListEntry{
    final String item;
    final int amount;
@@ -287,9 +278,33 @@ List<expensesListEntry> expensesListEntryPull(){
   new expensesListEntry("Wendy's",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
   new expensesListEntry("Burger King", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
 ];*/
+class colorPickerEntry{
+  final Color dartColor;
+  final charts.Color chartColor;
 
+  colorPickerEntry(this.dartColor,this.chartColor);
+}
+List<colorPickerEntry> colorPickerList = [
+  new colorPickerEntry(Colors.blue,charts.MaterialPalette.blue.shadeDefault),
+  new colorPickerEntry(Colors.red,charts.MaterialPalette.red.shadeDefault),
+  new colorPickerEntry(Colors.green,charts.MaterialPalette.green.shadeDefault),
+  new colorPickerEntry(Colors.yellow,charts.MaterialPalette.yellow.shadeDefault),
+  new colorPickerEntry(Colors.pink,charts.MaterialPalette.pink.shadeDefault),
+  new colorPickerEntry(Colors.lime, charts.MaterialPalette.lime.shadeDefault),
+  new colorPickerEntry(Colors.teal,charts.MaterialPalette.teal.shadeDefault),
+  new colorPickerEntry(Colors.indigo, charts.MaterialPalette.indigo.shadeDefault)
+];
+colorPickerEntry colorPicker(String targetString){
+  if (targetString == "blue") {return colorPickerList.elementAt(0);}
+  if (targetString == "red") {return colorPickerList.elementAt(1);}
+  if (targetString == "green") {return colorPickerList.elementAt(2);}
+  if (targetString == "yellow") {return colorPickerList.elementAt(3);}
+  if (targetString == "pink") {return colorPickerList.elementAt(4);}
+  if (targetString == "lime") {return colorPickerList.elementAt(5);}
+  if (targetString == "teal") {return colorPickerList.elementAt(6);}
+  if (targetString == "indigo") {return colorPickerList.elementAt(7);}
 
-
+}
 class GaugeChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
@@ -307,7 +322,7 @@ class GaugeChart extends StatelessWidget {
           // the chart will be left as a hole in the center. Adjust the start
           // angle and the arc length of the pie so it resembles a gauge.
           defaultRenderer: new charts.ArcRendererConfig(
-              arcWidth: 30, startAngle: -7/6 *pi, arcLength: 6.7 / 5 * pi))
+              arcWidth: 50, startAngle: -7/6 *pi, arcLength: 6.7 / 5 * pi))
     );
   }
 }
