@@ -279,8 +279,8 @@ List<expensesListEntry> expensesListEntryPull(){
   new expensesListEntry("Burger King", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
 ];*/
 class colorPickerEntry{
-  final color dartColor;
-  final Pallete chartColor;
+  final Color dartColor;
+  final charts.Color chartColor;
 
   colorPickerEntry(this.dartColor,this.chartColor);
 }
@@ -292,8 +292,8 @@ List<colorPickerEntry> colorPickerList = [
   new colorPickerEntry(Colors.pink,charts.MaterialPalette.pink.shadeDefault),
   new colorPickerEntry(Colors.lime, charts.MaterialPalette.lime.shadeDefault),
   new colorPickerEntry(Colors.teal,charts.MaterialPalette.teal.shadeDefault),
-  new colorPickerEntry(Colors.indigo, charts.MaterialPalette.indigo)
-]
+  new colorPickerEntry(Colors.indigo, charts.MaterialPalette.indigo.shadeDefault)
+];
 colorPickerEntry colorPicker(String targetString){
   if (targetString == "blue") {return colorPickerList.elementAt(0);}
   if (targetString == "red") {return colorPickerList.elementAt(1);}
