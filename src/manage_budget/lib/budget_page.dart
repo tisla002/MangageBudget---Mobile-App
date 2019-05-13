@@ -1,5 +1,5 @@
-import 'dart:core';
 import 'dart:ui';
+import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -11,6 +11,8 @@ import 'dart:math';
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
 final numCount = 10;
+String _total_budget = "";
+String _new_category = "";
 
 TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
@@ -33,7 +35,7 @@ class _BudgetPageState extends State<BudgetPage> {
       floatingActionButton: new FloatingActionButton(
           elevation: 0.0,
           child: new Icon(Icons.add),
-          backgroundColor: new Color(0xFF18D191),
+          backgroundColor: Colors.green, //new Color(0xFF18D191),
           onPressed: () {
             Navigator.push(
               context,
@@ -44,9 +46,17 @@ class _BudgetPageState extends State<BudgetPage> {
       body: ListView(
         children: <Widget>[
           Container(
-            height: 500,
+            height: 700,
             child: ListView(
+              scrollDirection: Axis.vertical,
               children: <Widget>[
+                /*Row(
+                  children: <Widget> [
+                    Expanded(
+                      child: Text('spacing'),
+                    )
+                  ]
+                ),*/
                 expensesListView(),
               ],
             ),
@@ -55,72 +65,6 @@ class _BudgetPageState extends State<BudgetPage> {
       ),
     );
   }
-  /*final noOfSelectedItems = 0;
-        @override
-        Widget build(BuildContext context) {
-          return Scaffold(
-            body: _buildSuggestions(),
-            floatingActionButton: new FloatingActionButton(
-              elevation: 0.0,
-              child: new Icon(Icons.add),
-              backgroundColor: new Color(0xFF18D191),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddBudgetPage()),
-                );
-              }
-            )
-          );
-        }
-
-        Widget _buildSuggestions() {
-          return ListView.builder(
-            padding: const EdgeInsets.all(16.0),
-                itemCount: dataSample.length, //dummy value
-                itemBuilder: (context, i) {
-                  return _buildRow(dataSample, i);
-                }
-          );
-        }
-
-        Widget _buildRow(dataSample, i) {
-
-          return new GestureDetector(
-            onTap: () {  },
-            child: Stack(
-
-            alignment: Alignment.centerLeft,
-
-            children: <Widget>[
-              SizedBox(
-
-                width: budgetBoxWidth,
-                height: budgetBoxHeight,
-                child: Container(
-                  alignment: Alignment.center,
-                  color: Colors.grey,
-
-                ),
-              ),
-              SizedBox(
-
-                width: (dataSample.elementAt(i).budgetSpent / dataSample.elementAt(i).totalBudget) * budgetBoxWidth,
-                height: budgetBoxHeight,
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  alignment: Alignment.centerLeft,
-                  color: Colors.green, //dataSample.elementAt(i).barColor,
-                  child: Text(dataSample.elementAt(i).category, style: TextStyle(color: Colors.white)),
-
-                ),
-              ),
-            ],
-            )
-          );
-        }
-  */
-
 }
 
 List<BudgetCategory> sample() {
@@ -146,7 +90,7 @@ List<BudgetCategory> sample() {
     int index = randStringIndexGen.nextInt(11);
 
 
-    sample.add( BudgetCategory( value["budget category"],value["cost"], 50,
+    sample.add( BudgetCategory( value["budget category"],value["cost"], 100,
         charts.Color.fromHex( code: colorsForCharts[index]) ) );
   });
 
@@ -156,59 +100,81 @@ List<BudgetCategory> sample() {
 }
 
 class _expensesListViewState extends State<expensesListView>{
-  //List<expensesListEntry> targetList = expensesListEntrySample;
   List<BudgetCategory> targetList = sample();
 
   @override
   Widget build(BuildContext context){
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: targetList.length,
-      itemBuilder: (context,position){
-        return Card(
-          color: Colors.blue,
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:[
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+    /*return GestureDetector(
+      onTap: ( ) {
+         //Todo on tap gesture
+      },
+      child:*/ return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: targetList.length,
+        itemBuilder: (context,position) {
+          return Stack(
+            alignment: Alignment.bottomLeft,
+            children: <Widget> [
+              Card(
+                child: Container(
+                  height: 90,
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.green)),
+                ),
+              ),
+              Card(
+                child: Container(
+                  alignment: Alignment.topRight,
+                  child: Text(" yoooo" ),
+                )
+              ),
+              Card(
+                color: Colors.grey,
+                child: Container(
+                  height: 52, //have to manually put in this value ._." (52, 65)
+                  padding: const EdgeInsets.all(16.0),
+                )
+              ),
+              Card(
+              color: Colors.green,
+              child: FractionallySizedBox(
+                widthFactor: calcBudgetPercent(targetList.elementAt(position).totalBudget,
+                           targetList.elementAt(position).budgetSpent),
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children:[
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              child:Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
-                            )
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:[
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+//                                    child:Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
+                                  )
+                              ),
+                            ]
                         ),
                         Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                              child: Text("5/6/2019", style: TextStyle(fontSize: 12.0, color: Colors.white))
-                          ),
+                            alignment: Alignment.centerRight,
+                            child:Container(
+                                child:Text("\$"+targetList.elementAt(position).budgetSpent.toString() + " of \$" +targetList.elementAt(position).totalBudget.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
+                            )
                         )
                       ]
                   ),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child:Container(
-                          child:Text("\$"+targetList.elementAt(position).totalBudget.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
-                      )
-                  )
-                ]
+                ),
+              ),
             ),
-          ),
-        );
-      },
+           ]
+          );
+        },
+//      ),
     );
   }
 }
-
-/*class BudgetCategories extends StatefulWidget {
-  @override
-  _BudgetPageState createState() => _BudgetPageState();
-}*/
 
 class expensesListView extends StatefulWidget{
   @override
@@ -218,9 +184,6 @@ class expensesListView extends StatefulWidget{
 }
 
 class AddBudgetPage extends StatelessWidget {
-  String newCategory = "";
-  String newTotalBudget = "";
-  String newBudgetSpent = "";
 
   @override
   Widget build(BuildContext context) {
@@ -234,37 +197,52 @@ class AddBudgetPage extends StatelessWidget {
             child: new Center(
                 child: new Column(
                     children: <Widget>[
-                      new TextField(
+                      new TextFormField(
                         controller: category,
                         decoration: new InputDecoration(
                           hintText: "Add your category",
                         ),
-                        onSubmitted: (String str) {
+                        maxLines: 1,
+                        maxLength: 40,  //variable length
+                        maxLengthEnforced: true,
+                        validator: (value) => value.isEmpty ? "Category cannot be empty you noob" : null,
+                        onSaved: (value) => _new_category = value,
+                        onFieldSubmitted: (String str) {
                           //setState(() {
-                            newCategory = str;
-                            buttonPressed(context);
+                          _new_category = str;
+//                            buttonPressed(context);
                           //});
                         },
+
                       ),
-                      new TextField(
+                      new TextFormField(
                         controller: amount,
                         keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
                           hintText: "Add your total budget",
                         ),
-                        onSubmitted: (String str1) {
-                          newTotalBudget = str1;
-                          buttonPressed(context);
-                        }
+                        maxLines: 1,
+                        maxLength: 20,
+                        maxLengthEnforced: true,
+                        validator: (value) => value.isEmpty ? "Budget cannot be empty you dingdong" : null,
+                        onSaved: (value) => _total_budget = value,  //value is not being saved
+                        onFieldSubmitted: (String str1) {
+                          _total_budget = str1;
+//                          buttonPressed(context);
+                        },
                       ),
                       new RaisedButton(
                         onPressed: () {
+                          if (_total_budget.isEmpty || _new_category.isEmpty) {//|| _new_category.isEmpty) {
+                            nothingEntered(context);
+                          }
+                          else {
                           addBudget(userID, int.parse(amount.text), category.text);
-                          buttonPressed(context); //dummy onPressed does not look at the value
+                            buttonPressed(context); //dummy onPressed does not look at the value
+                          }
                         },
                         child: Text('Enter'),
                       ),
-//
                     ])
                 ),
             ),
@@ -272,10 +250,25 @@ class AddBudgetPage extends StatelessWidget {
   }
 }
 
+void nothingEntered(BuildContext context) {
+  var alertDialog = AlertDialog(
+    title: Text("Enter in your budget info fool, Look: " + _total_budget + " , " + _new_category),
+    content: Text("I'm kidding don\'t hurt me pls", style: TextStyle(fontSize: 10.0),),
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alertDialog;
+    }
+  );
+}
+
 void buttonPressed(BuildContext context) {
 
   Navigator.pop(context);
-
+//  if(_new_category.isEmpty || _total_budget.isEmpty ) {
+//    nothingEntered(context);
+//  }
   var alertDialog = AlertDialog(
     title: Text("You have pressed a button successfully"),
     content: Text("Thank you, your data is stored"),
@@ -287,6 +280,16 @@ void buttonPressed(BuildContext context) {
       return alertDialog;
     }
   );
+}
+
+double calcBudgetPercent(int total, int spent) {
+  double percent;
+
+//  percent = spent.toDouble() - total.toDouble();
+
+  percent = spent.toDouble() / total.toDouble();
+
+  return percent;
 }
 
 class BudgetCategory {
