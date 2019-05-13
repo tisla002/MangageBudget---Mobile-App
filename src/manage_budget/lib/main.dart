@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:manage_budget/login_page.dart';
+import 'package:manage_budget/notification.dart';
 
 
 
 void main(){
+  notifyInit();
   runApp(new MyApp());
 }
 
