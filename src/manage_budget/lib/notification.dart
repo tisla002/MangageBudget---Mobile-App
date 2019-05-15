@@ -2,7 +2,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-void notifyInit(){
+String FireBaseToken;
+
+void notifyInit() async {
   _firebaseMessaging.requestNotificationPermissions();
   _firebaseMessaging.configure(
     onMessage: (Map<String, dynamic> message) async {
@@ -16,4 +18,8 @@ void notifyInit(){
     },
   );
   print("notifyinit");
+ _firebaseMessaging.getToken().then((token){
+   print(token);
+   FireBaseToken = token;
+ });
 }
