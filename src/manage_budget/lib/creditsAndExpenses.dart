@@ -12,6 +12,9 @@ import 'dart:math';
 import 'login_page.dart';
 
 TextEditingController addcreditscontroller = new TextEditingController();
+StreamSubscription _subscriptionHistoryStream;
+List<dynamic> _budgetHistoryList2;
+
 
 List<charts.Series<GaugeSegment, String>> createData(List<expensesListEntry> targetList) {
    List<GaugeSegment> data = [];
@@ -185,6 +188,9 @@ List<expensesListEntry> creditsAndExpensesSample() {
 
   List<expensesListEntry> sample = new List();
 
+  //budgetHistoryList = budgetHistory(userID);
+
+
   budgetHistory(userID).forEach((value){
     index = randStringIndexGen.nextInt(11);
     sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], charts.Color.fromHex(code: colorsForCharts[index]), Colors.red[600]));
@@ -202,7 +208,31 @@ List<expensesListEntry> creditsAndExpensesSample() {
 
 class _expensesListViewState extends State<expensesListView>{
    //List<expensesListEntry> targetList = expensesListEntrySample;
+
+    List<dynamic> _budgetHistoryList;
     List<expensesListEntry> targetList = creditsAndExpensesSample();
+
+    @override
+    void initState(){
+      FirebaseStream.getStream(userID,_update)
+          .then((StreamSubscription s) => _subscriptionHistoryStream = s);
+      super.initState();
+
+    }
+
+    _update(List<dynamic> value){
+      setState(() {
+        //this._budgetHistoryList = value;
+        targetList = creditsAndExpensesSample();
+      });
+      print(value);
+    }
+
+    @override
+    void dispose() {
+      _subscriptionHistoryStream.cancel();
+      super.dispose();
+    }
 
    @override
     Widget build(BuildContext context){
