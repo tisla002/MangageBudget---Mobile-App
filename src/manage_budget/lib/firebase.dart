@@ -123,13 +123,14 @@
   List<dynamic> grabHistory(String userID){ //gets all within credits
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Credits");
 
-
+    /*
     user.once().then((value){
       _grabHistory = _parsing(value);
       //print(_grabHistory);
     });
+    */
 
-    //grabHistoryStream(userID, user);
+    grabHistoryStream(userID, user);
     
     //print(_grabHistory);
     return _grabHistory;
