@@ -234,6 +234,7 @@ class AddBudgetPage extends StatelessWidget {
                         maxLengthEnforced: true,
                         validator: (value) => value.isEmpty ? "Category cannot be empty you noob" : null,
                         onSaved: (value) => _new_category = value,
+//                        onEditingComplete: (value) _new_category = value,
                         onFieldSubmitted: (String str) {
                           //setState(() {
                           _new_category = str;
@@ -293,6 +294,125 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
 
   @override
   Widget build(BuildContext context) {
+    return new Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget> [
+        new Row( children: <Widget> [Container (height: 10.0,)] ),
+        new Row (
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+          Container(
+          alignment: Alignment.centerRight,
+              height: 50.0, width: 50.0,
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                  color: Colors.blue,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 2.0,
+                  )
+              )
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            height: 50.0, width: 50.0,
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              border: Border.all(
+                color: Colors.black,
+                width: 2.0,
+              )
+            )
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            height: 50.0, width: 50.0,
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.green,
+              border: Border.all(
+                color: Colors.black,
+                width: 2.0,
+              )
+            )
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            height: 50.0, width: 50.0,
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.yellow,
+              border: Border.all(
+                color: Colors.black,
+                width: 2.0,
+              )
+            )
+          ),
+
+        ]
+        ),
+        new Row( children: <Widget> [Container (height: 10.0,)] ),
+        new Row (
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                  alignment: Alignment.centerRight,
+                  height: 50.0, width: 50.0,
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                      color: Colors.pink,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2.0,
+                      )
+                  )
+              ),
+              Container(
+                  alignment: Alignment.centerRight,
+                  height: 50.0, width: 50.0,
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                      color: Colors.lime,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2.0,
+                      )
+                  )
+              ),
+              Container(
+                  alignment: Alignment.centerRight,
+                  height: 50.0, width: 50.0,
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                      color: Colors.teal,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2.0,
+                      )
+                  )
+              ),
+              Container(
+                  alignment: Alignment.centerRight,
+                  height: 50.0, width: 50.0,
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                      color: Colors.indigo,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2.0,
+                      )
+                  )
+              ),
+
+            ]
+        ),
+        new Row( children: <Widget> [Container (height: 10.0,)] ),
+    ]
+    );
+  }
+
+  /*Widget build(BuildContext context) {
     return ListView.builder(
         shrinkWrap: false,
         itemCount: colorPickerList.length ~/ 4,
@@ -375,11 +495,10 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               ),
             ],
           );
-            i = i + 4;
         }
     );
 
-  }
+  }*/
 }
 void nothingEntered(BuildContext context) {
   var alertDialog = AlertDialog(
