@@ -7,9 +7,7 @@ import 'firebase.dart';
 import 'login_page.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
-import 'package:manage_budget/creditsAndExpenses.dart';
-
-
+//import 'package:flutter_sidekick/flutter_sidekick.dart';
 
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
@@ -135,10 +133,7 @@ class _expensesListViewState extends State<expensesListView>{
         itemBuilder: (context,position) {
           return GestureDetector(
             onTap: ( ) {
-              List<expensesListEntry> expensesListBudget = expensesForBudgetsSample(targetList.elementAt(position).category);
-              //print(expensesListBudget);
-              budgetBoxPressed(context, expensesListBudget);
-
+              budgetBoxPressed(context);
             },
             child: Stack(
               alignment: Alignment.bottomLeft,
@@ -296,79 +291,104 @@ class BudgetColorChoices extends StatefulWidget {
 
 class _BudgetColorChoicesState extends State<BudgetColorChoices> {
   int addition = 3;
+  bool _tapInProgress = false;
 
   @override
   Widget build(BuildContext context) {
     return new Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          new Row(children: <Widget>[Container(height: 1.0,)]),
-          new Row (
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget> [
+        new Row( children: <Widget> [Container (height: 10.0,)] ),
+        new Row (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0,
-                    width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2.0,
-                        )
+          GestureDetector(
+            onTap: () {
+              _tapInProgress = true;
+              _color_selected = "blue";
+            },
+            onTapCancel: () {
+              _tapInProgress = false;
+              _color_selected = "";
+            },
+            child: Container(
+            alignment: Alignment.centerRight,
+                height: 50.0, width: 50.0,
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                    color: _tapInProgress? Colors.blueAccent:Colors.blue,
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 2.0,
                     )
-                ),
-                Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0,
-                    width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2.0,
-                        )
-                    )
-                ),
-                Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0,
-                    width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.green,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2.0,
-                        )
-                    )
-                ),
-                Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0,
-                    width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.yellow,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2.0,
-                        )
-                    )
-                ),
-
-              ]
+                )
+            ),
           ),
-          new Row(children: <Widget>[Container(height: 10.0,)]),
-          new Row (
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
+          GestureDetector(
+            onTap: () {
+              _color_selected = "red";
+            },
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: 50.0, width: 50.0,
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2.0,
+                )
+              )
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              _color_selected = "green";
+            },
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: 50.0, width: 50.0,
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2.0,
+                )
+              )
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              _color_selected = "yellow";
+            },
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: 50.0, width: 50.0,
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.yellow,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2.0,
+                )
+              )
+            ),
+          ),
+
+        ]
+        ),
+        new Row( children: <Widget> [Container (height: 10.0,)] ),
+        new Row (
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  _color_selected = "pink";
+                },
+                child: Container(
                     alignment: Alignment.centerRight,
-                    height: 50.0,
-                    width: 50.0,
+                    height: 50.0, width: 50.0,
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                         color: Colors.pink,
@@ -378,10 +398,14 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                         )
                     )
                 ),
-                Container(
+              ),
+              GestureDetector(
+                onTap: () {
+                  _color_selected = "lime";
+                },
+                child: Container(
                     alignment: Alignment.centerRight,
-                    height: 50.0,
-                    width: 50.0,
+                    height: 50.0, width: 50.0,
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                         color: Colors.lime,
@@ -391,10 +415,14 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                         )
                     )
                 ),
-                Container(
+              ),
+              GestureDetector(
+                onTap: () {
+                  _color_selected = "teal";
+                },
+                child: Container(
                     alignment: Alignment.centerRight,
-                    height: 50.0,
-                    width: 50.0,
+                    height: 50.0, width: 50.0,
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                         color: Colors.teal,
@@ -404,10 +432,14 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                         )
                     )
                 ),
-                Container(
+              ),
+              GestureDetector(
+                onTap: () {
+                  _color_selected = "indigo";
+                },
+                child: Container(
                     alignment: Alignment.centerRight,
-                    height: 50.0,
-                    width: 50.0,
+                    height: 50.0, width: 50.0,
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                         color: Colors.indigo,
@@ -417,14 +449,102 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                         )
                     )
                 ),
+              ),
 
-              ]
-          ),
-          new Row(children: <Widget>[Container(height: 10.0,)]),
-        ]
+            ]
+        ),
+        new Row( children: <Widget> [Container (height: 10.0,)] ),
+    ]
     );
   }
 
+  /*Widget build(BuildContext context) {
+    return ListView.builder(
+        shrinkWrap: false,
+        itemCount: colorPickerList.length ~/ 4,
+        padding: const EdgeInsets.all(10.0),
+        itemBuilder: (context, i) { //need to fix issue of overflow
+
+            return Row(
+            mainAxisSize: MainAxisSize.min,
+//            verticalDirection: VerticalDirection.,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+               GestureDetector(
+                    onTap: () {
+                      buttonPressed(context);
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        height: 50.0,
+                        width: 50.0,
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                            color: colorPickerList.elementAt( (i * addition) + i + 0).dartColor,
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 2.0,
+                            )
+                        )
+                    ),
+                  ),
+              GestureDetector(
+                onTap:( ) {
+                  buttonPressed(context);
+                },
+                child: Container(
+                    alignment: Alignment.center,
+                    height: 50.0, width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: colorPickerList.elementAt( (i * addition) + i + 1 ).dartColor,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+              ),
+              GestureDetector(
+                onTap:( ) {
+                  buttonPressed(context);
+                },
+                child: Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0, width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: colorPickerList.elementAt( (i * addition) + i + 2 ).dartColor,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+              ),
+              GestureDetector(
+                onTap:( ) {
+                  buttonPressed(context);
+                },
+                child: Container(
+                    alignment: Alignment.center,
+                    height: 50.0, width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: colorPickerList.elementAt( (i * addition) + i + 3 ).dartColor,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+              ),
+            ],
+          );
+        }
+    );
+
+  }*/
 }
 void nothingEntered(BuildContext context) {
   var alertDialog = AlertDialog(
@@ -458,23 +578,10 @@ void buttonPressed(BuildContext context) {
   );
 }
 
-void budgetBoxPressed(BuildContext context, List<expensesListEntry> targetList) {
-  
-  print(targetList);
-  
+void budgetBoxPressed(BuildContext context) {
   var alertDialog = AlertDialog(
-    title: Text("OOF"),
-    content: //Text("Hello?"),
-
-     Container(
-       width: double.maxFinite,
-       height: 300.0,
-       child: ListView(
-         children:
-
-           targetList.map((data)=> Text(data.item)).toList(),
-       ),
-     ),
+    title: Text("This function does not work"),
+    content: Text("We're working on it :("),
   );
 
   showDialog(
@@ -508,95 +615,7 @@ class BudgetCategory {
 
   BudgetCategory(this.category, this.totalBudget, this.budgetSpent, this.barColor);
 }
+/*class AddInputColors extends AddBudgetPage {
 
-
-
-List<expensesListEntry> expensesForBudgetsSample(String category) {
-  List<String> colorsForCharts= new List(12);
-  colorsForCharts[0] = "FFFF5722";
-  colorsForCharts[1] = "FF00C853";
-  colorsForCharts[2] = "FF004D40";
-  colorsForCharts[3] = "FFFFEB3B";
-  colorsForCharts[4] = "FFCDDC39";
-  colorsForCharts[5] = "FFB2FF59";
-  colorsForCharts[6] = "FF009688";
-  colorsForCharts[7] = "FF00BCD4";
-  colorsForCharts[8] = "FF2196F3";
-  colorsForCharts[9] = "FF3f51B5";
-  colorsForCharts[10] = "FF9C27B0";
-  colorsForCharts[11] = "FF607D8B";
-
-  var randStringIndexGen = new Random(1000);
-  int index = randStringIndexGen.nextInt(11);
-
-  List<expensesListEntry> sample = new List();
-
-
-  budgetHistory2(userID, category).forEach((val){
-    index = randStringIndexGen.nextInt(11);
-    sample.add(expensesListEntry(val["expense description"],val["cost"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
-  });
-  //print(budgetHistory(userID));
-  print(sample[0]);
-
-  return sample;
-}
-
-class _budgetExpensesListViewState extends State<budgetExpensesListView>{
-  //List<expensesListEntry> targetList = expensesListEntrySample;
-  List<expensesListEntry> targetList = creditsAndExpensesSample();
-
-  @override
-  Widget build(BuildContext context){
-    return ListView.builder(
-      itemCount: targetList.length,
-      itemBuilder: (context,position){
-        return Card(
-          color: targetList.elementAt(position).boxColor,
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:[
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:[
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              child:Text(targetList.elementAt(position).item, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
-                            )
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                              child: Text(targetList.elementAt(position).date, style: TextStyle(fontSize: 12.0, color: Colors.white))
-                          ),
-                        )
-                      ]
-                  ),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child:Container(
-                          child:Text("\$"+targetList.elementAt(position).amount.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
-                      )
-                  )
-                ]
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class budgetExpensesListView extends StatefulWidget{
-  @override
-  State<budgetExpensesListView> createState(){
-    return _budgetExpensesListViewState();
-  }
-}
-
-
-
+}*/
 //comment im here
