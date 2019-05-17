@@ -112,7 +112,7 @@ List<BudgetCategory> sample() {
     int index = randStringIndexGen.nextInt(11);
 
 
-    sample.add( BudgetCategory( value["budget category"],value["cost"], 200,
+    sample.add( BudgetCategory( value["budget category"],value["cost"], totalBudgetExpense(value["budget category"]),
         charts.Color.fromHex( code: colorsForCharts[index]) ) );
   });
 
@@ -655,7 +655,10 @@ List<expensesListEntry> expensesForBudgetsSample(String category) {
 
   budgetHistory2(userID, category).forEach((val){
     index = randStringIndexGen.nextInt(11);
-    sample.add(expensesListEntry(val["expense description"],val["cost"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
+    if (val["budget category"] == category) {
+      sample.add(expensesListEntry(val["expense description"],val["cost"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
+    }
+
   });
   //print(budgetHistory(userID));
   print(sample[0]);
@@ -686,8 +689,12 @@ int totalBudgetExpense(String category) {
 
 
   budgetHistory2(userID, category).forEach((val){
+    print("category: " + category);
+    print(val["expense description"]);
     index = randStringIndexGen.nextInt(11);
-    sampleTotal += val["cost"];
+    if (val["budget category"] == category) {
+      sampleTotal += val["cost"];
+    }
   });
   //print(budgetHistory(userID));
 
