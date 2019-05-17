@@ -7,6 +7,7 @@ import 'firebase.dart';
 import 'login_page.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
+import 'package:manage_budget/creditsAndExpenses.dart';
 
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
@@ -115,7 +116,10 @@ class _expensesListViewState extends State<expensesListView>{
         itemBuilder: (context,position) {
           return GestureDetector(
             onTap: ( ) {
-              budgetBoxPressed(context);
+              List<expensesListEntry> expensesListBudget = expensesForBudgetsSample();
+              //print(expensesListBudget);
+              budgetBoxPressed(context, expensesListBudget);
+
             },
             child: Stack(
               alignment: Alignment.bottomLeft,
@@ -289,10 +293,23 @@ void buttonPressed(BuildContext context) {
   );
 }
 
-void budgetBoxPressed(BuildContext context) {
+void budgetBoxPressed(BuildContext context, List<expensesListEntry> targetList) {
+  
+  print(targetList);
+  
   var alertDialog = AlertDialog(
-    title: Text("This function does not work"),
-    content: Text("We're working on it :("),
+    title: Text("OOF"),
+    content: //Text("Hello?"),
+
+     Container(
+       width: double.maxFinite,
+       height: 300.0,
+       child: ListView(
+         children:
+
+           targetList.map((data)=> Text(data.item)).toList(),
+       ),
+     ),
   );
 
   showDialog(
@@ -325,6 +342,92 @@ class BudgetCategory {
   charts.Color barColor;
 
   BudgetCategory(this.category, this.totalBudget, this.budgetSpent, this.barColor);
+}
+
+List<expensesListEntry> expensesForBudgetsSample() {
+  List<String> colorsForCharts= new List(12);
+  colorsForCharts[0] = "FFFF5722";
+  colorsForCharts[1] = "FF00C853";
+  colorsForCharts[2] = "FF004D40";
+  colorsForCharts[3] = "FFFFEB3B";
+  colorsForCharts[4] = "FFCDDC39";
+  colorsForCharts[5] = "FFB2FF59";
+  colorsForCharts[6] = "FF009688";
+  colorsForCharts[7] = "FF00BCD4";
+  colorsForCharts[8] = "FF2196F3";
+  colorsForCharts[9] = "FF3f51B5";
+  colorsForCharts[10] = "FF9C27B0";
+  colorsForCharts[11] = "FF607D8B";
+
+  var randStringIndexGen = new Random(1000);
+  int index = randStringIndexGen.nextInt(11);
+
+  List<expensesListEntry> sample = new List();
+
+
+  grabHistory2(userID, "Grocery").forEach((val){
+    index = randStringIndexGen.nextInt(11);
+    sample.add(expensesListEntry(val["expense description"],val["amount"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
+  });
+  //print(budgetHistory(userID));
+  //print(sample);
+
+  return sample;
+}
+
+class _budgetExpensesListViewState extends State<budgetExpensesListView>{
+  //List<expensesListEntry> targetList = expensesListEntrySample;
+  List<expensesListEntry> targetList = creditsAndExpensesSample();
+
+  @override
+  Widget build(BuildContext context){
+    return ListView.builder(
+      itemCount: targetList.length,
+      itemBuilder: (context,position){
+        return Card(
+          color: targetList.elementAt(position).boxColor,
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children:[
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:[
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              child:Text(targetList.elementAt(position).item, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
+                            )
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                              child: Text(targetList.elementAt(position).date, style: TextStyle(fontSize: 12.0, color: Colors.white))
+                          ),
+                        )
+                      ]
+                  ),
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child:Container(
+                          child:Text("\$"+targetList.elementAt(position).amount.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
+                      )
+                  )
+                ]
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class budgetExpensesListView extends StatefulWidget{
+  @override
+  State<budgetExpensesListView> createState(){
+    return _budgetExpensesListViewState();
+  }
 }
 
 //comment im here
