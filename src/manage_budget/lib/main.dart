@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manage_budget/login_page.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:manage_budget/notification.dart';
 
 
@@ -7,6 +8,8 @@ import 'package:manage_budget/notification.dart';
 void main(){
   notifyInit();
   runApp(new MyApp());
+  flutterLocalNotificationsPlugin.show(10, "Title", "Body",notifyDeats);
+  print("notifysent");
 }
 
 class MyApp extends StatelessWidget {
