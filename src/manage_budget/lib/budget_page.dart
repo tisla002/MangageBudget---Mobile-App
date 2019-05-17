@@ -7,13 +7,14 @@ import 'firebase.dart';
 import 'login_page.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
-import 'package:flutter_sidekick/flutter_sidekick.dart';
+//import 'package:flutter_sidekick/flutter_sidekick.dart';
 
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
 final numCount = 10;
 String _total_budget = "";
 String _new_category = "";
+String _color_selected = "";
 
 TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
@@ -263,7 +264,7 @@ class AddBudgetPage extends StatelessWidget {
                             nothingEntered(context);
                           }
                           else {
-                          addBudget(userID, int.parse(amount.text), category.text);
+                          addBudget(userID, int.parse(amount.text), category.text, "White");
                             buttonPressed(context); //dummy onPressed does not look at the value
                           }
                         },
