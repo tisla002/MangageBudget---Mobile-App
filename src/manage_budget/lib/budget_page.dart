@@ -116,7 +116,7 @@ class _expensesListViewState extends State<expensesListView>{
         itemBuilder: (context,position) {
           return GestureDetector(
             onTap: ( ) {
-              List<expensesListEntry> expensesListBudget = expensesForBudgetsSample();
+              List<expensesListEntry> expensesListBudget = expensesForBudgetsSample(targetList.elementAt(position).category);
               //print(expensesListBudget);
               budgetBoxPressed(context, expensesListBudget);
 
@@ -344,7 +344,7 @@ class BudgetCategory {
   BudgetCategory(this.category, this.totalBudget, this.budgetSpent, this.barColor);
 }
 
-List<expensesListEntry> expensesForBudgetsSample() {
+List<expensesListEntry> expensesForBudgetsSample(String category) {
   List<String> colorsForCharts= new List(12);
   colorsForCharts[0] = "FFFF5722";
   colorsForCharts[1] = "FF00C853";
@@ -365,12 +365,12 @@ List<expensesListEntry> expensesForBudgetsSample() {
   List<expensesListEntry> sample = new List();
 
 
-  grabHistory2(userID, "Grocery").forEach((val){
+  budgetHistory2(userID, category).forEach((val){
     index = randStringIndexGen.nextInt(11);
-    sample.add(expensesListEntry(val["expense description"],val["amount"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
+    sample.add(expensesListEntry(val["expense description"],val["cost"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
   });
   //print(budgetHistory(userID));
-  //print(sample);
+  print(sample[0]);
 
   return sample;
 }
