@@ -265,7 +265,7 @@ class AddBudgetPage extends StatelessWidget {
                             nothingEntered(context);
                           }
                           else {
-                          addBudget(userID, int.parse(amount.text), category.text, "White");
+                          addBudget(userID, int.parse(amount.text), category.text, _color_selected);
                             buttonPressed(context); //dummy onPressed does not look at the value
                           }
                         },
@@ -304,11 +304,11 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               children: <Widget>[
           GestureDetector(
             onTap: () {
-              _tapInProgress = true;
+              //_tapInProgress = !_tapInProgress;
               _color_selected = "blue";
             },
             onTapCancel: () {
-              _tapInProgress = false;
+              //_tapInProgress = false;
               _color_selected = "";
             },
             child: Container(
@@ -316,7 +316,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                 height: 50.0, width: 50.0,
                 padding: EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                    color: _tapInProgress? Colors.blueAccent:Colors.blue,
+                    color: Colors.blue,
                     border: Border.all(
                       color: Colors.black,
                       width: 2.0,
