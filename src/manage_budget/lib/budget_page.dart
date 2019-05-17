@@ -9,11 +9,14 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:manage_budget/creditsAndExpenses.dart';
 
+
+
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
 final numCount = 10;
 String _total_budget = "";
 String _new_category = "";
+String _color_selected = "";
 
 TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
@@ -23,6 +26,34 @@ List<BudgetCategory> dataSample = [
   new BudgetCategory("Groceries", 500, 200, charts.MaterialPalette.blue.shadeDefault),
   new BudgetCategory("Potatoes", 600, 400, charts.MaterialPalette.pink.shadeDefault)
 ];
+
+class colorPickerEntry{
+  final Color dartColor;
+  final charts.Color chartColor;
+
+  colorPickerEntry(this.dartColor,this.chartColor);
+}
+List<colorPickerEntry> colorPickerList = [
+  new colorPickerEntry(Colors.blue,charts.MaterialPalette.blue.shadeDefault),
+  new colorPickerEntry(Colors.red,charts.MaterialPalette.red.shadeDefault),
+  new colorPickerEntry(Colors.green,charts.MaterialPalette.green.shadeDefault),
+  new colorPickerEntry(Colors.yellow,charts.MaterialPalette.yellow.shadeDefault),
+  new colorPickerEntry(Colors.pink,charts.MaterialPalette.pink.shadeDefault),
+  new colorPickerEntry(Colors.lime, charts.MaterialPalette.lime.shadeDefault),
+  new colorPickerEntry(Colors.teal,charts.MaterialPalette.teal.shadeDefault),
+  new colorPickerEntry(Colors.indigo, charts.MaterialPalette.indigo.shadeDefault)
+];
+colorPickerEntry colorPicker(String targetString){
+  if (targetString == "blue") {return colorPickerList.elementAt(0);}
+  if (targetString == "red") {return colorPickerList.elementAt(1);}
+  if (targetString == "green") {return colorPickerList.elementAt(2);}
+  if (targetString == "yellow") {return colorPickerList.elementAt(3);}
+  if (targetString == "pink") {return colorPickerList.elementAt(4);}
+  if (targetString == "lime") {return colorPickerList.elementAt(5);}
+  if (targetString == "teal") {return colorPickerList.elementAt(6);}
+  if (targetString == "indigo") {return colorPickerList.elementAt(7);}
+
+}
 
 class BudgetPage extends StatefulWidget {
   @override
@@ -45,24 +76,15 @@ class _BudgetPageState extends State<BudgetPage> {
           }
       ),
       body: ListView(
-        children: <Widget>[
-          Container(
-            height: 700,
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              children: <Widget>[
-                /*Row(
-                  children: <Widget> [
-                    Expanded(
-                      child: Text('spacing'),
-                    )
-                  ]
-                ),*/
-                expensesListView(),
-              ],
+          scrollDirection: Axis.vertical,
+          children: <Widget>[
+            Container(
+//              height: 10000,
+//              padding: const EdgeInsets.all(10.0),
+//              color: Colors.green,
+              child: expensesListView(),
             ),
-          )
-        ],
+          ],
       ),
     );
   }
@@ -105,11 +127,8 @@ class _expensesListViewState extends State<expensesListView>{
 
   @override
   Widget build(BuildContext context){
-    /*return GestureDetector(
-      onTap: ( ) {
-         //Todo on tap gesture
-      },
-      child:*/ return ListView.builder(
+        return ListView.builder(        //not scrolling, which is an issue
+//          padding: const EdgeInsets.all(2.0),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: targetList.length,
@@ -125,6 +144,14 @@ class _expensesListViewState extends State<expensesListView>{
               alignment: Alignment.bottomLeft,
               children: <Widget> [
                 Card(
+                    child: Container(
+                      height: 90,
+                      padding: const EdgeInsets.all(10.0),
+                      alignment: Alignment.topRight,
+                      child: Text("\$" + targetList.elementAt(position).budgetSpent.toString() + " of \$" + targetList.elementAt(position).totalBudget.toString(),style: TextStyle(fontSize: 16.0,color:Colors.green)), //color is added dynamically
+                    )
+                ),
+                Card(
                   child: Container(
                     height: 90,
                     padding: const EdgeInsets.all(10.0),
@@ -132,17 +159,9 @@ class _expensesListViewState extends State<expensesListView>{
                   ),
                 ),
                 Card(
-                  child: Container(
-                    height: 90,
-                    padding: const EdgeInsets.all(10.0),
-                    alignment: Alignment.topRight,
-                    child: Text("yoooo" ),
-                  )
-                ),
-                Card(
                   color: Colors.grey,
                   child: Container(
-                    height: 52, //have to manually put in this value ._." (52, 65)
+                    height: 48, //have to manually put in this value ._." (52, 65)
                     padding: const EdgeInsets.all(16.0),
                   )
                 ),
@@ -153,28 +172,30 @@ class _expensesListViewState extends State<expensesListView>{
                              targetList.elementAt(position).budgetSpent),
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children:[
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children:[
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-//                                    child:Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
-                                    )
-                                ),
-                              ]
-                          ),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child:Container(
-                                  child:Text("\$"+targetList.elementAt(position).budgetSpent.toString() + " of \$" +targetList.elementAt(position).totalBudget.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
-                              )
-                          )
-                        ]
-                    ),
+                    height: 48,
+//                    child: Row(
+//                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                        children:[
+//                          Column(
+//                              crossAxisAlignment: CrossAxisAlignment.start,
+//                              children:[
+//                                Align(
+//                                    alignment: Alignment.centerLeft,
+//                                    child: Container(
+////                                    child:Text(targetList.elementAt(position).category, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
+//                                    )
+//                                ),
+//                              ]
+//                          ),
+//                          Align(
+//                              alignment: Alignment.centerRight,
+//                              child:Container(
+//                                height: 32,
+////                                  child:Text("\$"+targetList.elementAt(position).budgetSpent.toString() + " of \$" +targetList.elementAt(position).totalBudget.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
+//                              )
+//                          )
+//                        ]
+//                    ),
                   ),
                 ),
               ),
@@ -200,7 +221,7 @@ class AddBudgetPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          backgroundColor: new Color(0xFF18D191),
+          backgroundColor: Colors.green,//new Color(0xFF18D191),
           title: new Text('Input Budget'),
         ),
         body: new Container(
@@ -218,6 +239,7 @@ class AddBudgetPage extends StatelessWidget {
                         maxLengthEnforced: true,
                         validator: (value) => value.isEmpty ? "Category cannot be empty you noob" : null,
                         onSaved: (value) => _new_category = value,
+//                        onEditingComplete: (value) _new_category = value,
                         onFieldSubmitted: (String str) {
                           //setState(() {
                           _new_category = str;
@@ -248,12 +270,16 @@ class AddBudgetPage extends StatelessWidget {
                             nothingEntered(context);
                           }
                           else {
-                          addBudget(userID, int.parse(amount.text), category.text);
+                          addBudget(userID, int.parse(amount.text), category.text, "White");
                             buttonPressed(context); //dummy onPressed does not look at the value
                           }
                         },
                         child: Text('Enter'),
                       ),
+                      new Container(
+                        height: 500,
+                        child: BudgetColorChoices(),
+                      )
                     ])
                 ),
             ),
@@ -261,6 +287,145 @@ class AddBudgetPage extends StatelessWidget {
   }
 }
 
+class BudgetColorChoices extends StatefulWidget {
+  @override
+  State<BudgetColorChoices> createState(){
+    return _BudgetColorChoicesState();
+  }
+}
+
+class _BudgetColorChoicesState extends State<BudgetColorChoices> {
+  int addition = 3;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          new Row(children: <Widget>[Container(height: 10.0,)]),
+          new Row (
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0,
+                    width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0,
+                    width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0,
+                    width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0,
+                    width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.yellow,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+
+              ]
+          ),
+          new Row(children: <Widget>[Container(height: 10.0,)]),
+          new Row (
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0,
+                    width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.pink,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0,
+                    width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.lime,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0,
+                    width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.teal,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    height: 50.0,
+                    width: 50.0,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.indigo,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        )
+                    )
+                ),
+
+              ]
+          ),
+          new Row(children: <Widget>[Container(height: 10.0,)]),
+        ]
+    );
+  }
+
+}
 void nothingEntered(BuildContext context) {
   var alertDialog = AlertDialog(
     title: Text("Enter in your budget info fool, Look: " + _total_budget + " , " + _new_category),
@@ -282,7 +447,7 @@ void buttonPressed(BuildContext context) {
 //  }
   var alertDialog = AlertDialog(
     title: Text("You have pressed a button successfully"),
-    content: Text("Thank you, your data is stored"),
+    content: Text("Thank you my dude"),
   );
 
   showDialog(
@@ -344,6 +509,8 @@ class BudgetCategory {
   BudgetCategory(this.category, this.totalBudget, this.budgetSpent, this.barColor);
 }
 
+
+
 List<expensesListEntry> expensesForBudgetsSample(String category) {
   List<String> colorsForCharts= new List(12);
   colorsForCharts[0] = "FFFF5722";
@@ -365,10 +532,10 @@ List<expensesListEntry> expensesForBudgetsSample(String category) {
   List<expensesListEntry> sample = new List();
 
 
-  budgetHistory2(userID, category).forEach((val){
+ /* budgetHistory2(userID, category).forEach((val){
     index = randStringIndexGen.nextInt(11);
     sample.add(expensesListEntry(val["expense description"],val["cost"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
-  });
+  });*/
   //print(budgetHistory(userID));
   print(sample[0]);
 
@@ -429,5 +596,7 @@ class budgetExpensesListView extends StatefulWidget{
     return _budgetExpensesListViewState();
   }
 }
+
+
 
 //comment im here
