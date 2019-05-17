@@ -277,7 +277,7 @@ class AddBudgetPage extends StatelessWidget {
                         child: Text('Enter'),
                       ),
                       new Container(
-                        height: 500,
+                        height: 300,
                         child: BudgetColorChoices(),
                       )
                     ])
@@ -302,7 +302,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
     return new Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          new Row(children: <Widget>[Container(height: 10.0,)]),
+          new Row(children: <Widget>[Container(height: 1.0,)]),
           new Row (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -532,10 +532,10 @@ List<expensesListEntry> expensesForBudgetsSample(String category) {
   List<expensesListEntry> sample = new List();
 
 
- /* budgetHistory2(userID, category).forEach((val){
+  budgetHistory2(userID, category).forEach((val){
     index = randStringIndexGen.nextInt(11);
     sample.add(expensesListEntry(val["expense description"],val["cost"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
-  });*/
+  });
   //print(budgetHistory(userID));
   print(sample[0]);
 
