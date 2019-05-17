@@ -663,6 +663,42 @@ List<expensesListEntry> expensesForBudgetsSample(String category) {
   return sample;
 }
 
+
+int totalBudgetExpense(String category) {
+  List<String> colorsForCharts= new List(12);
+  colorsForCharts[0] = "FFFF5722";
+  colorsForCharts[1] = "FF00C853";
+  colorsForCharts[2] = "FF004D40";
+  colorsForCharts[3] = "FFFFEB3B";
+  colorsForCharts[4] = "FFCDDC39";
+  colorsForCharts[5] = "FFB2FF59";
+  colorsForCharts[6] = "FF009688";
+  colorsForCharts[7] = "FF00BCD4";
+  colorsForCharts[8] = "FF2196F3";
+  colorsForCharts[9] = "FF3f51B5";
+  colorsForCharts[10] = "FF9C27B0";
+  colorsForCharts[11] = "FF607D8B";
+
+  var randStringIndexGen = new Random(1000);
+  int index = randStringIndexGen.nextInt(11);
+
+  int sampleTotal = 0;
+
+
+  budgetHistory2(userID, category).forEach((val){
+    index = randStringIndexGen.nextInt(11);
+    sampleTotal += val["cost"];
+  });
+  //print(budgetHistory(userID));
+
+
+  return sampleTotal;
+}
+
+
+
+
+
 class _budgetExpensesListViewState extends State<budgetExpensesListView>{
   //List<expensesListEntry> targetList = expensesListEntrySample;
   List<expensesListEntry> targetList = creditsAndExpensesSample();
