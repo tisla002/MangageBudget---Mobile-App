@@ -21,12 +21,6 @@ String _color_selected = "";
 TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
 
-//List<BudgetCategory> dataSample = [
-//  new BudgetCategory("Food", 500, 300, charts.MaterialPalette.green.shadeDefault),
-//  new BudgetCategory("Groceries", 500, 200, charts.MaterialPalette.blue.shadeDefault),
-//  new BudgetCategory("Potatoes", 600, 400, charts.MaterialPalette.pink.shadeDefault)
-//];
-
 class colorPickerEntry{
   final Color dartColor;
   final charts.Color chartColor;
@@ -516,93 +510,6 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
     );
   }
 
-  /*Widget build(BuildContext context) {
-    return ListView.builder(
-        shrinkWrap: false,
-        itemCount: colorPickerList.length ~/ 4,
-        padding: const EdgeInsets.all(10.0),
-        itemBuilder: (context, i) { //need to fix issue of overflow
-
-            return Row(
-            mainAxisSize: MainAxisSize.min,
-//            verticalDirection: VerticalDirection.,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-               GestureDetector(
-                    onTap: () {
-                      buttonPressed(context);
-                    },
-                    child: Container(
-                        alignment: Alignment.center,
-                        height: 50.0,
-                        width: 50.0,
-                        padding: EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                            color: colorPickerList.elementAt( (i * addition) + i + 0).dartColor,
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 2.0,
-                            )
-                        )
-                    ),
-                  ),
-              GestureDetector(
-                onTap:( ) {
-                  buttonPressed(context);
-                },
-                child: Container(
-                    alignment: Alignment.center,
-                    height: 50.0, width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: colorPickerList.elementAt( (i * addition) + i + 1 ).dartColor,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2.0,
-                        )
-                    )
-                ),
-              ),
-              GestureDetector(
-                onTap:( ) {
-                  buttonPressed(context);
-                },
-                child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0, width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: colorPickerList.elementAt( (i * addition) + i + 2 ).dartColor,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2.0,
-                        )
-                    )
-                ),
-              ),
-              GestureDetector(
-                onTap:( ) {
-                  buttonPressed(context);
-                },
-                child: Container(
-                    alignment: Alignment.center,
-                    height: 50.0, width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: colorPickerList.elementAt( (i * addition) + i + 3 ).dartColor,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2.0,
-                        )
-                    )
-                ),
-              ),
-            ],
-          );
-        }
-    );
-
-  }*/
 }
 
 
@@ -655,8 +562,6 @@ void budgetBoxPressed(BuildContext context, List<expensesListEntry> targetList) 
 
 double calcBudgetPercent(int total, int spent) {
   double percent;
-
-//  percent = spent.toDouble() - total.toDouble();
 
   percent = spent.toDouble() / total.toDouble();
 
@@ -731,7 +636,6 @@ int totalBudgetExpense(String category) {
 
   int sampleTotal = 0;
 
-
   budgetHistory2(userID, category).forEach((val){
     print("category: " + category);
     print(val["expense description"]);
@@ -740,8 +644,6 @@ int totalBudgetExpense(String category) {
       sampleTotal += val["cost"];
     }
   });
-  //print(budgetHistory(userID));
-
 
   return sampleTotal;
 }
@@ -751,7 +653,6 @@ int totalBudgetExpense(String category) {
 
 
 class _budgetExpensesListViewState extends State<budgetExpensesListView>{
-  //List<expensesListEntry> targetList = expensesListEntrySample;
   List<expensesListEntry> targetList = creditsAndExpensesSample();
 
   @override
