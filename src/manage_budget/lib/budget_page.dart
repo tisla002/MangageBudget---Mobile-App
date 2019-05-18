@@ -114,7 +114,7 @@ List<BudgetCategory> sample() {
 
 
     sample.add( BudgetCategory( value["budget category"],value["cost"], totalBudgetExpense(value["budget category"]),
-        /*value["color"]*/charts.Color.fromHex( code: colorsForCharts[index])) );
+        colorPicker(value["color"]).dartColor/*charts.Color.fromHex( code: colorsForCharts[index])*/ ) );
   });
 
   print(budgetLimit2(userID));
@@ -165,7 +165,7 @@ class _expensesListViewState extends State<expensesListView>{
                   )
                 ),
                 Card(
-                color: Colors.green,  //this should be the color the user selected ie. targetList.elementAt(position).barColor
+                color: targetList.elementAt(position).barColor,//Colors.green,  //this should be the color the user selected ie. targetList.elementAt(position).barColor
                 child: FractionallySizedBox(
                   widthFactor: calcBudgetPercent(targetList.elementAt(position).totalBudget,
                              targetList.elementAt(position).budgetSpent),
@@ -671,7 +671,7 @@ class BudgetCategory {
   final String category;
   final int totalBudget;
   final int budgetSpent;
-  charts.Color barColor;
+  Color barColor;
 
   BudgetCategory(this.category, this.totalBudget, this.budgetSpent, this.barColor);
 }
