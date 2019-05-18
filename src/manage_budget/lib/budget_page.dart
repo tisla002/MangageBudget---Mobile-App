@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:core';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -16,6 +17,7 @@ String _new_category = "";
 
 TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
+StreamSubscription _subscription;
 
 List<BudgetCategory> dataSample = [
   new BudgetCategory("Food", 500, 300, charts.MaterialPalette.green.shadeDefault),
@@ -94,13 +96,32 @@ List<BudgetCategory> sample() {
         charts.Color.fromHex( code: colorsForCharts[index]) ) );
   });
 
-  print(budgetLimit2(userID));
-
   return sample;
 }
 
 class _expensesListViewState extends State<expensesListView>{
   List<BudgetCategory> targetList = sample();
+
+
+  @override
+  void initState(){
+    FirebaseStream.getStream(userID,_update)
+        .then((StreamSubscription s) => _subscription = s);
+    super.initState();
+  }
+
+  _update(List<dynamic> value){
+    setState(() {
+      //this._budgetHistoryList = value;
+      targetList = sample();
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context){
@@ -233,7 +254,7 @@ class AddBudgetPage extends StatelessWidget {
                       ),
                       new RaisedButton(
                         onPressed: () {
-                          if (_total_budget.isEmpty || _new_category.isEmpty) {//|| _new_category.isEmpty) {
+                          if (amount.text.isEmpty || category.text.isEmpty) {//|| _new_category.isEmpty) {
                             nothingEntered(context);
                           }
                           else {

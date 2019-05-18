@@ -200,6 +200,7 @@ List<expensesListEntry> creditsAndExpensesSample() {
     index = randStringIndexGen.nextInt(11);
     sample.add(expensesListEntry(val["description"],val["amount"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
   });
+
   //print(budgetHistory(userID));
   //print(sample);
 

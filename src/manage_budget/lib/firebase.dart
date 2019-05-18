@@ -1,4 +1,5 @@
   import 'package:firebase_database/firebase_database.dart';
+  import 'package:firebase_auth/firebase_auth.dart';
   import 'dart:async';
 
   List<dynamic> _list = new List();
@@ -19,6 +20,10 @@
     } );
 
     return _list;
+  }
+
+  String firebaseUserID(FirebaseUser usr){
+    return usr.uid;
   }
 
   int getDataInt(DatabaseReference ref, String dataToGet){
@@ -208,6 +213,7 @@
     return _budgetLimit;
   }
 
+
   List<dynamic> budgetLimit2(String userID){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Budgets");
     /*
@@ -231,18 +237,11 @@
     return subscription;
   }
 
+
   List<dynamic> budgetHistory(String userID){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Expenses");
 
-    /*
-    user.once().then((value){
-      _budgetHistory = _parsingBudget(value);
-      //print(expenseList);
-    });
-    */
-
     budgetHistoryStream(userID, user);
-    //print(_budgetHistory);
     return _budgetHistory;
   }
 
@@ -261,7 +260,6 @@
 
     user.orderByChild("budget category").equalTo(category).once().then((value){
       _budgetHistory = _parsingBudget(value);
-      //print(expenseList);
     });
 
     return _budgetHistory;
@@ -273,7 +271,6 @@
     var map = Map.from(snap.value);
 
     map.values.forEach((value){
-      //print(value);
       creditList.add(value);
     });
 
@@ -286,7 +283,6 @@
     var map = Map.from(snap.value);
 
     map.values.forEach((value){
-      //print(value);
       budgetList.add(value);
     });
 
@@ -338,29 +334,12 @@
 
   }
 
-  List<dynamic> _parsingExpense(DataSnapshot snap) {
-    List<dynamic> expenseList = new List();
-
-    var map = Map.from(snap.value);
-
-    map.values.forEach((value){
-      //print(value);
-      expenseList.add(value);
-    });
-
-    return expenseList;
-  }
-
   class Expense{
     String key;
     int budgetCategory;
     String expenseDescription;
     int cost;
     String date;
-    //"budget category" : category,
-    //"expense description" : description,
-    //"cost" : amount,
-    //"date" : date
 
     Expense(this.budgetCategory, this.expenseDescription, this.cost, this.date);
 

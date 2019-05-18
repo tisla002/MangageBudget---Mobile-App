@@ -5,6 +5,8 @@ import 'package:manage_budget/create_account.dart';
 import 'package:manage_budget/firebase.dart';
 import 'main_page.dart';
 import 'firebase.dart';
+import 'package:manage_budget/creditsAndExpenses.dart';
+import 'package:manage_budget/budget_page.dart';
 
 
   String _email;
@@ -30,7 +32,7 @@ import 'firebase.dart';
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
-    userID = user.uid;
+    userID = firebaseUserID(user);
     newuser(userID);
     return user;
   }
@@ -55,7 +57,9 @@ import 'firebase.dart';
           _connect = false;
         }
 
-        userID = user.uid;
+        userID = usersFirebase(user.uid).userID;
+
+        //userID = firebaseUserID(user);
       }catch(e){
         //not doing anything currently
         print('Error: $e');
@@ -69,6 +73,7 @@ import 'firebase.dart';
   }
 
   class _LoginPageState extends State<LoginPage>{
+
     @override
       Widget build(BuildContext context) {
       return Scaffold(
@@ -169,10 +174,9 @@ import 'firebase.dart';
                 onPressed: () {
                   _login().then((value) {
                     if(_connect != false ){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                      );
+                      sample();
+                      creditsAndExpensesSample();
+                      Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()),);
                     }
                   });
                 }
@@ -218,4 +222,10 @@ import 'firebase.dart';
       );
     }
 
+  }
+
+  class usersFirebase {
+      final String userID;
+
+      usersFirebase(this.userID);
   }
