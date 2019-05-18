@@ -17,14 +17,15 @@ String _total_budget = "";
 String _new_category = "";
 String _color_selected = "";
 
+
 TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
 
-List<BudgetCategory> dataSample = [
-  new BudgetCategory("Food", 500, 300, charts.MaterialPalette.green.shadeDefault),
-  new BudgetCategory("Groceries", 500, 200, charts.MaterialPalette.blue.shadeDefault),
-  new BudgetCategory("Potatoes", 600, 400, charts.MaterialPalette.pink.shadeDefault)
-];
+//List<BudgetCategory> dataSample = [
+//  new BudgetCategory("Food", 500, 300, charts.MaterialPalette.green.shadeDefault),
+//  new BudgetCategory("Groceries", 500, 200, charts.MaterialPalette.blue.shadeDefault),
+//  new BudgetCategory("Potatoes", 600, 400, charts.MaterialPalette.pink.shadeDefault)
+//];
 
 class colorPickerEntry{
   final Color dartColor;
@@ -113,7 +114,7 @@ List<BudgetCategory> sample() {
 
 
     sample.add( BudgetCategory( value["budget category"],value["cost"], totalBudgetExpense(value["budget category"]),
-        charts.Color.fromHex( code: colorsForCharts[index]) ) );
+        /*value["color"]*/charts.Color.fromHex( code: colorsForCharts[index])) );
   });
 
   print(budgetLimit2(userID));
@@ -164,7 +165,7 @@ class _expensesListViewState extends State<expensesListView>{
                   )
                 ),
                 Card(
-                color: Colors.green,
+                color: Colors.green,  //this should be the color the user selected ie. targetList.elementAt(position).barColor
                 child: FractionallySizedBox(
                   widthFactor: calcBudgetPercent(targetList.elementAt(position).totalBudget,
                              targetList.elementAt(position).budgetSpent),
@@ -237,7 +238,7 @@ class AddBudgetPage extends StatelessWidget {
                         maxLengthEnforced: true,
                         validator: (value) => value.isEmpty ? "Category cannot be empty you noob" : null,
                         onSaved: (value) => _new_category = value,
-//                        onEditingComplete: (value) _new_category = value,
+//                        onEditingComplete: (value) => _new_category = value,
                         onFieldSubmitted: (String str) {
                           //setState(() {
                           _new_category = str;
@@ -264,18 +265,20 @@ class AddBudgetPage extends StatelessWidget {
                       ),
                       new RaisedButton(
                         onPressed: () {
-                          if (_total_budget.isEmpty || _new_category.isEmpty) {//|| _new_category.isEmpty) {
+                          if (amount.text.isEmpty || category.text.isEmpty || _color_selected.isEmpty) {//|| _new_category.isEmpty) {
                             nothingEntered(context);
                           }
                           else {
                           addBudget(userID, int.parse(amount.text), category.text, _color_selected);
                             buttonPressed(context); //dummy onPressed does not look at the value
+                            amount.clear();
+                            category.clear();
                           }
                         },
                         child: Text('Enter'),
                       ),
                       new Container(
-                        height: 300,
+//                        height: 300,
                         child: BudgetColorChoices(),
                       )
                     ])
@@ -283,6 +286,20 @@ class AddBudgetPage extends StatelessWidget {
             ),
         );
   }
+}
+
+void nothingEntered(BuildContext context) {
+  var alertDialog = AlertDialog(
+    title: Text("Enter in your budget info fool, Look:\n category: " + category.text + ",\n budget: " + amount.text
+      + ",\n color: " + _color_selected + ","),
+    content: Text("I'm kidding don\'t hurt me pls", style: TextStyle(fontSize: 10.0),),
+  );
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog;
+      }
+  );
 }
 
 class BudgetColorChoices extends StatefulWidget {
@@ -293,8 +310,25 @@ class BudgetColorChoices extends StatefulWidget {
 }
 
 class _BudgetColorChoicesState extends State<BudgetColorChoices> {
-  int addition = 3;
-  bool _tapInProgress = false;
+  bool _tapInProgress = false; bool _tapInProgress2 = false;
+  bool _tapInProgress3 = false; bool _tapInProgress4 = false;
+  bool _tapInProgress5 = false; bool _tapInProgress6 = false;
+  bool _tapInProgress7 = false; bool _tapInProgress8 = false;
+
+  bool setAllFalse (bool _currentTap ) {
+    bool temp = !_currentTap;
+    _tapInProgress = false; _tapInProgress2 = false;
+    _tapInProgress3 = false; _tapInProgress4 = false;
+    _tapInProgress5 = false; _tapInProgress6 = false;
+    _tapInProgress7 = false; _tapInProgress8 = false;
+
+    if(temp == false) {
+      _color_selected = "";
+    }
+    return temp;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -307,13 +341,15 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               children: <Widget>[
           GestureDetector(
             onTap: () {
-              //_tapInProgress = !_tapInProgress;
+              setState(() {
               _color_selected = "blue";
+              _tapInProgress = setAllFalse(_tapInProgress); });
             },
-            onTapCancel: () {
-              //_tapInProgress = false;
+            /*onTapCancel: () {
+              setState(() {
+                _tapInProgress = false;});
               _color_selected = "";
-            },
+            },*/
             child: Container(
             alignment: Alignment.centerRight,
                 height: 50.0, width: 50.0,
@@ -321,7 +357,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                 decoration: BoxDecoration(
                     color: Colors.blue,
                     border: Border.all(
-                      color: Colors.black,
+                      color: _tapInProgress? Colors.black:Colors.white,
                       width: 2.0,
                     )
                 )
@@ -329,7 +365,9 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
           ),
           GestureDetector(
             onTap: () {
-              _color_selected = "red";
+              setState(() {
+                _color_selected = "red";
+                _tapInProgress2 = setAllFalse(_tapInProgress2); });
             },
             child: Container(
               alignment: Alignment.centerRight,
@@ -338,7 +376,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               decoration: BoxDecoration(
                 color: Colors.red,
                 border: Border.all(
-                  color: Colors.black,
+                  color: _tapInProgress2? Colors.black:Colors.white,
                   width: 2.0,
                 )
               )
@@ -346,7 +384,10 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
           ),
           GestureDetector(
             onTap: () {
-              _color_selected = "green";
+              setState(() {
+                _color_selected = "green";
+                _tapInProgress3 = setAllFalse(_tapInProgress3); });
+
             },
             child: Container(
               alignment: Alignment.centerRight,
@@ -355,7 +396,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               decoration: BoxDecoration(
                 color: Colors.green,
                 border: Border.all(
-                  color: Colors.black,
+                  color: _tapInProgress3? Colors.black:Colors.white,
                   width: 2.0,
                 )
               )
@@ -363,7 +404,10 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
           ),
           GestureDetector(
             onTap: () {
-              _color_selected = "yellow";
+              setState(() {
+                _color_selected = "yellow";
+                _tapInProgress4 = setAllFalse(_tapInProgress4); });
+
             },
             child: Container(
               alignment: Alignment.centerRight,
@@ -372,7 +416,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               decoration: BoxDecoration(
                 color: Colors.yellow,
                 border: Border.all(
-                  color: Colors.black,
+                  color: _tapInProgress4? Colors.black:Colors.white,
                   width: 2.0,
                 )
               )
@@ -387,7 +431,10 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  _color_selected = "pink";
+                  setState(() {
+                    _color_selected = "pink";
+                    _tapInProgress5 = setAllFalse(_tapInProgress5); });
+
                 },
                 child: Container(
                     alignment: Alignment.centerRight,
@@ -396,7 +443,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                     decoration: BoxDecoration(
                         color: Colors.pink,
                         border: Border.all(
-                          color: Colors.black,
+                          color: _tapInProgress5? Colors.black:Colors.white,
                           width: 2.0,
                         )
                     )
@@ -404,7 +451,10 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               ),
               GestureDetector(
                 onTap: () {
-                  _color_selected = "lime";
+                  setState(() {
+                    _color_selected = "lime";
+                    _tapInProgress6 = setAllFalse(_tapInProgress6); });
+
                 },
                 child: Container(
                     alignment: Alignment.centerRight,
@@ -413,7 +463,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                     decoration: BoxDecoration(
                         color: Colors.lime,
                         border: Border.all(
-                          color: Colors.black,
+                          color: _tapInProgress6? Colors.black:Colors.white,
                           width: 2.0,
                         )
                     )
@@ -421,7 +471,10 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               ),
               GestureDetector(
                 onTap: () {
-                  _color_selected = "teal";
+                  setState(() {
+                    _color_selected = "teal";
+                    _tapInProgress7 = setAllFalse(_tapInProgress7); });
+
                 },
                 child: Container(
                     alignment: Alignment.centerRight,
@@ -430,7 +483,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                     decoration: BoxDecoration(
                         color: Colors.teal,
                         border: Border.all(
-                          color: Colors.black,
+                          color: _tapInProgress7? Colors.black:Colors.white,
                           width: 2.0,
                         )
                     )
@@ -438,7 +491,9 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
               ),
               GestureDetector(
                 onTap: () {
-                  _color_selected = "indigo";
+                  setState(() {
+                    _color_selected = "indigo";
+                    _tapInProgress8 = setAllFalse(_tapInProgress8); });
                 },
                 child: Container(
                     alignment: Alignment.centerRight,
@@ -447,7 +502,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
                     decoration: BoxDecoration(
                         color: Colors.indigo,
                         border: Border.all(
-                          color: Colors.black,
+                          color: _tapInProgress8? Colors.black:Colors.white,
                           width: 2.0,
                         )
                     )
@@ -549,18 +604,7 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
 
   }*/
 }
-void nothingEntered(BuildContext context) {
-  var alertDialog = AlertDialog(
-    title: Text("Enter in your budget info fool, Look: " + _total_budget + " , " + _new_category),
-    content: Text("I'm kidding don\'t hurt me pls", style: TextStyle(fontSize: 10.0),),
-  );
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alertDialog;
-    }
-  );
-}
+
 
 void buttonPressed(BuildContext context) {
 
@@ -569,7 +613,7 @@ void buttonPressed(BuildContext context) {
 //    nothingEntered(context);
 //  }
   var alertDialog = AlertDialog(
-    title: Text("You have pressed a button successfully"),
+    title: Text("You have successfully entered in your budget"),
     content: Text("Thank you my dude"),
   );
 
@@ -760,3 +804,4 @@ class budgetExpensesListView extends StatefulWidget{
     return _budgetExpensesListViewState();
   }
 }
+
