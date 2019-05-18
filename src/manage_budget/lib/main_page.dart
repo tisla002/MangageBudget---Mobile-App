@@ -7,17 +7,20 @@ import "package:manage_budget/creditsAndExpenses.dart";
 import "budget_page.dart";
 import "package:manage_budget/firebase.dart";
 
-//adrian this should be where you are going to be working
 class MainPage extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() => new _MainPageState();
 }
 
 class Dropdown extends StatefulWidget {
+
   @override
   _DropdownState createState() => new _DropdownState();
 }
+
 class _DropdownState extends State<Dropdown>{
+
   TextEditingController addExpensesController = new TextEditingController();
   TextEditingController addDescriptionController = new TextEditingController();
   dynamic dropdownValue;
@@ -149,7 +152,9 @@ class _DropdownState extends State<Dropdown>{
     );
   }
 }
+
 class _MainPageState extends State<MainPage> {
+
   int _currentIndex = 0;
   final List<Widget> _children = [
         Dropdown(),
@@ -203,64 +208,3 @@ class _MainPageState extends State<MainPage> {
     });
   }
 }
-
-
-
-//using this for sign out currently, we can totally remove this
-/*onPressed: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.pop(context);
-          },*/
-
-//child: Text('Log Out'),
-
-/*body: Center(
-        child: Column(
-          children: <Widget>[
-
-
-            new Image(image: new AssetImage("assets/oof.png")),
-
-            new SizedBox(
-              height: 70.0,
-              width: double.infinity,
-              child: OutlineButton(
-
-                  color: Colors.grey[200],
-                  textColor: Colors.black,
-                  onPressed: (){
-
-                  },
-                  child: Text("First Submenu")
-                ),
-              ),
-
-            new SizedBox(
-              width: double.infinity,
-              height: 70.0,
-              child: OutlineButton(
-
-                  color: Colors.grey[200],
-                  textColor: Colors.black,
-                  onPressed: (){
-
-                  },
-                  child: Text("Second Submenu")
-              ),
-            ),
-            new SizedBox(
-              height: 70.0,
-              width: double.infinity,
-              child: OutlineButton(
-                  highlightColor: Colors.green,
-                  color: Colors.grey,
-                  textColor: Colors.black,
-                  onPressed: (){
-
-                  },
-                  child: Text("Second Submenu")
-              ),
-            ),
-          ],
-        ),
-      ),*/

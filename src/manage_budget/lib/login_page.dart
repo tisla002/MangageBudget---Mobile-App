@@ -32,7 +32,7 @@ import 'package:manage_budget/budget_page.dart';
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
-    userID = firebaseUserID(user);
+    userID = user.uid;
     newuser(userID);
     return user;
   }
@@ -57,9 +57,8 @@ import 'package:manage_budget/budget_page.dart';
           _connect = false;
         }
 
-        userID = usersFirebase(user.uid).userID;
+        userID = user.uid;
 
-        //userID = firebaseUserID(user);
       }catch(e){
         //not doing anything currently
         print('Error: $e');
@@ -174,8 +173,9 @@ import 'package:manage_budget/budget_page.dart';
                 onPressed: () {
                   _login().then((value) {
                     if(_connect != false ){
-                      sample();
-                      creditsAndExpensesSample();
+                      print(budgetHistory(userID));
+                      print(grabHistory(userID));
+                      print(budgetLimit2(userID));
                       Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()),);
                     }
                   });
@@ -222,10 +222,4 @@ import 'package:manage_budget/budget_page.dart';
       );
     }
 
-  }
-
-  class usersFirebase {
-      final String userID;
-
-      usersFirebase(this.userID);
   }

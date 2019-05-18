@@ -202,6 +202,7 @@ List<expensesListEntry> creditsAndExpensesSample() {
   });
 
   //print(budgetHistory(userID));
+  //print(grabHistory(userID));
   //print(sample);
 
   return sample;

@@ -22,8 +22,22 @@
     return _list;
   }
 
-  String firebaseUserID(FirebaseUser usr){
-    return usr.uid;
+  String returnUserID(){
+
+    String userID;
+
+    _returnUserID().then((value){
+      userID = value;
+    });
+
+    return userID;
+  }
+
+  Future<String> _returnUserID() async{
+    FirebaseUser usr = await FirebaseAuth.instance.currentUser();
+
+    String uid = usr.uid;
+    return uid;
   }
 
   int getDataInt(DatabaseReference ref, String dataToGet){
