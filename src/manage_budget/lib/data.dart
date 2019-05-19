@@ -11,9 +11,9 @@ Map<String, double> budgetsMax = new Map();
 Map<String, double> budgetSpent = new Map();
 
 void updateData(){
-    print("expense updated");
+    //print("expense updated");
   if(userID == ""){
-    print("Stopped");
+    //print("Stopped");
     return;
   }
   //print("Still running");
@@ -29,30 +29,30 @@ void updateData(){
       budgetsMax[item["budget category"]] = item["cost"] * 1.0; 
       //print("doesn't contain it");
     }
-    print("newIteration");
-    print(budgetSpent);
-    print(item["budget category"]);
+    //print("newIteration");
+    //print(budgetSpent);
+    //print(item["budget category"]);
     if(budgetSpent.containsKey(item["budget category"])){
-      print("addTo");
+     // print("addTo");
       budgetSpent[item["budget category"]] += item["cost"];
     }else{
       budgetSpent[item["budget category"]] = 0;
-      print(item["budget category"]);
-      print("reset");
+     // print(item["budget category"]);
+     // print("reset");
     }
   });
   budgetHistory2(userID, "Candy").forEach((val){//FIX budget history to only return relevant data?
-  print(val);
+  //print(val);
       budgetSpent[val["budget category"]] += val["cost"];
-      print(budgetSpent);
+      //print(budgetSpent);
     });
 
   budgetSpent.forEach((key, value){
-    print(key);
+    //print(key);
     if(value/(budgetsMax[key]) >= .8){
-      print("before error?");
+      //print("before error?");
       approachingLimit[key] = (double.parse((value/budgetsMax[key]).toStringAsFixed(2)) * 100).toInt();
-      print("After?");
+      //print("After?");
     }
   });
 }
@@ -62,25 +62,25 @@ void initMaps(){
   if(budgetList == null || dontRunThis == 1 || userID == ""){
     return;
   }
-  print(userID);
+  //print(userID);
   dontRunThis = 1;
-  print("CALLED");
+  //print("CALLED");
   budgetList = budgetLimit2(userID);
   //print(budgetList);
   budgetList.forEach((item){
     //print(item["budget category"]);
     categories.add(item["budget category"]);
-    budgetsMax[item["budget category"]] = item["cost"];  
-    budgetSpent[item["budget category"]] = 0;
+    budgetsMax[item["budget category"]] = item["cost"].toDouble();
+    budgetSpent[item["budget category"]] = 0.0;
   });
 
   //budgetSpent.forEach((cat, cost)
   //for(int i = 0; i < budgetSpent.length; i++){
   //  print(categories[i];
 budgetHistory2(userID, "Candy").forEach((val){//FIX budget history to only return relevant data?
-      budgetSpent[val["budget category"]] += val["cost"];
+      budgetSpent[val["budget category"]] += val["cost"].toDouble();
     });
-    print("end cat");
+    //print("end cat");
   //}
  // print("^budget spent");
  // print(budgetSpent);
