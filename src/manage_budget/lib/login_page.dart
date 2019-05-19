@@ -12,7 +12,7 @@ import 'package:manage_budget/budget_page.dart';
   String _email;
   String _password;
 
-  String userID;
+  String _userID;
 
   bool _connect = false;
 
@@ -32,9 +32,13 @@ import 'package:manage_budget/budget_page.dart';
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
-    userID = user.uid;
-    newuser(userID);
+    _userID = user.uid;
+    newuser(_userID);
     return user;
+  }
+
+  String returnUserID(){
+    return _userID;
   }
 
   bool _validate(){
@@ -52,12 +56,12 @@ import 'package:manage_budget/budget_page.dart';
         FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
         print('Signed in: ${user.uid}');
         if(user.uid != null){
+          _userID = user.uid;
           _connect = true;
         }else{
+          _userID = "none";
           _connect = false;
         }
-
-        userID = user.uid;
 
       }catch(e){
         //not doing anything currently
@@ -173,9 +177,10 @@ import 'package:manage_budget/budget_page.dart';
                 onPressed: () {
                   _login().then((value) {
                     if(_connect != false ){
-                      print(budgetHistory(userID));
-                      print(grabHistory(userID));
-                      print(budgetLimit2(userID));
+                      print(returnUserID());
+                      print(budgetHistory(returnUserID()));
+                      print(grabHistory(returnUserID()));
+                      print(budgetLimit2(returnUserID()));
                       Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()),);
                     }
                   });

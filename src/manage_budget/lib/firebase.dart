@@ -1,5 +1,4 @@
   import 'package:firebase_database/firebase_database.dart';
-  import 'package:firebase_auth/firebase_auth.dart';
   import 'dart:async';
 
   List<dynamic> _list = new List();
@@ -20,24 +19,6 @@
     } );
 
     return _list;
-  }
-
-  String returnUserID(){
-
-    String userID;
-
-    _returnUserID().then((value){
-      userID = value;
-    });
-
-    return userID;
-  }
-
-  Future<String> _returnUserID() async{
-    FirebaseUser usr = await FirebaseAuth.instance.currentUser();
-
-    String uid = usr.uid;
-    return uid;
   }
 
   int getDataInt(DatabaseReference ref, String dataToGet){

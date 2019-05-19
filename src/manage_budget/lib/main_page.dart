@@ -26,9 +26,9 @@ class _DropdownState extends State<Dropdown>{
   dynamic dropdownValue;
   List<String>generateStringList(){
     List<String> targetList=[];
-    List<dynamic> grabbedList= returnBudgetList(userID);
+    List<dynamic> grabbedList= budgetLimit2(returnUserID());
         grabbedList.forEach((category){
-          targetList.add(category.toString());
+          targetList.add(category["budget category"]);
         }
     );
     return targetList;
@@ -119,7 +119,7 @@ class _DropdownState extends State<Dropdown>{
                                   disabledColor: Colors.grey,
                                   color: Colors.green,
                                   onPressed: () {
-                                    addExpense(userID, int.parse(addExpensesController.text), "4/20/2019", dropdownValue, addDescriptionController.text);
+                                    addExpense(returnUserID(), int.parse(addExpensesController.text), "4/20/2019", dropdownValue, addDescriptionController.text);
                                   },
                                   label: Text("")
                               ),
@@ -174,6 +174,7 @@ class _MainPageState extends State<MainPage> {
             onPressed: (){
               FirebaseAuth.instance.signOut().then((value){
                 Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
+                //return new LoginPage();
               });
             },
           ),

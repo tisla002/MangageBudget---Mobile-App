@@ -81,7 +81,7 @@ class creditsAndExpensesPage extends StatelessWidget {
                               disabledColor: Colors.grey,
                               color: Colors.green,
                               onPressed: () {
-                                addCredit(userID, int.parse(addcreditscontroller.text), "5/4/2019", "Credit");
+                                addCredit(returnUserID(), int.parse(addcreditscontroller.text), "5/4/2019", "Credit");
                                 Navigator.of(context).pop();
                               },
                               label: Text("")
@@ -191,12 +191,12 @@ List<expensesListEntry> creditsAndExpensesSample() {
   //budgetHistoryList = budgetHistory(userID);
 
 
-  budgetHistory(userID).forEach((value){
+  budgetHistory(returnUserID()).forEach((value){
     index = randStringIndexGen.nextInt(11);
     sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], charts.Color.fromHex(code: colorsForCharts[index]), Colors.red[600]));
   });
 
-  grabHistory(userID).forEach((val){
+  grabHistory(returnUserID()).forEach((val){
     index = randStringIndexGen.nextInt(11);
     sample.add(expensesListEntry(val["description"],val["amount"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
   });
@@ -216,7 +216,7 @@ class _expensesListViewState extends State<expensesListView>{
 
     @override
     void initState(){
-      FirebaseStream.getStream(userID,_update)
+      FirebaseStream.getStream(returnUserID(),_update)
           .then((StreamSubscription s) => _subscriptionHistoryStream = s);
       super.initState();
 

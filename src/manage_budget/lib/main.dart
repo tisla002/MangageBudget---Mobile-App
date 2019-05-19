@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green
       ),
       home: new LoginPage()
-
     );
   }
 }

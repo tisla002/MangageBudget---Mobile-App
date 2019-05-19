@@ -73,7 +73,7 @@ List<BudgetCategory> sample() {
 
   List<BudgetCategory> sample = new List();
 
-  budgetLimit2(userID).forEach((value)  {
+  budgetLimit2(returnUserID()).forEach((value)  {
     List<String> colorsForCharts= new List(12);
     colorsForCharts[0] = "FFFF5722";
     colorsForCharts[1] = "FF00C853";
@@ -105,7 +105,7 @@ class _expensesListViewState extends State<expensesListView>{
 
   @override
   void initState(){
-    FirebaseStream.getStream(userID,_update)
+    FirebaseStream.getStream(returnUserID(),_update)
         .then((StreamSubscription s) => _subscription = s);
     super.initState();
   }
@@ -258,7 +258,7 @@ class AddBudgetPage extends StatelessWidget {
                             nothingEntered(context);
                           }
                           else {
-                          addBudget(userID, int.parse(amount.text), category.text);
+                          addBudget(returnUserID(), int.parse(amount.text), category.text);
                             buttonPressed(context); //dummy onPressed does not look at the value
                           }
                         },
