@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manage_budget/login_page.dart';
-import 'package:manage_budget/notification.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:manage_budget/notifications.dart';
 
 
 

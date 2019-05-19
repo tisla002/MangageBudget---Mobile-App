@@ -38,19 +38,20 @@ class _DropdownState extends State<Dropdown>{
     return Column(
       children: <Widget>[
         Container(
-          height: 400,
+          height: 340,
           child: GaugeChart(createData(creditsAndExpensesSample())),
         ),
         Container(
+          height: 200,
           child:
-            Text("Table of Contents Place Holder")
+              tableOfContents(),
         ),
         Container(
             alignment: Alignment.bottomCenter,
             child:
             ButtonTheme(
               minWidth: 400.0,
-              height: 100.0,
+              height: 80.0,
               child: RaisedButton(
                 onPressed: () {
                   showDialog(context: context,
@@ -141,16 +142,43 @@ class _DropdownState extends State<Dropdown>{
                         );
                       });
                 },
-                child: Text ("Add Expenses",
-                    style: TextStyle(
-                      color: Colors.white,
-                    )),
+                child: Column(
+                  children: <Widget>[
+                    Icon(Icons.attach_money,color: Colors.white,size: 60),
+                    Text ("Add Expenses",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ))
+                  ],
+                ),
               ),
             )
         )
       ],
     );
   }
+}
+
+
+class tableOfContents extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    List<String> targetList = grabBudgetList();
+    return ListView.builder(itemCount: targetList.length,itemBuilder:(context,index){
+      return ListTile(
+        title: Text(targetList.elementAt(index)),
+        trailing: Icon(Icons.monetization_on,color:Colors.yellow),
+      );
+    });
+  }
+  List<String> grabBudgetList(){
+    List<String> targetList =new List();
+    returnBudgetList(userID).forEach((key){
+        targetList.add(key.toString());
+    });
+    return targetList;
+  }
+
 }
 
 class _MainPageState extends State<MainPage> {

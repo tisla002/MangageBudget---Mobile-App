@@ -1,5 +1,8 @@
   import 'package:firebase_database/firebase_database.dart';
   import 'dart:async';
+  import 'package:manage_budget/data.dart';
+  import 'package:manage_budget/notifications.dart';
+
 
   List<dynamic> _list = new List();
   List<dynamic> _search = new List();
@@ -82,16 +85,17 @@
       "cost" : amount,
       "date" : date
     });
-
+    
     return true;
   }
 
-  bool addBudget(String userID, int amount, String category){
+  bool addBudget(String userID, int amount, String category, String color){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID);
 
     user.child("Budgets").push().set({
       "budget category" : category,
-      "cost" : amount
+      "cost" : amount,
+      "color" : color
     });
 
     _updateBudgetCategories(user, category);
@@ -255,6 +259,9 @@
 
     user.orderByChild("budget category").equalTo(category).once().then((value){
       _budgetHistory = _parsingBudget(value);
+
+      //print(_budgetHistory);
+
     });
 
     return _budgetHistory;
