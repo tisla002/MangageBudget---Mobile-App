@@ -82,13 +82,7 @@ import 'package:manage_budget/notifications.dart';
       "cost" : amount,
       "date" : date
     });
-    updateData();
-    if(approachingLimit.isNotEmpty){
-      approachingLimit.forEach((key, value){
-        approachingLimitNotify(key, value);
-      });
-      approachingLimit.clear();
-    }
+    
     return true;
   }
 

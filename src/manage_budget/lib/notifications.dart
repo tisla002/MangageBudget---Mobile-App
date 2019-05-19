@@ -13,6 +13,8 @@ InitializationSettings _initializationSettings;
 AndroidInitializationSettings _androidInitializationSettings;
 IOSInitializationSettings _iosInitializationSettings;
 
+int _notificationCounter = 1;
+
 void notifyInit(){
   _iosNoteDetails = IOSNotificationDetails();
   _andNoteDetails = AndroidNotificationDetails("id", "name", "description");
@@ -31,8 +33,9 @@ void approachingLimitNotify(String key, int value){
   String body = "You have reached ";
   body += value.toString();
   body += "% of your \$";
-  body += budgetsMax[key].toString();
+  body += budgetsMax[key].toStringAsFixed(2);
   body += " budget for ";
   body += key;
-  flutterLocalNotificationsPlugin.show(10, title, body, notifyDeats);
+  flutterLocalNotificationsPlugin.show(_notificationCounter, title, body, notifyDeats);
+  _notificationCounter++;
 }
