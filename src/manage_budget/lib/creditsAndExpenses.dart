@@ -38,15 +38,6 @@ class creditsAndExpensesPage extends StatelessWidget {
   Widget build(BuildContext context){
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-     /* appBar: AppBar(
-          leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed:() {Navigator.pop(context);} ),
-          title: Text('Credits And Expenses'),
-          actions: <Widget>[
-            IconButton(icon:Icon(Icons.settings),onPressed: null)
-          ],
-      ),*/
-
-
       body: ListView(
         //crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -303,7 +294,6 @@ colorPickerEntry colorPicker(String targetString){
   if (targetString == "lime") {return colorPickerList.elementAt(5);}
   if (targetString == "teal") {return colorPickerList.elementAt(6);}
   if (targetString == "indigo") {return colorPickerList.elementAt(7);}
-
 }
 class GaugeChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -346,7 +336,6 @@ class detailedReportPage extends StatelessWidget{
           IconButton(icon:Icon(Icons.settings),onPressed: null)
         ],
       ),
-
     );
   }
 }
