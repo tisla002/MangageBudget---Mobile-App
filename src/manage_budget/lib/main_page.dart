@@ -173,8 +173,8 @@ class tableOfContents extends StatelessWidget{
   }
   List<String> grabBudgetList(){
     List<String> targetList =new List();
-    returnBudgetList(userID).forEach((key){
-        targetList.add(key.toString());
+    budgetLimit2(returnUserID()).forEach((key){
+        targetList.add(key["budget category"]);
     });
     return targetList;
   }

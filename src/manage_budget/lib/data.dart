@@ -54,7 +54,7 @@ void updateData(){
       approachingLimit[key] = (double.parse((value/budgetsMax[key]).toStringAsFixed(2)) * 100).toInt();
       print("After?");
     }
-  }); 
+  });
 }
 
 //Could add the if statement...or you could only just call this function once
@@ -66,9 +66,9 @@ void initMaps(){
   dontRunThis = 1;
   print("CALLED");
   budgetList = budgetLimit2(userID);
-  print(budgetList);
+  //print(budgetList);
   budgetList.forEach((item){
-    print(item["budget category"]);
+    //print(item["budget category"]);
     categories.add(item["budget category"]);
     budgetsMax[item["budget category"]] = item["cost"];  
     budgetSpent[item["budget category"]] = 0;
@@ -82,10 +82,10 @@ budgetHistory2(userID, "Candy").forEach((val){//FIX budget history to only retur
     });
     print("end cat");
   //}
-  print("^budget spent");
-  print(budgetSpent);
-  print(budgetsMax);
-  print("^Maxes");
+ // print("^budget spent");
+ // print(budgetSpent);
+ // print(budgetsMax);
+ // print("^Maxes");
 
 }
 
