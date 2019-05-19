@@ -7,8 +7,10 @@ import 'firebase.dart';
 import 'login_page.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
-import "creditsAndExpenses.dart";
-//import 'package:flutter_sidekick/flutter_sidekick.dart';
+import 'package:manage_budget/data.dart';//FIXME Remove this?
+import 'package:manage_budget/notifications.dart';
+import 'package:manage_budget/creditsAndExpenses.dart';
+
 
 final budgetBoxHeight = 30.0;
 final budgetBoxWidth = 400.0;
@@ -102,7 +104,8 @@ List<BudgetCategory> sample() {
     colorsForCharts[9] = "FF3f51B5";
     colorsForCharts[10] = "FF9C27B0";
     colorsForCharts[11] = "FF607D8B";
-
+    //print(value);
+    //print(userID);
     var randStringIndexGen = new Random(1000);
     int index = randStringIndexGen.nextInt(11);
 
@@ -110,8 +113,17 @@ List<BudgetCategory> sample() {
     sample.add( BudgetCategory( value["budget category"],value["cost"], totalBudgetExpense(value["budget category"]),
         colorPicker(value["color"]).dartColor/*charts.Color.fromHex( code: colorsForCharts[index])*/ ) );
   });
-
-  print(budgetLimit2(userID));
+//print(budgetHistory2(userID, "Candy"));
+  //print(budgetLimit2(userID));
+  //FIXME Only putting here because I know this gets called somewhere
+  initMaps();
+  updateData();
+  if(approachingLimit.isNotEmpty){
+      approachingLimit.forEach((key, value){
+        approachingLimitNotify(key, value);
+      });
+      approachingLimit.clear();
+    }
 
   return sample;
 }

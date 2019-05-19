@@ -1,4 +1,6 @@
   import 'package:firebase_database/firebase_database.dart';
+import 'package:manage_budget/data.dart';
+import 'package:manage_budget/notifications.dart';
 
   List<dynamic> _list = new List();
   List<dynamic> _search = new List();
@@ -80,7 +82,7 @@
       "cost" : amount,
       "date" : date
     });
-
+    
     return true;
   }
 
@@ -220,7 +222,7 @@
 
     user.orderByChild("budget category").equalTo(category).once().then((value){
       _budgetHistory = _parsingBudget(value);
-      //print(expenseList);
+      //print(_budgetHistory);
     });
 
     return _budgetHistory;
