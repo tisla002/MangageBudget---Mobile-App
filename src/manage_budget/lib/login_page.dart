@@ -5,11 +5,14 @@ import 'package:manage_budget/create_account.dart';
 import 'package:manage_budget/firebase.dart';
 import 'main_page.dart';
 import 'firebase.dart';
+import 'package:manage_budget/creditsAndExpenses.dart';
+import 'package:manage_budget/budget_page.dart';
 
 
   String _email;
   String _password;
 
+  String _userID;
   String userID;
 
   bool _connect = false;
@@ -30,9 +33,14 @@ import 'firebase.dart';
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
+    _userID = user.uid;
     userID = user.uid;
-    newuser(userID);
+    newuser(_userID);
     return user;
+  }
+
+  String returnUserID(){
+    return _userID;
   }
 
   bool _validate(){
@@ -50,12 +58,15 @@ import 'firebase.dart';
         FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
         print('Signed in: ${user.uid}');
         if(user.uid != null){
+          _userID = user.uid;
+          userID = user.uid;
           _connect = true;
         }else{
+          _userID = "";
+          userID = "";
           _connect = false;
         }
 
-        userID = user.uid;
       }catch(e){
         //not doing anything currently
         print('Error: $e');
@@ -69,6 +80,7 @@ import 'firebase.dart';
   }
 
   class _LoginPageState extends State<LoginPage>{
+
     @override
       Widget build(BuildContext context) {
       return Scaffold(
@@ -169,10 +181,11 @@ import 'firebase.dart';
                 onPressed: () {
                   _login().then((value) {
                     if(_connect != false ){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                      );
+                      print(returnUserID());
+                      print(budgetHistory(returnUserID()));
+                      print(grabHistory(returnUserID()));
+                      print(budgetLimit2(returnUserID()));
+                      Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()),);
                     }
                   });
                 }

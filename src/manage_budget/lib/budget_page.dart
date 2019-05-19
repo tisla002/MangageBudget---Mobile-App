@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:core';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -22,6 +23,7 @@ String _color_selected = "";
 
 TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
+StreamSubscription _subscription;
 
 class colorPickerEntry{
   final Color dartColor;
@@ -90,7 +92,7 @@ List<BudgetCategory> sample() {
 
   List<BudgetCategory> sample = new List();
 
-  budgetLimit2(userID).forEach((value)  {
+  budgetLimit2(returnUserID()).forEach((value)  {
     List<String> colorsForCharts= new List(12);
     colorsForCharts[0] = "FFFF5722";
     colorsForCharts[1] = "FF00C853";
@@ -113,6 +115,7 @@ List<BudgetCategory> sample() {
     sample.add( BudgetCategory( value["budget category"],value["cost"], totalBudgetExpense(value["budget category"]),
         colorPicker(value["color"]).dartColor/*charts.Color.fromHex( code: colorsForCharts[index])*/ ) );
   });
+  
 //print(budgetHistory2(userID, "Candy"));
   //print(budgetLimit2(userID));
   //FIXME Only putting here because I know this gets called somewhere
@@ -130,6 +133,27 @@ List<BudgetCategory> sample() {
 
 class _expensesListViewState extends State<expensesListView>{
   List<BudgetCategory> targetList = sample();
+
+
+  @override
+  void initState(){
+    FirebaseStream.getStream(returnUserID(),_update)
+        .then((StreamSubscription s) => _subscription = s);
+    super.initState();
+  }
+
+  _update(List<dynamic> value){
+    setState(() {
+      //this._budgetHistoryList = value;
+      targetList = sample();
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context){
@@ -271,6 +295,7 @@ class AddBudgetPage extends StatelessWidget {
                       ),
                       new RaisedButton(
                         onPressed: () {
+                          
                           if (amount.text.isEmpty || category.text.isEmpty || _color_selected.isEmpty) {//|| _new_category.isEmpty) {
                             nothingEntered(context);
                           }
