@@ -205,6 +205,12 @@ class tableOfContents extends StatelessWidget{
 
 class _MainPageState extends State<MainPage> {
 
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
   int _currentIndex = 0;
   final List<Widget> _children = [
         Dropdown(),
@@ -223,6 +229,7 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.power_settings_new),
             onPressed: (){
               FirebaseAuth.instance.signOut().then((value){
+                connect = false;
                 Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
                 //return new LoginPage();
               });

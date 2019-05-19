@@ -15,9 +15,12 @@ import 'package:manage_budget/budget_page.dart';
   String _userID;
   String userID;
 
-  bool _connect = false;
+  bool connect = false;
 
   final formKey = new GlobalKey<FormState>();
+
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -62,11 +65,11 @@ import 'package:manage_budget/budget_page.dart';
         if(user.uid != null){
           _userID = user.uid;
           userID = user.uid;
-          _connect = true;
+          connect = true;
         }else{
           _userID = "";
           userID = "";
-          _connect = false;
+          connect = false;
         }
 
       }catch(e){
@@ -90,12 +93,48 @@ import 'package:manage_budget/budget_page.dart';
     );
   }
 
+  void _onLoading(BuildContext context) {
+    var alertDialog = AlertDialog(
+      content: Container(
+        height: 60.0,
+        child: Column(
+          children: <Widget>[
+            CircularProgressIndicator(),
+            Text('Loading')
+          ],
+        ),
+      )
+    );
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context){
+        return alertDialog;
+      }
+    );
+    new Future.delayed(new Duration(seconds: 1), () {
+      _email = null;
+      _password = null;
+      formKey.currentState.reset();
+      Navigator.pop(context); //pop dialog
+      Navigator.push(context, new MaterialPageRoute(builder: (context) => new MainPage()),);
+    });
+  }
+
   class LoginPage extends StatefulWidget {
     @override
       State<StatefulWidget> createState() => new _LoginPageState();
   }
 
   class _LoginPageState extends State<LoginPage>{
+
+  @override
+  void initState() {
+    super.initState();
+    connect = false;
+    _email = null;
+    _password = null;
+  }
 
     @override
       Widget build(BuildContext context) {
@@ -162,19 +201,21 @@ import 'package:manage_budget/budget_page.dart';
               padding:
               const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
               child: new TextFormField(
+                controller: email,
                 decoration: new InputDecoration(labelText: 'Email'),
                 validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-                onSaved: (value) => _email = value,
+                onSaved: (value) => _email = email.text,
               ),
             ),
             Padding(
               padding:
               const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
               child: new TextFormField(
+                controller: password,
                 obscureText: true,
                 decoration: new InputDecoration(labelText: 'Password'),
                 validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-                onSaved: (value) => _password = value,
+                onSaved: (value) => _password = password.text,
               ),
             ),
           ],
@@ -196,13 +237,17 @@ import 'package:manage_budget/budget_page.dart';
                 child: new Text("Login"),
                 onPressed: () {
                   _login().then((value) {
-                    if(_connect != false ){
+                    if(connect != false ){
                       returnUserID();
-                      budgetHistory(returnUserID());
-                      budgetHistory2(returnUserID(),"");
                       grabHistory(returnUserID());
+                      budgetHistory(returnUserID());
+                      grabHistory2(userID, "");
+                      budgetHistory2(returnUserID(),"");
+                      budgetLimit(userID, "");
                       budgetLimit2(returnUserID());
-                      Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()),);
+
+                      _onLoading(context);
+
                     }else{
                       error(context);
                     }
