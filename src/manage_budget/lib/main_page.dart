@@ -38,20 +38,19 @@ class _DropdownState extends State<Dropdown>{
     return Column(
       children: <Widget>[
         Container(
-          height: 340,
+          height: 320,
           child: GaugeChart(createData(creditsAndExpensesSample())),
         ),
         Container(
-          height: 200,
+          height: 232,
           child:
               tableOfContents(),
         ),
-        Container(
-            alignment: Alignment.bottomCenter,
+        Card(
             child:
             ButtonTheme(
               minWidth: 400.0,
-              height: 80.0,
+              height: 76.0,
               child: RaisedButton(
                 onPressed: () {
                   showDialog(context: context,
@@ -163,20 +162,43 @@ class _DropdownState extends State<Dropdown>{
 class tableOfContents extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    List<String> targetList = grabBudgetList();
-    return ListView.builder(itemCount: targetList.length,itemBuilder:(context,index){
-      return ListTile(
-        title: Text(targetList.elementAt(index)),
-        trailing: Icon(Icons.monetization_on,color:Colors.yellow),
-      );
-    });
+    List<budgetColorEntry> targetList = grabBudgetList();
+    return Column(
+      children: <Widget>[
+        Card(
+          color: Colors.green,
+          child: Container(
+            padding: EdgeInsets.only(left:10),
+            width: MediaQuery.of(context).size.width,
+            child:Text("Total Expenses: "+ "\$"+creditTotal(creditsAndExpensesSample()).toString(),style:new TextStyle(fontSize:30,color:Colors.white))
+          )
+        ),
+        Container(
+          height:188,
+          child: ListView.builder(itemCount: targetList.length,itemBuilder:(context,index){
+            return ListTile(
+              title: Text(targetList.elementAt(index).budgetName,style:new TextStyle(fontWeight: FontWeight.bold)),
+              trailing: Icon(Icons.monetization_on,color:colorPicker(targetList.elementAt(index).color).dartColor,size: 30,),
+            );
+          }),
+        )
+      ],
+    );
   }
-  List<String> grabBudgetList(){
-    List<String> targetList =new List();
+  double creditTotal(List<expensesListEntry> creditList){
+    double sum = 0.0;
+    for(int i=0;i<creditList.length;i++){
+      sum = sum+creditList[i].amount;
+    }
+    return sum;
+  }
+  List<budgetColorEntry> grabBudgetList(){
+    List<budgetColorEntry> colorList = new List();
     budgetLimit2(returnUserID()).forEach((key){
-        targetList.add(key["budget category"]);
+      colorList.add(budgetColorEntry(key["budget category"], key["color"]));
     });
-    return targetList;
+
+    return colorList;
   }
 
 }

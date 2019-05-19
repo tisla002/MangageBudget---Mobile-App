@@ -159,46 +159,37 @@ class expensesListView extends StatefulWidget{
 }
 
 List<expensesListEntry> creditsAndExpensesSample() {
-  //new expensesListEntry("Winson", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault);
-  List<String> colorsForCharts= new List(12);
-  colorsForCharts[0] = "FFFF5722";
-  colorsForCharts[1] = "FF00C853";
-  colorsForCharts[2] = "FF004D40";
-  colorsForCharts[3] = "FFFFEB3B";
-  colorsForCharts[4] = "FFCDDC39";
-  colorsForCharts[5] = "FFB2FF59";
-  colorsForCharts[6] = "FF009688";
-  colorsForCharts[7] = "FF00BCD4";
-  colorsForCharts[8] = "FF2196F3";
-  colorsForCharts[9] = "FF3f51B5";
-  colorsForCharts[10] = "FF9C27B0";
-  colorsForCharts[11] = "FF607D8B";
-
-  var randStringIndexGen = new Random(1000);
-  int index = randStringIndexGen.nextInt(11);
-
   List<expensesListEntry> sample = new List();
 
-  //budgetHistoryList = budgetHistory(userID);
-
+  List<budgetColorEntry>colorList= returnbudgetColorTable();
 
   budgetHistory(returnUserID()).forEach((value){
-    index = randStringIndexGen.nextInt(11);
-    sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], charts.Color.fromHex(code: colorsForCharts[index]), Colors.red[600]));
+    sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], colorPicker(colorGrabber(colorList, value["budget category"])).chartColor, colorPicker(colorGrabber(colorList, value["budget category"])).dartColor));
   });
-
-  grabHistory(returnUserID()).forEach((val){
-    index = randStringIndexGen.nextInt(11);
-    sample.add(expensesListEntry(val["description"],val["amount"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
-  });
-
-  //print(budgetHistory(userID));
-  //print(grabHistory(userID));
-  //print(sample);
 
   return sample;
 }
+colorGrabber(List<budgetColorEntry> colorList, String budgetName){
+  for(int i=0; i< colorList.length;i++){
+    if(colorList[i].budgetName==budgetName){
+      return colorList[i].color;
+    }
+  }
+}
+List<budgetColorEntry> returnbudgetColorTable(){
+  List<budgetColorEntry> colorList = new List();
+  budgetLimit2(returnUserID()).forEach((key){
+    colorList.add(budgetColorEntry(key["budget category"], key["color"]));
+  });
 
+  return colorList;
+}
+class budgetColorEntry{
+  String color;
+  String budgetName;
+
+  budgetColorEntry(this.budgetName,this.color);
+}
 class _expensesListViewState extends State<expensesListView>{
    //List<expensesListEntry> targetList = expensesListEntrySample;
 
@@ -281,26 +272,7 @@ class expensesListEntry{
    expensesListEntry(this.item,this.amount,this.date,this.color, this.boxColor);
 }
 
-List<expensesListEntry> expensesListEntryPull(){
 
-}
-
-/*List<expensesListEntry> expensesListEntrySample = [
-  new expensesListEntry("Winson", 50, "4/1/2019", charts.MaterialPalette.purple.shadeDefault),
-  new expensesListEntry("Staters's Bros", 150, "4/2/2019", charts.MaterialPalette.deepOrange.shadeDefault),
-  new expensesListEntry("AT&T",49, "4/2/2019", charts.MaterialPalette.red.shadeDefault),
-  new expensesListEntry("Edison",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
-  new expensesListEntry("Poo", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
-  new expensesListEntry("Walmart", 150, "4/2/2019", charts.MaterialPalette.deepOrange.shadeDefault),
-  new expensesListEntry("Verizon",49, "4/2/2019", charts.MaterialPalette.red.shadeDefault),
-  new expensesListEntry("Apple",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
-  new expensesListEntry("Lincoln", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
-  new expensesListEntry("McDonalds", 100, "4/1/2019", charts.MaterialPalette.purple.shadeDefault),
-  new expensesListEntry("Vons", 150, "4/2/2019", charts.MaterialPalette.deepOrange.shadeDefault),
-  new expensesListEntry("Jack in the Box",49, "4/2/2019", charts.MaterialPalette.red.shadeDefault),
-  new expensesListEntry("Wendy's",39,"4/10/2019", charts.MaterialPalette.blue.shadeDefault),
-  new expensesListEntry("Burger King", 100, "4/1/2019", charts.MaterialPalette.green.shadeDefault),
-];*/
 class colorPickerEntry{
   final Color dartColor;
   final charts.Color chartColor;
@@ -360,14 +332,136 @@ class GaugeSegment {
 class detailedReportPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
+    List<expensesListEntry> creditList=creditHistoryList();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed:() {Navigator.pop(context);} ),
         title: Text('Detailed Report'),
-        actions: <Widget>[
-          IconButton(icon:Icon(Icons.settings),onPressed: null)
-        ],
+      ),
+      body:Container(
+        child: Column(
+          children: <Widget>[
+            Card(
+              child:Container(
+                  color: Colors.lightGreen,
+                  height: 300,
+                  width:MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(top:10,left:10),
+                        alignment: Alignment.center,
+                        child: Text("Credits Information",style: new TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold)),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top:10,left:10),
+                        alignment: Alignment.centerLeft,
+                        child: Text("Total Credits: \$"+ creditTotal(creditList).toString(),style: new TextStyle(fontSize: 25,color: Colors.white)),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top:10),
+                        alignment: Alignment.centerLeft,
+                        height: 200,
+                        child: ListView.builder(
+                          itemCount: creditList.length,
+                          itemBuilder: (context,position){
+                            return Card(
+                              color: creditList.elementAt(position).boxColor,
+                              child: Container(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children:[
+                                      Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children:[
+                                            Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Container(
+                                                  child:Text(creditList.elementAt(position).item, style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold, color: Colors.white)),
+                                                )
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                  child: Text(creditList.elementAt(position).date, style: TextStyle(fontSize: 12.0, color: Colors.white))
+                                              ),
+                                            )
+                                          ]
+                                      ),
+                                      Align(
+                                          alignment: Alignment.centerRight,
+                                          child:Container(
+                                              child:Text("\$"+creditList.elementAt(position).amount.toString(),style: TextStyle(fontSize: 16.0,color:Colors.white))
+                                          )
+                                      )
+                                    ]
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+            ),
+            Card(
+              child:Container(
+                color: Colors.redAccent,
+                height: 370,
+                width:MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(top:10,left:10),
+                      alignment: Alignment.center,
+                      child: Text("Expenses Information",style: new TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold)),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top:10,left:10),
+                      alignment: Alignment.centerLeft,
+                      child: Text("Total Expenses: \$" + creditTotal(creditsAndExpensesSample()).toString(),style: new TextStyle(fontSize: 25,color:Colors.white)),
+                    ),
+                    Container(
+                      height:278,
+                      child:
+                        expensesListView(),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        )
       ),
     );
+  }
+  List<expensesListEntry>creditHistoryList(){
+    List<expensesListEntry> sample = new List();
+    grabHistory(returnUserID()).forEach((val){
+      sample.add(expensesListEntry(val["description"],val["amount"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
+    });
+    return sample;
+  }
+  double creditTotal(List<expensesListEntry> creditList){
+    double sum = 0.0;
+    for(int i=0;i<creditList.length;i++){
+      sum = sum+creditList[i].amount;
+    }
+    return sum;
+  }
+  List<expensesListEntry> creditsAndExpensesSample() {
+    List<expensesListEntry> sample = new List();
+
+    List<budgetColorEntry>colorList= returnbudgetColorTable();
+
+    budgetHistory(returnUserID()).forEach((value){
+      sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], colorPicker(colorGrabber(colorList, value["budget category"])).chartColor, colorPicker(colorGrabber(colorList, value["budget category"])).dartColor));
+    });
+
+    return sample;
   }
 }
