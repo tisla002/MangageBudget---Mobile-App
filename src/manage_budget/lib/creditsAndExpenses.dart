@@ -384,9 +384,69 @@ class detailedReportPage extends StatelessWidget{
       appBar: AppBar(
         leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed:() {Navigator.pop(context);} ),
         title: Text('Detailed Report'),
-        actions: <Widget>[
-          IconButton(icon:Icon(Icons.settings),onPressed: null)
-        ],
+      ),
+      body:Container(
+        child: Column(
+          children: <Widget>[
+            Card(
+              child:Container(
+                  color: Colors.lightGreen,
+                  height: 150,
+                  width:MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(top:10,left:10),
+                        alignment: Alignment.center,
+                        child: Text("Account Information",style: new TextStyle(fontSize: 30,color: Colors.white)),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top:10,left:10),
+                        alignment: Alignment.centerLeft,
+                        child: Text("Total Credits: ",style: new TextStyle(fontSize: 25,color: Colors.white)),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top:10,left:10),
+                        alignment: Alignment.centerLeft,
+                        child: Text("Total Expenses: ",style: new TextStyle(fontSize: 25,color:Colors.white)),
+                      ),
+                    ],
+                  ),
+                ),
+            ),
+            Card(
+              child:Container(
+                color: Colors.redAccent,
+                height: 200,
+                width:MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(top:10,left:10),
+                      alignment: Alignment.center,
+                      child: Text("Warnings",style: new TextStyle(fontSize: 25,color: Colors.white)),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top:10,left:10),
+                      alignment: Alignment.centerLeft,
+                      child: Text("Total Expenses: ",style: new TextStyle(fontSize: 25,color:Colors.white)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Card(
+              color: Colors.grey,
+              child: Container(
+                height:315,
+                child:
+                expensesListView(),
+              ),
+            )
+          ],
+        )
       ),
     );
   }
