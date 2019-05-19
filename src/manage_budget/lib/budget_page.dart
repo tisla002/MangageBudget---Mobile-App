@@ -121,7 +121,7 @@ List<BudgetCategory> sample() {
   //FIXME Only putting here because I know this gets called somewhere
 
 
-  //notificationData();
+  notificationData();
   return sample;
 }
 
