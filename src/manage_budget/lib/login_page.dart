@@ -13,6 +13,7 @@ import 'package:manage_budget/budget_page.dart';
   String _password;
 
   String _userID;
+  String userID;
 
   bool _connect = false;
 
@@ -33,6 +34,7 @@ import 'package:manage_budget/budget_page.dart';
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
     _userID = user.uid;
+    userID = user.uid;
     newuser(_userID);
     return user;
   }
@@ -57,9 +59,11 @@ import 'package:manage_budget/budget_page.dart';
         print('Signed in: ${user.uid}');
         if(user.uid != null){
           _userID = user.uid;
+          userID = user.uid;
           _connect = true;
         }else{
-          _userID = "none";
+          _userID = "";
+          userID = "";
           _connect = false;
         }
 
