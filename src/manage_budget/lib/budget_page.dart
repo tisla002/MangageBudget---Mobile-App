@@ -93,7 +93,7 @@ List<BudgetCategory> sample() {
   List<BudgetCategory> sample = new List();
 
   budgetLimit2(returnUserID()).forEach((value)  {
-    List<String> colorsForCharts= new List(12);
+    /*List<String> colorsForCharts= new List(12);
     colorsForCharts[0] = "FFFF5722";
     colorsForCharts[1] = "FF00C853";
     colorsForCharts[2] = "FF004D40";
@@ -109,31 +109,35 @@ List<BudgetCategory> sample() {
     //print(value);
     //print(userID);
     var randStringIndexGen = new Random(1000);
-    int index = randStringIndexGen.nextInt(11);
+    int index = randStringIndexGen.nextInt(11);*/
 
-
+    budgetHistory2(userID, value["budget category"]);
     sample.add( BudgetCategory( value["budget category"],value["cost"], totalBudgetExpense(value["budget category"]),
-        colorPicker(value["color"]).dartColor/*charts.Color.fromHex( code: colorsForCharts[index])*/ ) );
+        colorPicker(value["color"]).dartColor ) );
   });
   
-//print(budgetHistory2(userID, "Candy"));
+  //print(budgetHistory2(userID, "Candy"));
   //print(budgetLimit2(userID));
   //FIXME Only putting here because I know this gets called somewhere
+
+
+  notificationData();
+  return sample;
+}
+
+void notificationData(){
   initMaps();
   updateData();
   if(approachingLimit.isNotEmpty){
-      approachingLimit.forEach((key, value){
-        approachingLimitNotify(key, value);
-      });
-      approachingLimit.clear();
-    }
-
-  return sample;
+    approachingLimit.forEach((key, value){
+      approachingLimitNotify(key, value);
+    });
+    approachingLimit.clear();
+  }
 }
 
 class _expensesListViewState extends State<expensesListView>{
   List<BudgetCategory> targetList = sample();
-
 
   @override
   void initState(){
@@ -571,7 +575,7 @@ void buttonPressed(BuildContext context) {
 
 void budgetBoxPressed(BuildContext context, List<expensesListEntry> targetList) {
 
-  print(targetList);
+  //print(targetList);
 
   var alertDialog = AlertDialog(
     title: Text("OOF"),
@@ -619,7 +623,7 @@ class BudgetCategory {
 }
 
 List<expensesListEntry> expensesForBudgetsSample(String category) {
-  List<String> colorsForCharts= new List(12);
+  /*List<String> colorsForCharts= new List(12);
   colorsForCharts[0] = "FFFF5722";
   colorsForCharts[1] = "FF00C853";
   colorsForCharts[2] = "FF004D40";
@@ -635,25 +639,26 @@ List<expensesListEntry> expensesForBudgetsSample(String category) {
 
   var randStringIndexGen = new Random(1000);
   int index = randStringIndexGen.nextInt(11);
-
+*/
   List<expensesListEntry> sample = new List();
 
 
   budgetHistory2(userID, category).forEach((val){
-    index = randStringIndexGen.nextInt(11);
+    //index = randStringIndexGen.nextInt(11);
     if (val["budget category"] == category) {
       sample.add(expensesListEntry(val["expense description"],val["cost"],val["date"], charts.MaterialPalette.green.shadeDefault, Colors.green[600]));
     }
 
   });
   //print(budgetHistory(userID));
-  print(sample[0]);
+  //print(sample[0]);
 
   return sample;
 }
 
 
 int totalBudgetExpense(String category) {
+  /*
   List<String> colorsForCharts= new List(12);
   colorsForCharts[0] = "FFFF5722";
   colorsForCharts[1] = "FF00C853";
@@ -666,17 +671,17 @@ int totalBudgetExpense(String category) {
   colorsForCharts[8] = "FF2196F3";
   colorsForCharts[9] = "FF3f51B5";
   colorsForCharts[10] = "FF9C27B0";
-  colorsForCharts[11] = "FF607D8B";
-
+  colorsForCharts[11] = "FF607D8B";*/
+  /*
   var randStringIndexGen = new Random(1000);
   int index = randStringIndexGen.nextInt(11);
-
+  */
   int sampleTotal = 0;
 
   budgetHistory2(userID, category).forEach((val){
-    print("category: " + category);
-    print(val["expense description"]);
-    index = randStringIndexGen.nextInt(11);
+    //print("category: " + category);
+    //print(val["expense description"]);
+    //index = randStringIndexGen.nextInt(11);
     if (val["budget category"] == category) {
       sampleTotal += val["cost"];
     }

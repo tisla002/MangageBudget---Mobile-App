@@ -181,10 +181,11 @@ import 'package:manage_budget/budget_page.dart';
                 onPressed: () {
                   _login().then((value) {
                     if(_connect != false ){
-                      print(returnUserID());
-                      print(budgetHistory(returnUserID()));
-                      print(grabHistory(returnUserID()));
-                      print(budgetLimit2(returnUserID()));
+                      returnUserID();
+                      budgetHistory(returnUserID());
+                      budgetHistory2(returnUserID(),"");
+                      grabHistory(returnUserID());
+                      budgetLimit2(returnUserID());
                       Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()),);
                     }
                   });

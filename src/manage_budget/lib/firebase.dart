@@ -9,6 +9,7 @@
   List<dynamic> _amnts = new List();
   List<dynamic> _grabHistory = new List();
   List<dynamic> _budgetHistory = new List();
+  List<dynamic> _budgetHistory2 = new List();
   List<dynamic> _budgetLimit2 = new List();
   List<dynamic> _valuess = new List();
   int _dataInt = 0;
@@ -255,16 +256,36 @@
   }
 
   List<dynamic> budgetHistory2(String userID, String category){
-    DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Expenses");
+    Query user = FirebaseDatabase
+        .instance
+        .reference()
+        .child("UserData")
+        .child(userID)
+        .child("Expenses")
+        .orderByChild("budget category")
+        .equalTo(category);
 
+    budgetHistory2Stream(userID, user);
+
+    /*
     user.orderByChild("budget category").equalTo(category).once().then((value){
-      _budgetHistory = _parsingBudget(value);
+      _budgetHistory2 = _parsingBudget(value);
 
       //print(_budgetHistory);
 
+    });*/
+
+    return _budgetHistory2;
+  }
+
+  Future<StreamSubscription<Event>> budgetHistory2Stream(String userID, Query ref) async {
+
+    StreamSubscription<Event> subscription = ref.reference().onValue.listen((Event event) {
+      DataSnapshot val = event.snapshot;
+      _budgetHistory2 = _parsingBudget(val);
     });
 
-    return _budgetHistory;
+    return subscription;
   }
 
   List<dynamic> _parsing(DataSnapshot snap) {
