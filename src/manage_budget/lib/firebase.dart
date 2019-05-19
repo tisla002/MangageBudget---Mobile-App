@@ -86,12 +86,13 @@ import 'package:manage_budget/notifications.dart';
     return true;
   }
 
-  bool addBudget(String userID, int amount, String category){
+  bool addBudget(String userID, int amount, String category, String color){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID);
 
     user.child("Budgets").push().set({
       "budget category" : category,
-      "cost" : amount
+      "cost" : amount,
+      "color" : color
     });
 
     _updateBudgetCategories(user, category);
