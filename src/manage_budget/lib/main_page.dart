@@ -163,20 +163,21 @@ class _DropdownState extends State<Dropdown>{
 class tableOfContents extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    List<String> targetList = grabBudgetList();
+    List<budgetColorEntry> targetList = grabBudgetList();
     return ListView.builder(itemCount: targetList.length,itemBuilder:(context,index){
       return ListTile(
-        title: Text(targetList.elementAt(index)),
-        trailing: Icon(Icons.monetization_on,color:Colors.yellow),
+        title: Text(targetList.elementAt(index).budgetName),
+        trailing: Icon(Icons.monetization_on,color:colorPicker(targetList.elementAt(index).color).dartColor,size: 30,),
       );
     });
   }
-  List<String> grabBudgetList(){
-    List<String> targetList =new List();
+  List<budgetColorEntry> grabBudgetList(){
+    List<budgetColorEntry> colorList = new List();
     budgetLimit2(returnUserID()).forEach((key){
-        targetList.add(key["budget category"]);
+      colorList.add(budgetColorEntry(key["budget category"], key["color"]));
     });
-    return targetList;
+
+    return colorList;
   }
 
 }

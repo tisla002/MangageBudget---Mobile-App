@@ -25,33 +25,33 @@ TextEditingController amount = new TextEditingController();
 TextEditingController category = new TextEditingController();
 StreamSubscription _subscription;
 
-class colorPickerEntry{
-  final Color dartColor;
-  final charts.Color chartColor;
-
-  colorPickerEntry(this.dartColor,this.chartColor);
-}
-List<colorPickerEntry> colorPickerList = [
-  new colorPickerEntry(Colors.blue,charts.MaterialPalette.blue.shadeDefault),
-  new colorPickerEntry(Colors.red,charts.MaterialPalette.red.shadeDefault),
-  new colorPickerEntry(Colors.green,charts.MaterialPalette.green.shadeDefault),
-  new colorPickerEntry(Colors.yellow,charts.MaterialPalette.yellow.shadeDefault),
-  new colorPickerEntry(Colors.pink,charts.MaterialPalette.pink.shadeDefault),
-  new colorPickerEntry(Colors.lime, charts.MaterialPalette.lime.shadeDefault),
-  new colorPickerEntry(Colors.teal,charts.MaterialPalette.teal.shadeDefault),
-  new colorPickerEntry(Colors.indigo, charts.MaterialPalette.indigo.shadeDefault)
-];
-colorPickerEntry colorPicker(String targetString){
-  if (targetString == "blue") {return colorPickerList.elementAt(0);}
-  if (targetString == "red") {return colorPickerList.elementAt(1);}
-  if (targetString == "green") {return colorPickerList.elementAt(2);}
-  if (targetString == "yellow") {return colorPickerList.elementAt(3);}
-  if (targetString == "pink") {return colorPickerList.elementAt(4);}
-  if (targetString == "lime") {return colorPickerList.elementAt(5);}
-  if (targetString == "teal") {return colorPickerList.elementAt(6);}
-  if (targetString == "indigo") {return colorPickerList.elementAt(7);}
-
-}
+//class colorPickerEntry{
+//  final Color dartColor;
+//  final charts.Color chartColor;
+//
+//  colorPickerEntry(this.dartColor,this.chartColor);
+//}
+//List<colorPickerEntry> colorPickerList = [
+//  new colorPickerEntry(Colors.blue,charts.MaterialPalette.blue.shadeDefault),
+//  new colorPickerEntry(Colors.red,charts.MaterialPalette.red.shadeDefault),
+//  new colorPickerEntry(Colors.green,charts.MaterialPalette.green.shadeDefault),
+//  new colorPickerEntry(Colors.yellow,charts.MaterialPalette.yellow.shadeDefault),
+//  new colorPickerEntry(Colors.pink,charts.MaterialPalette.pink.shadeDefault),
+//  new colorPickerEntry(Colors.lime, charts.MaterialPalette.lime.shadeDefault),
+//  new colorPickerEntry(Colors.teal,charts.MaterialPalette.teal.shadeDefault),
+//  new colorPickerEntry(Colors.indigo, charts.MaterialPalette.indigo.shadeDefault)
+//];
+//colorPickerEntry colorPicker(String targetString){
+//  if (targetString == "blue") {return colorPickerList.elementAt(0);}
+//  if (targetString == "red") {return colorPickerList.elementAt(1);}
+//  if (targetString == "green") {return colorPickerList.elementAt(2);}
+//  if (targetString == "yellow") {return colorPickerList.elementAt(3);}
+//  if (targetString == "pink") {return colorPickerList.elementAt(4);}
+//  if (targetString == "lime") {return colorPickerList.elementAt(5);}
+//  if (targetString == "teal") {return colorPickerList.elementAt(6);}
+//  if (targetString == "indigo") {return colorPickerList.elementAt(7);}
+//
+//}
 
 class BudgetPage extends StatefulWidget {
   @override
@@ -121,7 +121,7 @@ List<BudgetCategory> sample() {
   //FIXME Only putting here because I know this gets called somewhere
 
 
-  notificationData();
+  //notificationData();
   return sample;
 }
 

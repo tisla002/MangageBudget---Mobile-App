@@ -180,11 +180,11 @@ List<expensesListEntry> creditsAndExpensesSample() {
   List<expensesListEntry> sample = new List();
 
   //budgetHistoryList = budgetHistory(userID);
-
+  List<budgetColorEntry>colorList= returnbudgetColorTable();
 
   budgetHistory(returnUserID()).forEach((value){
     index = randStringIndexGen.nextInt(11);
-    sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], charts.Color.fromHex(code: colorsForCharts[index]), Colors.red[600]));
+    sample.add(expensesListEntry(value["expense description"],value["cost"],value["date"], colorPicker(colorGrabber(colorList, value["budget category"])).chartColor, colorPicker(colorGrabber(colorList, value["budget category"])).dartColor));
   });
 
   grabHistory(returnUserID()).forEach((val){
@@ -198,7 +198,27 @@ List<expensesListEntry> creditsAndExpensesSample() {
 
   return sample;
 }
+colorGrabber(List<budgetColorEntry> colorList, String budgetName){
+  for(int i=0; i< colorList.length;i++){
+    if(colorList[i].budgetName==budgetName){
+      return colorList[i].color;
+    }
+  }
+}
+List<budgetColorEntry> returnbudgetColorTable(){
+  List<budgetColorEntry> colorList = new List();
+  budgetLimit2(returnUserID()).forEach((key){
+    colorList.add(budgetColorEntry(key["budget category"], key["color"]));
+  });
 
+  return colorList;
+}
+class budgetColorEntry{
+  String color;
+  String budgetName;
+
+  budgetColorEntry(this.budgetName,this.color);
+}
 class _expensesListViewState extends State<expensesListView>{
    //List<expensesListEntry> targetList = expensesListEntrySample;
 
