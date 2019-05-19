@@ -22,6 +22,8 @@ import 'package:manage_budget/budget_page.dart';
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  String _error;
+
   Future<FirebaseUser> _handleSignIn() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -69,9 +71,23 @@ import 'package:manage_budget/budget_page.dart';
 
       }catch(e){
         //not doing anything currently
+        _error = e.toString();
         print('Error: $e');
       }
     }
+  }
+
+  void error(BuildContext context) {
+    var alertDialog = AlertDialog(
+      title: Text("Login Error"),
+      content: Text(_error, style: TextStyle(fontSize: 10.0),),
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog;
+        }
+    );
   }
 
   class LoginPage extends StatefulWidget {
@@ -187,6 +203,8 @@ import 'package:manage_budget/budget_page.dart';
                       grabHistory(returnUserID());
                       budgetLimit2(returnUserID());
                       Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()),);
+                    }else{
+                      error(context);
                     }
                   });
                 }
