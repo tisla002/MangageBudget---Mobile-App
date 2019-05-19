@@ -59,9 +59,9 @@ void updateData(){
 
 //Could add the if statement...or you could only just call this function once
 void initMaps(){
-  if(budgetList == null || dontRunThis == 1 || userID == ""){
-    return;
-  }
+  //if(budgetList == null || dontRunThis == 1 || userID == ""){
+  //  return;
+  //}
   //print(userID);
   dontRunThis = 1;
   //print("CALLED");
