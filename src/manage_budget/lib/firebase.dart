@@ -176,31 +176,6 @@
     return subscription;
   }
 
-
-
-  class Credit{
-    String key;
-    int amount;
-    String date;
-    String description;
-
-    Credit(this.amount, this.date, this.description);
-
-    Credit.fromSnapshot(DataSnapshot snapshot) :
-       key = snapshot.key,
-       amount = snapshot.value["amount"],
-       date = snapshot.value["date"],
-       description = snapshot.value["description"];
-
-    toJson(){
-      return {
-        "amount" : amount,
-        "date" : date,
-        "description" : description
-      };
-    }
-  }
-
   int budgetLimit(String userID, String category){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Budgets");
     List<dynamic> budgetList = new List();
@@ -212,7 +187,6 @@
 
     return _budgetLimit;
   }
-
 
   List<dynamic> budgetLimit2(String userID){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Budgets");
@@ -237,11 +211,10 @@
     return subscription;
   }
 
-
   List<dynamic> budgetHistory(String userID){
     DatabaseReference user = FirebaseDatabase.instance.reference().child("UserData").child(userID).child("Expenses");
 
-    budgetHistoryStream(userID, user);
+    Future.wait([budgetHistoryStream(userID, user)]);
     return _budgetHistory;
   }
 
@@ -311,6 +284,7 @@
 
     return budgetList;
   }
+
 
   class FirebaseStream {
 
@@ -382,4 +356,27 @@
       };
     }
 
+  }
+
+  class Credit{
+    String key;
+    int amount;
+    String date;
+    String description;
+
+    Credit(this.amount, this.date, this.description);
+
+    Credit.fromSnapshot(DataSnapshot snapshot) :
+          key = snapshot.key,
+          amount = snapshot.value["amount"],
+          date = snapshot.value["date"],
+          description = snapshot.value["description"];
+
+    toJson(){
+      return {
+        "amount" : amount,
+        "date" : date,
+        "description" : description
+      };
+    }
   }

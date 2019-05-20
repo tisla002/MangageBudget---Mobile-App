@@ -121,7 +121,7 @@ List<BudgetCategory> sample() {
   //FIXME Only putting here because I know this gets called somewhere
 
 
-  //notificationData();
+  notificationData();
   return sample;
 }
 
@@ -578,7 +578,7 @@ void budgetBoxPressed(BuildContext context, List<expensesListEntry> targetList) 
   //print(targetList);
 
   var alertDialog = AlertDialog(
-    title: Text("OOF"),
+    title: Text("Expenses List"),
     content: //Text("Hello?"),
 
     Container(
