@@ -120,6 +120,7 @@ class _DropdownState extends State<Dropdown>{
                                   color: Colors.green,
                                   onPressed: () {
                                     addExpense(returnUserID(), int.parse(addExpensesController.text), "4/20/2019", dropdownValue, addDescriptionController.text);
+                                    Navigator.of(context).pop();
                                   },
                                   label: Text("")
                               ),
