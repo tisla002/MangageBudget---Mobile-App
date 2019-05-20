@@ -5,19 +5,27 @@ import 'package:manage_budget/create_account.dart';
 import 'package:manage_budget/firebase.dart';
 import 'main_page.dart';
 import 'firebase.dart';
+import 'package:manage_budget/creditsAndExpenses.dart';
+import 'package:manage_budget/budget_page.dart';
 
 
   String _email;
   String _password;
 
+  String _userID;
   String userID;
 
-  bool _connect = false;
+  bool connect = false;
 
   final formKey = new GlobalKey<FormState>();
 
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  String _error;
 
   Future<FirebaseUser> _handleSignIn() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -30,9 +38,14 @@ import 'firebase.dart';
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
+    _userID = user.uid;
     userID = user.uid;
-    newuser(userID);
+    newuser(_userID);
     return user;
+  }
+
+  String returnUserID(){
+    return _userID;
   }
 
   bool _validate(){
@@ -50,17 +63,62 @@ import 'firebase.dart';
         FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
         print('Signed in: ${user.uid}');
         if(user.uid != null){
-          _connect = true;
+          _userID = user.uid;
+          userID = user.uid;
+          connect = true;
         }else{
-          _connect = false;
+          _userID = "";
+          userID = "";
+          connect = false;
         }
 
-        userID = user.uid;
       }catch(e){
         //not doing anything currently
+        _error = e.toString();
         print('Error: $e');
       }
     }
+  }
+
+  void error(BuildContext context) {
+    var alertDialog = AlertDialog(
+      title: Text("Login Error"),
+      content: Text(_error, style: TextStyle(fontSize: 10.0),),
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog;
+        }
+    );
+  }
+
+  void _onLoading(BuildContext context) {
+    var alertDialog = AlertDialog(
+      content: Container(
+        height: 60.0,
+        child: Column(
+          children: <Widget>[
+            CircularProgressIndicator(),
+            Text('Loading')
+          ],
+        ),
+      )
+    );
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context){
+        return alertDialog;
+      }
+    );
+    new Future.delayed(new Duration(seconds: 1), () {
+      _email = null;
+      _password = null;
+      formKey.currentState.reset();
+      Navigator.pop(context); //pop dialog
+      Navigator.push(context, new MaterialPageRoute(builder: (context) => new MainPage()),);
+    });
   }
 
   class LoginPage extends StatefulWidget {
@@ -69,6 +127,15 @@ import 'firebase.dart';
   }
 
   class _LoginPageState extends State<LoginPage>{
+
+  @override
+  void initState() {
+    super.initState();
+    connect = false;
+    _email = null;
+    _password = null;
+  }
+
     @override
       Widget build(BuildContext context) {
       return Scaffold(
@@ -134,19 +201,21 @@ import 'firebase.dart';
               padding:
               const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
               child: new TextFormField(
+                controller: email,
                 decoration: new InputDecoration(labelText: 'Email'),
                 validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-                onSaved: (value) => _email = value,
+                onSaved: (value) => _email = email.text,
               ),
             ),
             Padding(
               padding:
               const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
               child: new TextFormField(
+                controller: password,
                 obscureText: true,
                 decoration: new InputDecoration(labelText: 'Password'),
                 validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-                onSaved: (value) => _password = value,
+                onSaved: (value) => _password = password.text,
               ),
             ),
           ],
@@ -168,11 +237,19 @@ import 'firebase.dart';
                 child: new Text("Login"),
                 onPressed: () {
                   _login().then((value) {
-                    if(_connect != false ){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                      );
+                    if(connect != false ){
+                      returnUserID();
+                      grabHistory(returnUserID());
+                      budgetHistory(returnUserID());
+                      grabHistory2(userID, "");
+                      budgetHistory2(returnUserID(),"");
+                      budgetLimit(userID, "");
+                      budgetLimit2(returnUserID());
+
+                      _onLoading(context);
+
+                    }else{
+                      error(context);
                     }
                   });
                 }

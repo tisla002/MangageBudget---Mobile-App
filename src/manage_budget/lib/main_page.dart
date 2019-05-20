@@ -7,137 +7,211 @@ import "package:manage_budget/creditsAndExpenses.dart";
 import "budget_page.dart";
 import "package:manage_budget/firebase.dart";
 
-//adrian this should be where you are going to be working
 class MainPage extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() => new _MainPageState();
 }
 
 class Dropdown extends StatefulWidget {
+
   @override
   _DropdownState createState() => new _DropdownState();
 }
+
 class _DropdownState extends State<Dropdown>{
+
   TextEditingController addExpensesController = new TextEditingController();
   TextEditingController addDescriptionController = new TextEditingController();
   dynamic dropdownValue;
   List<String>generateStringList(){
     List<String> targetList=[];
-    List<dynamic> grabbedList= returnBudgetList(userID);
+    List<dynamic> grabbedList= budgetLimit2(returnUserID());
         grabbedList.forEach((category){
-          targetList.add(category.toString());
+          targetList.add(category["budget category"]);
         }
     );
     return targetList;
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.center,
-        child:
-        ButtonTheme(
-          minWidth: 400.0,
-          height: 100.0,
-          child: RaisedButton(
-            onPressed: () {
-              showDialog(context: context,
-                  builder: (BuildContext context){
-                    return AlertDialog(
-                      elevation: 15,
-                      content: Container(
-                          height: 182,
-                          child:
-                          Column(
-                            children: <Widget>[
-                              Container(
-                                height: 50,
-                                child:
-                                new TextField(
-                                  decoration: new InputDecoration(labelText: "Enter your number"),
-                                  controller: addExpensesController,
-                                  keyboardType: TextInputType.number,
-                                  autofocus: true,
-                                ),
-                              ),
-                              Container(
-                                  height: 50,
-                                  child:
-                                  new TextField(
-                                    decoration: new InputDecoration(labelText: "Enter your description"),
-                                    controller: addDescriptionController,
-                                  )
-                              ),
-                              new FormField(builder: (FormFieldState state){
-                                return InputDecorator(
-                                  decoration: InputDecoration(
-                                    icon: const Icon(Icons.assignment),
-                                    labelText: 'Budget Category',
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 320,
+          child: GaugeChart(createData(creditsAndExpensesSample())),
+        ),
+        Container(
+          height: 232,
+          child:
+              tableOfContents(),
+        ),
+        Card(
+            child:
+            ButtonTheme(
+              minWidth: 400.0,
+              height: 76.0,
+              child: RaisedButton(
+                onPressed: () {
+                  showDialog(context: context,
+                      builder: (BuildContext context){
+                        return AlertDialog(
+                          elevation: 15,
+                          content: Container(
+                              height: 182,
+                              child:
+                              Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: 50,
+                                    child:
+                                    new TextField(
+                                      decoration: new InputDecoration(labelText: "Enter your number"),
+                                      controller: addExpensesController,
+                                      keyboardType: TextInputType.number,
+                                      autofocus: true,
+                                    ),
                                   ),
-                                  child:  new DropdownButtonHideUnderline(
-                                      child: new DropdownButton<dynamic>(
-                                        value: dropdownValue,
-                                        isDense: true,
-                                        onChanged: (dynamic newValue){
-                                          setState( (){
-                                            dropdownValue = newValue;
-                                            state.didChange(newValue);
-                                          });
-                                        },
-                                        items: generateStringList().map((String value){
-                                          return new DropdownMenuItem<String>(
-                                              value: value,
-                                              child: new Text(value)
-                                          );
-                                        }).toList(),
+                                  Container(
+                                      height: 50,
+                                      child:
+                                      new TextField(
+                                        decoration: new InputDecoration(labelText: "Enter your description"),
+                                        controller: addDescriptionController,
                                       )
                                   ),
-                                );
+                                  new FormField(builder: (FormFieldState state){
+                                    return InputDecorator(
+                                      decoration: InputDecoration(
+                                        icon: const Icon(Icons.assignment),
+                                        labelText: 'Budget Category',
+                                      ),
+                                      child:  new DropdownButtonHideUnderline(
+                                          child: new DropdownButton<dynamic>(
+                                            value: dropdownValue,
+                                            isDense: true,
+                                            onChanged: (dynamic newValue){
+                                              setState( (){
+                                                dropdownValue = newValue;
+                                                state.didChange(newValue);
+                                              });
+                                            },
+                                            items: generateStringList().map((String value){
+                                              return new DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: new Text(value)
+                                              );
+                                            }).toList(),
+                                          )
+                                      ),
+                                    );
 
-                              })
-                            ],
-                          )
-                      ),
-                      actions: <Widget>[
-                        ButtonTheme(
-                          minWidth:125,
-                          child:
-                          new RaisedButton.icon(
-                              icon: new Icon(Icons.check,color: Colors.white),
-                              disabledColor: Colors.grey,
-                              color: Colors.green,
-                              onPressed: () {
-                                addExpense(userID, int.parse(addExpensesController.text), "4/20/2019", dropdownValue, addDescriptionController.text);
-                              },
-                              label: Text("")
+                                  })
+                                ],
+                              )
                           ),
-                        ),
+                          actions: <Widget>[
+                            ButtonTheme(
+                              minWidth:125,
+                              child:
+                              new RaisedButton.icon(
+                                  icon: new Icon(Icons.check,color: Colors.white),
+                                  disabledColor: Colors.grey,
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    addExpense(returnUserID(), int.parse(addExpensesController.text), "4/20/2019", dropdownValue, addDescriptionController.text);
+                                    Navigator.of(context).pop();
+                                  },
+                                  label: Text("")
+                              ),
+                            ),
 
-                        ButtonTheme(
-                          minWidth:125,
-                          child:
-                          new RaisedButton.icon(
-                            icon: new Icon(Icons.close,color: Colors.white),
-                            color: Colors.red,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            label: Text(""),
-                          ),
-                        )
-                      ],
-                    );
-                  });
-            },
-            child: Text ("Add Expenses",
-                style: TextStyle(
-                  color: Colors.white,
-                )),
-          ),
+                            ButtonTheme(
+                              minWidth:125,
+                              child:
+                              new RaisedButton.icon(
+                                icon: new Icon(Icons.close,color: Colors.white),
+                                color: Colors.red,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                label: Text(""),
+                              ),
+                            )
+                          ],
+                        );
+                      });
+                },
+                child: Column(
+                  children: <Widget>[
+                    Icon(Icons.attach_money,color: Colors.white,size: 60),
+                    Text ("Add Expenses",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ))
+                  ],
+                ),
+              ),
+            )
         )
+      ],
     );
   }
 }
+
+
+class tableOfContents extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    List<budgetColorEntry> targetList = grabBudgetList();
+    return Column(
+      children: <Widget>[
+        Card(
+          color: Colors.green,
+          child: Container(
+            padding: EdgeInsets.only(left:10),
+            width: MediaQuery.of(context).size.width,
+            child:Text("Total Expenses: "+ "\$"+creditTotal(creditsAndExpensesSample()).toString(),style:new TextStyle(fontSize:30,color:Colors.white))
+          )
+        ),
+        Container(
+          height:188,
+          child: ListView.builder(itemCount: targetList.length,itemBuilder:(context,index){
+            return ListTile(
+              title: Text(targetList.elementAt(index).budgetName,style:new TextStyle(fontWeight: FontWeight.bold)),
+              trailing: Icon(Icons.monetization_on,color:colorPicker(targetList.elementAt(index).color).dartColor,size: 30,),
+            );
+          }),
+        )
+      ],
+    );
+  }
+  double creditTotal(List<expensesListEntry> creditList){
+    double sum = 0.0;
+    for(int i=0;i<creditList.length;i++){
+      sum = sum+creditList[i].amount;
+    }
+    return sum;
+  }
+  List<budgetColorEntry> grabBudgetList(){
+    List<budgetColorEntry> colorList = new List();
+    budgetLimit2(returnUserID()).forEach((key){
+      colorList.add(budgetColorEntry(key["budget category"], key["color"]));
+    });
+
+    return colorList;
+  }
+
+}
+
 class _MainPageState extends State<MainPage> {
+
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
   int _currentIndex = 0;
   final List<Widget> _children = [
         Dropdown(),
@@ -156,7 +230,9 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.power_settings_new),
             onPressed: (){
               FirebaseAuth.instance.signOut().then((value){
+                connect = false;
                 Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
+                //return new LoginPage();
               });
             },
           ),
@@ -191,64 +267,3 @@ class _MainPageState extends State<MainPage> {
     });
   }
 }
-
-
-
-//using this for sign out currently, we can totally remove this
-/*onPressed: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.pop(context);
-          },*/
-
-//child: Text('Log Out'),
-
-/*body: Center(
-        child: Column(
-          children: <Widget>[
-
-
-            new Image(image: new AssetImage("assets/oof.png")),
-
-            new SizedBox(
-              height: 70.0,
-              width: double.infinity,
-              child: OutlineButton(
-
-                  color: Colors.grey[200],
-                  textColor: Colors.black,
-                  onPressed: (){
-
-                  },
-                  child: Text("First Submenu")
-                ),
-              ),
-
-            new SizedBox(
-              width: double.infinity,
-              height: 70.0,
-              child: OutlineButton(
-
-                  color: Colors.grey[200],
-                  textColor: Colors.black,
-                  onPressed: (){
-
-                  },
-                  child: Text("Second Submenu")
-              ),
-            ),
-            new SizedBox(
-              height: 70.0,
-              width: double.infinity,
-              child: OutlineButton(
-                  highlightColor: Colors.green,
-                  color: Colors.grey,
-                  textColor: Colors.black,
-                  onPressed: (){
-
-                  },
-                  child: Text("Second Submenu")
-              ),
-            ),
-          ],
-        ),
-      ),*/

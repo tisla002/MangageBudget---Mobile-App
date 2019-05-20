@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:manage_budget/login_page.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:manage_budget/notifications.dart';
 
 
 
 void main(){
+  notifyInit();
   runApp(new MyApp());
 }
 
@@ -24,7 +27,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green
       ),
       home: new LoginPage()
-
     );
   }
 }
