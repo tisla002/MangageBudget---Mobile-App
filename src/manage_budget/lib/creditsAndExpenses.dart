@@ -344,7 +344,7 @@ class detailedReportPage extends StatelessWidget{
             Card(
               child:Container(
                   color: Colors.lightGreen,
-                  height: 300,
+                  height: 323,
                   width:MediaQuery.of(context).size.width,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -357,7 +357,12 @@ class detailedReportPage extends StatelessWidget{
                       Container(
                         padding: EdgeInsets.only(top:10,left:10),
                         alignment: Alignment.centerLeft,
-                        child: Text("Total Credits: \$"+ creditTotal(creditList).toString(),style: new TextStyle(fontSize: 25,color: Colors.white)),
+                        child: Text("Current Credits: \$"+ (creditTotal(creditList)-creditTotal(creditsAndExpensesSample())).toString(),style: new TextStyle(fontSize: 25,color: currentCreditsColorStyle(creditTotal(creditList)-creditTotal(creditsAndExpensesSample())))),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top:10,left:10),
+                        alignment: Alignment.centerLeft,
+                        child: Text("Total Credits Added: \$"+ creditTotal(creditList).toString(),style: new TextStyle(fontSize: 25,color: Colors.white)),
                       ),
                       Container(
                         padding: EdgeInsets.only(top:10),
@@ -410,7 +415,7 @@ class detailedReportPage extends StatelessWidget{
             Card(
               child:Container(
                 color: Colors.redAccent,
-                height: 370,
+                height: 353,
                 width:MediaQuery.of(context).size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -426,7 +431,7 @@ class detailedReportPage extends StatelessWidget{
                       child: Text("Total Expenses: \$" + creditTotal(creditsAndExpensesSample()).toString(),style: new TextStyle(fontSize: 25,color:Colors.white)),
                     ),
                     Container(
-                      height:278,
+                      height:269,
                       child:
                         expensesListView(),
                     )
@@ -438,6 +443,16 @@ class detailedReportPage extends StatelessWidget{
         )
       ),
     );
+  }
+
+    dynamic currentCreditsColorStyle(double num){
+    //if num if negative color is red, else it is white
+    if (num <0){
+      return Colors.red;
+    }
+    else {
+      return Colors.white;
+    }
   }
   List<expensesListEntry>creditHistoryList(){
     List<expensesListEntry> sample = new List();
