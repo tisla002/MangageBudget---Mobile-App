@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import "package:manage_budget/creditsAndExpenses.dart";
 import "budget_page.dart";
 import "package:manage_budget/firebase.dart";
+import "package:manage_budget/ShareBudgetPage.dart";
 
 class MainPage extends StatefulWidget {
 
@@ -236,6 +237,13 @@ class _MainPageState extends State<MainPage> {
               });
             },
           ),
+          IconButton(
+            icon: Icon(Icons.contacts),
+            onPressed: (){
+              Navigator.push(
+              context, MaterialPageRoute( builder: (context) => SharedBudgetPage()),);
+              }
+              )
         ],
       ),
       backgroundColor: Colors.grey[200],
