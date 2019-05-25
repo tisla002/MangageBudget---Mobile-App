@@ -11,7 +11,7 @@ import 'dart:math';
 import 'package:manage_budget/data.dart';//FIXME Remove this?
 import 'package:manage_budget/notifications.dart';
 import 'package:manage_budget/creditsAndExpenses.dart';
-import 'ShareBudgetPage.dart';
+import 'package:manage_budget/budget_page.dart';
 
 
 final budgetBoxHeight = 30.0;
@@ -54,12 +54,12 @@ StreamSubscription _subscription;
 //
 //}
 
-class BudgetPage extends StatefulWidget {
+class SharedBudgetPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _BudgetPageState();
+  State<StatefulWidget> createState() => new _SharedBudgetPageState();
 }
 
-class _BudgetPageState extends State<BudgetPage> {
+class _SharedBudgetPageState extends State<SharedBudgetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,26 +70,26 @@ class _BudgetPageState extends State<BudgetPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddBudgetPage()),
+              MaterialPageRoute(builder: (context) => SharedAddBudgetPage()),
             );
           }
       ),
       body: ListView(
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            Container(
+        scrollDirection: Axis.vertical,
+        children: <Widget>[
+          Container(
 //              height: 10000,
 //              padding: const EdgeInsets.all(10.0),
 //              color: Colors.green,
-              child: expensesListView(),
-            ),
-          ],
+            child: SharedexpensesListView(),
+          ),
+        ],
       ),
     );
   }
 }
 
-List<BudgetCategory> sample() {
+List<BudgetCategory> Sharedsample() {
 
   List<BudgetCategory> sample = new List();
 
@@ -116,7 +116,7 @@ List<BudgetCategory> sample() {
     sample.add( BudgetCategory( value["budget category"],value["cost"], totalBudgetExpense(value["budget category"]),
         colorPicker(value["color"]).dartColor ) );
   });
-  
+
   //print(budgetHistory2(userID, "Candy"));
   //print(budgetLimit2(userID));
   //FIXME Only putting here because I know this gets called somewhere
@@ -137,8 +137,8 @@ void notificationData(){
   }
 }
 
-class _expensesListViewState extends State<expensesListView>{
-  List<BudgetCategory> targetList = sample();
+class _SharedexpensesListViewState extends State<SharedexpensesListView>{
+  List<BudgetCategory> targetList = Sharedsample();
 
   @override
   void initState(){
@@ -150,7 +150,7 @@ class _expensesListViewState extends State<expensesListView>{
   _update(List<dynamic> value){
     setState(() {
       //this._budgetHistoryList = value;
-      targetList = sample();
+      targetList = Sharedsample();
     });
   }
 
@@ -162,19 +162,19 @@ class _expensesListViewState extends State<expensesListView>{
 
   @override
   Widget build(BuildContext context){
-        return ListView.builder(        //not scrolling, which is an issue
+    return ListView.builder(        //not scrolling, which is an issue
 //          padding: const EdgeInsets.all(2.0),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: targetList.length,
-        itemBuilder: (context,position) {
-          return GestureDetector(
-            onTap: ( ) {
-              List<expensesListEntry> oof = expensesForBudgetsSample(targetList.elementAt(position).category);
-              budgetBoxPressed(context, oof);
-              oof.clear();
-            },
-            child: Stack(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: targetList.length,
+      itemBuilder: (context,position) {
+        return GestureDetector(
+          onTap: ( ) {
+            List<expensesListEntry> oof = expensesForBudgetsSample(targetList.elementAt(position).category);
+            budgetBoxPressed(context, oof);
+            oof.clear();
+          },
+          child: Stack(
               alignment: Alignment.bottomLeft,
               children: <Widget> [
                 Card(
@@ -193,20 +193,20 @@ class _expensesListViewState extends State<expensesListView>{
                   ),
                 ),
                 Card(
-                  color: Colors.grey,
-                  child: Container(
-                    height: 48, //have to manually put in this value ._." (52, 65)
-                    padding: const EdgeInsets.all(16.0),
-                  )
+                    color: Colors.grey,
+                    child: Container(
+                      height: 48, //have to manually put in this value ._." (52, 65)
+                      padding: const EdgeInsets.all(16.0),
+                    )
                 ),
                 Card(
-                color: targetList.elementAt(position).barColor,//Colors.green,  //this should be the color the user selected ie. targetList.elementAt(position).barColor
-                child: FractionallySizedBox(
-                  widthFactor: calcBudgetPercent(targetList.elementAt(position).totalBudget,
-                             targetList.elementAt(position).budgetSpent),
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    height: 48,
+                  color: targetList.elementAt(position).barColor,//Colors.green,  //this should be the color the user selected ie. targetList.elementAt(position).barColor
+                  child: FractionallySizedBox(
+                    widthFactor: calcBudgetPercent(targetList.elementAt(position).totalBudget,
+                        targetList.elementAt(position).budgetSpent),
+                    child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      height: 48,
 //                    child: Row(
 //                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                        children:[
@@ -230,104 +230,104 @@ class _expensesListViewState extends State<expensesListView>{
 //                          )
 //                        ]
 //                    ),
+                    ),
                   ),
                 ),
-              ),
-             ]
-            ),
-          );
-        },
+              ]
+          ),
+        );
+      },
 //      ),
     );
   }
 }
 
-class expensesListView extends StatefulWidget{
+class SharedexpensesListView extends StatefulWidget{
   @override
-  State<expensesListView> createState(){
-    return _expensesListViewState();
+  State<SharedexpensesListView> createState(){
+    return _SharedexpensesListViewState();
   }
 }
 
-class AddBudgetPage extends StatelessWidget {
+class SharedAddBudgetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          backgroundColor: Colors.green,//new Color(0xFF18D191),
-          title: new Text('Input Budget'),
-        ),
-        body: new Container(
-            padding: new EdgeInsets.all(32.0),
-            child: new Center(
-                child: new Column(
-                    children: <Widget>[
-                      new TextFormField(
-                        controller: category,
-                        decoration: new InputDecoration(
-                          hintText: "Add your category",
-                        ),
-                        maxLines: 1,
-                        maxLength: 40,  //variable length
-                        maxLengthEnforced: true,
-                        validator: (value) => value.isEmpty ? "Category cannot be empty you noob" : null,
-                        onSaved: (value) => _new_category = value,
+      appBar: new AppBar(
+        backgroundColor: Colors.green,//new Color(0xFF18D191),
+        title: new Text('Input Budget'),
+      ),
+      body: new Container(
+        padding: new EdgeInsets.all(32.0),
+        child: new Center(
+            child: new Column(
+                children: <Widget>[
+                  new TextFormField(
+                    controller: category,
+                    decoration: new InputDecoration(
+                      hintText: "Add your category",
+                    ),
+                    maxLines: 1,
+                    maxLength: 40,  //variable length
+                    maxLengthEnforced: true,
+                    validator: (value) => value.isEmpty ? "Category cannot be empty you noob" : null,
+                    onSaved: (value) => _new_category = value,
 //                        onEditingComplete: (value) => _new_category = value,
-                        onFieldSubmitted: (String str) {
-                          //setState(() {
-                          _new_category = str;
+                    onFieldSubmitted: (String str) {
+                      //setState(() {
+                      _new_category = str;
 //                            buttonPressed(context);
-                          //});
-                        },
+                      //});
+                    },
 
-                      ),
-                      new TextFormField(
-                        controller: amount,
-                        keyboardType: TextInputType.number,
-                        decoration: new InputDecoration(
-                          hintText: "Add your total budget",
-                        ),
-                        maxLines: 1,
-                        maxLength: 20,
-                        maxLengthEnforced: true,
-                        validator: (value) => value.isEmpty ? "Budget cannot be empty you dingdong" : null,
-                        onSaved: (value) => _total_budget = value,  //value is not being saved
-                        onFieldSubmitted: (String str1) {
-                          _total_budget = str1;
+                  ),
+                  new TextFormField(
+                    controller: amount,
+                    keyboardType: TextInputType.number,
+                    decoration: new InputDecoration(
+                      hintText: "Add your total budget",
+                    ),
+                    maxLines: 1,
+                    maxLength: 20,
+                    maxLengthEnforced: true,
+                    validator: (value) => value.isEmpty ? "Budget cannot be empty you dingdong" : null,
+                    onSaved: (value) => _total_budget = value,  //value is not being saved
+                    onFieldSubmitted: (String str1) {
+                      _total_budget = str1;
 //                          buttonPressed(context);
-                        },
-                      ),
-                      new RaisedButton(
-                        onPressed: () {
-                          
-                          if (amount.text.isEmpty || category.text.isEmpty || _color_selected.isEmpty) {//|| _new_category.isEmpty) {
-                            nothingEntered(context);
-                          }
-                          else {
-                          addBudget(userID, int.parse(amount.text), category.text, _color_selected);
-                            buttonPressed(context); //dummy onPressed does not look at the value
-                            amount.clear();
-                            category.clear();
-                          }
-                        },
-                        child: Text('Enter'),
-                      ),
-                      new Container(
+                    },
+                  ),
+                  new RaisedButton(
+                    onPressed: () {
+
+                      if (amount.text.isEmpty || category.text.isEmpty || _color_selected.isEmpty) {//|| _new_category.isEmpty) {
+                        nothingEntered(context);
+                      }
+                      else {
+                        addBudget(userID, int.parse(amount.text), category.text, _color_selected);
+                        buttonPressed(context); //dummy onPressed does not look at the value
+                        amount.clear();
+                        category.clear();
+                      }
+                    },
+                    child: Text('Enter'),
+                  ),
+                  new Container(
 //                        height: 300,
-                        child: BudgetColorChoices(),
-                      )
-                    ])
-                ),
-            ),
-        );
+                    child: BudgetColorChoices(),
+                  )
+                ])
+        ),
+      ),
+    );
   }
 }
 
 void nothingEntered(BuildContext context) {
   var alertDialog = AlertDialog(
     title: Text("Enter in your budget info fool, Look:\n category: " + category.text + ",\n budget: " + amount.text
-      + ",\n color: " + _color_selected + ","),
+        + ",\n color: " + _color_selected + ","),
     content: Text("I'm kidding don\'t hurt me pls", style: TextStyle(fontSize: 10.0),),
   );
   showDialog(
@@ -369,186 +369,186 @@ class _BudgetColorChoicesState extends State<BudgetColorChoices> {
   @override
   Widget build(BuildContext context) {
     return new Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget> [
-        new Row( children: <Widget> [Container (height: 10.0,)] ),
-        new Row (
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget> [
+          new Row( children: <Widget> [Container (height: 10.0,)] ),
+          new Row (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              setState(() {
-              _color_selected = "blue";
-              _tapInProgress = setAllFalse(_tapInProgress); });
-            },
-            /*onTapCancel: () {
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _color_selected = "blue";
+                      _tapInProgress = setAllFalse(_tapInProgress); });
+                  },
+                  /*onTapCancel: () {
               setState(() {
                 _tapInProgress = false;});
               _color_selected = "";
             },*/
-            child: Container(
-            alignment: Alignment.centerRight,
-                height: 50.0, width: 50.0,
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    border: Border.all(
-                      color: _tapInProgress? Colors.black:Colors.white,
-                      width: 2.0,
-                    )
-                )
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _color_selected = "red";
-                _tapInProgress2 = setAllFalse(_tapInProgress2); });
-            },
-            child: Container(
-              alignment: Alignment.centerRight,
-              height: 50.0, width: 50.0,
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                border: Border.all(
-                  color: _tapInProgress2? Colors.black:Colors.white,
-                  width: 2.0,
-                )
-              )
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _color_selected = "green";
-                _tapInProgress3 = setAllFalse(_tapInProgress3); });
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50.0, width: 50.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          border: Border.all(
+                            color: _tapInProgress? Colors.black:Colors.white,
+                            width: 2.0,
+                          )
+                      )
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _color_selected = "red";
+                      _tapInProgress2 = setAllFalse(_tapInProgress2); });
+                  },
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50.0, width: 50.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          border: Border.all(
+                            color: _tapInProgress2? Colors.black:Colors.white,
+                            width: 2.0,
+                          )
+                      )
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _color_selected = "green";
+                      _tapInProgress3 = setAllFalse(_tapInProgress3); });
 
-            },
-            child: Container(
-              alignment: Alignment.centerRight,
-              height: 50.0, width: 50.0,
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                border: Border.all(
-                  color: _tapInProgress3? Colors.black:Colors.white,
-                  width: 2.0,
-                )
-              )
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _color_selected = "yellow";
-                _tapInProgress4 = setAllFalse(_tapInProgress4); });
+                  },
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50.0, width: 50.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          border: Border.all(
+                            color: _tapInProgress3? Colors.black:Colors.white,
+                            width: 2.0,
+                          )
+                      )
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _color_selected = "yellow";
+                      _tapInProgress4 = setAllFalse(_tapInProgress4); });
 
-            },
-            child: Container(
-              alignment: Alignment.centerRight,
-              height: 50.0, width: 50.0,
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.yellow,
-                border: Border.all(
-                  color: _tapInProgress4? Colors.black:Colors.white,
-                  width: 2.0,
-                )
-              )
-            ),
-          ),
+                  },
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50.0, width: 50.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                          color: Colors.yellow,
+                          border: Border.all(
+                            color: _tapInProgress4? Colors.black:Colors.white,
+                            width: 2.0,
+                          )
+                      )
+                  ),
+                ),
 
+              ]
+          ),
+          new Row( children: <Widget> [Container (height: 10.0,)] ),
+          new Row (
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _color_selected = "pink";
+                      _tapInProgress5 = setAllFalse(_tapInProgress5); });
+
+                  },
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50.0, width: 50.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                          color: Colors.pink,
+                          border: Border.all(
+                            color: _tapInProgress5? Colors.black:Colors.white,
+                            width: 2.0,
+                          )
+                      )
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _color_selected = "lime";
+                      _tapInProgress6 = setAllFalse(_tapInProgress6); });
+
+                  },
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50.0, width: 50.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                          color: Colors.lime,
+                          border: Border.all(
+                            color: _tapInProgress6? Colors.black:Colors.white,
+                            width: 2.0,
+                          )
+                      )
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _color_selected = "teal";
+                      _tapInProgress7 = setAllFalse(_tapInProgress7); });
+
+                  },
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50.0, width: 50.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                          color: Colors.teal,
+                          border: Border.all(
+                            color: _tapInProgress7? Colors.black:Colors.white,
+                            width: 2.0,
+                          )
+                      )
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _color_selected = "indigo";
+                      _tapInProgress8 = setAllFalse(_tapInProgress8); });
+                  },
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50.0, width: 50.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                          color: Colors.indigo,
+                          border: Border.all(
+                            color: _tapInProgress8? Colors.black:Colors.white,
+                            width: 2.0,
+                          )
+                      )
+                  ),
+                ),
+
+              ]
+          ),
+          new Row( children: <Widget> [Container (height: 10.0,)] ),
         ]
-        ),
-        new Row( children: <Widget> [Container (height: 10.0,)] ),
-        new Row (
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _color_selected = "pink";
-                    _tapInProgress5 = setAllFalse(_tapInProgress5); });
-
-                },
-                child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0, width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.pink,
-                        border: Border.all(
-                          color: _tapInProgress5? Colors.black:Colors.white,
-                          width: 2.0,
-                        )
-                    )
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _color_selected = "lime";
-                    _tapInProgress6 = setAllFalse(_tapInProgress6); });
-
-                },
-                child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0, width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.lime,
-                        border: Border.all(
-                          color: _tapInProgress6? Colors.black:Colors.white,
-                          width: 2.0,
-                        )
-                    )
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _color_selected = "teal";
-                    _tapInProgress7 = setAllFalse(_tapInProgress7); });
-
-                },
-                child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0, width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.teal,
-                        border: Border.all(
-                          color: _tapInProgress7? Colors.black:Colors.white,
-                          width: 2.0,
-                        )
-                    )
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _color_selected = "indigo";
-                    _tapInProgress8 = setAllFalse(_tapInProgress8); });
-                },
-                child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50.0, width: 50.0,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.indigo,
-                        border: Border.all(
-                          color: _tapInProgress8? Colors.black:Colors.white,
-                          width: 2.0,
-                        )
-                    )
-                ),
-              ),
-
-            ]
-        ),
-        new Row( children: <Widget> [Container (height: 10.0,)] ),
-    ]
     );
   }
 
@@ -567,10 +567,10 @@ void buttonPressed(BuildContext context) {
   );
 
   showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alertDialog;
-    }
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog;
+      }
   );
 }
 
